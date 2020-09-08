@@ -1,109 +1,62 @@
-﻿using UnityEngine;
-using UnityEditor;
+﻿using UnityEditor;
+using UnityEngine;
 
 [CustomEditor(typeof(XR_SkeletonPoser))]
 public class XR_SkeletonPoserEditor : Editor
 {
-    
     private XR_SkeletonPoser _poser;
     
-    private GameObject tempLeft = null;
-    private GameObject tempRight = null;
-
-    private bool showLeftIsPressed;
-    private bool hideLeftIsPressed;
-
-    private bool showRightIsPressed;
-    private bool hideRightIsPressed;
+    private GameObject _tempLeft;
+    private bool _toggleLeftHand;
+    private bool _setToggleLeftHand;
 
     private void OnEnable()
     {
-        Debug.Log("OnEnable");
         _poser = (XR_SkeletonPoser) target;
-    }
-
-    private void OnDisable()
-    {
-        Debug.Log("OnDisable");
-        DestroyImmediate(tempLeft);
-        DestroyImmediate(tempRight);
     }
 
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
-        
+
         DrawPoseEditor();
     }
 
     private void DrawPoseEditor()
     {
-        if (Application.isPlaying)
+        if (Application.isPlaying) // Check if in playmode and skip if not. 
         {
             EditorGUILayout.LabelField("Cannot modify pose while in play mode.");
+            
+            // Destroy hands when in playmode
+            DestroyImmediate(_tempLeft);
+            // DestroyImmediate(_tempRight);
         }
         else
         {
-            // Edit mode is active
-            
             // Preview button
-            
-            EditorGUILayout.LabelField("Do not unselect the gameobject, it will destroy the hand! This isn't intended behaviour, fix soon™!");
-            
-            EditorGUILayout.BeginHorizontal("box");
-            
-            showLeftIsPressed = GUILayout.Button("Show Left", "box");
-            if(showLeftIsPressed && tempLeft == null)
+
+            // EditorGUILayout.BeginHorizontal("box");
+
+            _toggleLeftHand = EditorGUILayout.Toggle("Toggle Left", _toggleLeftHand);
+            if (_toggleLeftHand)
             {
-                tempLeft = _poser.ShowLeftPreview();
+                if (!_setToggleLeftHand) _tempLeft = _poser.ShowLeftPreview();
+                _setToggleLeftHand = true;
             }
-            else if (showLeftIsPressed && tempLeft != null)
+            else
             {
-                return;
-            }
-            
-            hideLeftIsPressed = GUILayout.Button("Destroy Left", "box");
-            if(hideLeftIsPressed && tempLeft != null)
-            {
-                tempLeft = _poser.DestroyLeftPreview(tempLeft);
-            }
-            else if (hideLeftIsPressed && tempLeft == null)
-            {
-                return;
+                if (_setToggleLeftHand) _poser.DestroyLeftPreview(_tempLeft);
+                _setToggleLeftHand = false;
             }
 
-            EditorGUILayout.Space(20);
-
-            showRightIsPressed = GUILayout.Button("Show Right", "box");
-            if(showRightIsPressed && tempRight == null)
-            {
-                tempRight = _poser.ShowLeftPreview();
-            }
-            else if (showRightIsPressed && tempRight != null)
-            {
-                return;
-            }
-            
-            hideRightIsPressed = GUILayout.Button("Destroy Right", "box");
-            if(hideRightIsPressed && tempRight != null)
-            {
-                tempRight = _poser.DestroyRightPreview(tempRight);
-            }
-            else if (hideRightIsPressed && tempRight == null)
-            {
-                return;
-            }
-
-            
-            EditorGUILayout.EndHorizontal();
+            // EditorGUILayout.EndHorizontal();
 
             // Reset Pose button
 
             // Save pose button
 
             // Load pose button
-
         }
     }
-
 }
