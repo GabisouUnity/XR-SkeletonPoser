@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class XR_SkeletonPoser : MonoBehaviour
 {
@@ -7,7 +8,7 @@ public class XR_SkeletonPoser : MonoBehaviour
 
     public GameObject leftHand = null;
     
-    // Functions used by XR_SkeletonPoserEditor.
+    // Functions used by XR_SkeletonPoserEditor
     
     public GameObject ShowLeftPreview()
     {

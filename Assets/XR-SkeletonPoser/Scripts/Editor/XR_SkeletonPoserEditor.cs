@@ -12,7 +12,7 @@ public class XR_SkeletonPoserEditor : Editor
 
     private void OnEnable()
     {
-        _poser = (XR_SkeletonPoser) target;
+        _poser = target as XR_SkeletonPoser;
     }
 
     public override void OnInspectorGUI()
@@ -35,13 +35,16 @@ public class XR_SkeletonPoserEditor : Editor
         else
         {
             // Preview button
-
-            // EditorGUILayout.BeginHorizontal("box");
-
+            
             _toggleLeftHand = EditorGUILayout.Toggle("Toggle Left", _toggleLeftHand);
             if (_toggleLeftHand)
             {
                 if (!_setToggleLeftHand) _tempLeft = _poser.ShowLeftPreview();
+
+                _tempLeft.transform.parent = _poser.transform;
+                _tempLeft.transform.localPosition = Vector3.zero;
+                _tempLeft.transform.localRotation = Quaternion.identity;
+
                 _setToggleLeftHand = true;
             }
             else
@@ -49,14 +52,6 @@ public class XR_SkeletonPoserEditor : Editor
                 if (_setToggleLeftHand) _poser.DestroyLeftPreview(_tempLeft);
                 _setToggleLeftHand = false;
             }
-
-            // EditorGUILayout.EndHorizontal();
-
-            // Reset Pose button
-
-            // Save pose button
-
-            // Load pose button
         }
     }
 }
