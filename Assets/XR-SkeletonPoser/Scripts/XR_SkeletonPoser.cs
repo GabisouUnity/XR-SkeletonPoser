@@ -8,6 +8,8 @@ public class XR_SkeletonPoser : MonoBehaviour
 
     public GameObject leftHand = null;
     
+    public bool leftToggled = false;
+    
     // Functions used by XR_SkeletonPoserEditor
     
     public GameObject ShowLeftPreview()

@@ -4,15 +4,17 @@ using UnityEngine;
 [CustomEditor(typeof(XR_SkeletonPoser))]
 public class XR_SkeletonPoserEditor : Editor
 {
-    private XR_SkeletonPoser _poser;
-    
     private GameObject _tempLeft;
     private bool _toggleLeftHand;
-    private bool _setToggleLeftHand;
+
+    private SerializedObject _targetObject;
+    private SerializedProperty _propertyLeftToggled = null;
+    private SerializedProperty _propertyTempLeft = null;
 
     private void OnEnable()
     {
-        _poser = target as XR_SkeletonPoser;
+        _targetObject = serializedObject;
+        _propertyLeftToggled = _targetObject.FindProperty("leftToggled");
     }
 
     public override void OnInspectorGUI()
@@ -27,30 +29,28 @@ public class XR_SkeletonPoserEditor : Editor
         if (Application.isPlaying) // Check if in playmode and skip if not. 
         {
             EditorGUILayout.LabelField("Cannot modify pose while in play mode.");
-            
-            // Destroy hands when in playmode
-            DestroyImmediate(_tempLeft);
-            // DestroyImmediate(_tempRight);
         }
         else
         {
             // Preview button
             
+            _targetObject.Update();
+            
             _toggleLeftHand = EditorGUILayout.Toggle("Toggle Left", _toggleLeftHand);
             if (_toggleLeftHand)
             {
-                if (!_setToggleLeftHand) _tempLeft = _poser.ShowLeftPreview();
-
-                _tempLeft.transform.parent = _poser.transform;
+                if (!_propertyLeftToggled.boolValue) _tempLeft = _targetObject.ShowLeftPreview();
+            
+                _tempLeft.transform.parent = _targetObject.targetObject;
                 _tempLeft.transform.localPosition = Vector3.zero;
                 _tempLeft.transform.localRotation = Quaternion.identity;
-
-                _setToggleLeftHand = true;
+            
+                _propertyLeftToggled.boolValue = true;
             }
             else
             {
-                if (_setToggleLeftHand) _poser.DestroyLeftPreview(_tempLeft);
-                _setToggleLeftHand = false;
+                if (_propertyLeftToggled.boolValue) _targetObject.DestroyLeftPreview(_tempLeft);
+                _propertyLeftToggled.boolValue = false;
             }
         }
     }
