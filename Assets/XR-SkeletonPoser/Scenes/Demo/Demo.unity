@@ -280,6 +280,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   leftHand: {fileID: 100060, guid: 65d8eda911e0ba548a3674f65c43308b, type: 3}
+  leftToggled: 1
 --- !u!65 &210984512
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -952,6 +953,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   leftHand: {fileID: 0}
+  leftToggled: 0
 --- !u!1 &2036468501
 GameObject:
   m_ObjectHideFlags: 0
