@@ -6,34 +6,31 @@ public class XR_SkeletonPoserEditor : Editor
 {
     private XR_SkeletonPoser _poser = null;
     
-    private GameObject _tempLeft;
-    private bool _toggleLeftHand;
-
-    private SerializedObject _targetObject = null;
-    private SerializedProperty _propertyLeftToggled = null;
-    // private SerializedProperty _propertyTempLeft = null;
+    // private SerializedProperty _propertyShowLeft = null;
+    private GameObject _leftGameObject = null;
+    private bool _leftIsShown;
 
     private void OnEnable()
     {
-        _targetObject = serializedObject;
-        
-        GameObject poserGameObject = _targetObject.targetObject as GameObject;
-        // Returns null, bug
-        _poser = poserGameObject.GetComponent<XR_SkeletonPoser>();
+        _poser = (XR_SkeletonPoser) target;
 
-        _propertyLeftToggled = _targetObject.FindProperty("leftToggled");
+        // _propertyShowLeft = serializedObject.FindProperty("_showLeft");
     }
 
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
+        
+        serializedObject.Update();
 
         DrawPoseEditor();
+
+        serializedObject.ApplyModifiedProperties();
     }
 
     private void DrawPoseEditor()
     {
-        if (Application.isPlaying) // Check if in playmode and skip if not. 
+        if (Application.isPlaying) // Check if in playmode and skip if not.
         {
             EditorGUILayout.LabelField("Cannot modify pose while in play mode.");
         }
@@ -41,24 +38,42 @@ public class XR_SkeletonPoserEditor : Editor
         {
             // Preview button
             
-            _targetObject.Update();
-            
-            _toggleLeftHand = EditorGUILayout.Toggle("Toggle Left", _toggleLeftHand);
-            if (_toggleLeftHand)
-            {
-                if (!_propertyLeftToggled.boolValue) _tempLeft = _poser.ShowLeftPreview();
-            
-                _tempLeft.transform.parent = _poser.gameObject.transform;
-                _tempLeft.transform.localPosition = Vector3.zero;
-                _tempLeft.transform.localRotation = Quaternion.identity;
-            
-                _propertyLeftToggled.boolValue = true;
-            }
-            else
-            {
-                if (_propertyLeftToggled.boolValue) _poser.DestroyLeftPreview(_tempLeft);
-                _propertyLeftToggled.boolValue = false;
-            }
+            // _toggleLeftHand = EditorGUILayout.Toggle("Toggle Left", _toggleLeftHand);
+            // if (_toggleLeftHand)
+            // {
+            //     if (!_showLeft) tempLeft = _poser.ShowLeftPreview();
+            //
+            //     tempLeft.transform.parent = _poser.gameObject.transform;
+            //     tempLeft.transform.localPosition = Vector3.zero;
+            //     tempLeft.transform.localRotation = Quaternion.identity;
+            //
+            //     _showLeft = true;
+            // }
+            // else
+            // {
+            //     if (_showLeft) _poser.DestroyLeftPreview(tempLeft);
+            //     _showLeft = false;
+            // }
+
+            // if (_propertyShowLeft.boolValue)
+            // {
+                if (GUILayout.Button("Show Hand"))
+                {
+                    if (!_leftIsShown)
+                    {
+                        _leftGameObject = _poser.ShowLeftPreview();
+                        _leftIsShown = true;
+                    }
+                }
+                if (GUILayout.Button("Hide Hand"))
+                {
+                    if (_leftIsShown)
+                    {
+                        _poser.DestroyLeftPreview(_leftGameObject);
+                        _leftIsShown = false;
+                    }
+                }
+            // }
         }
     }
 }

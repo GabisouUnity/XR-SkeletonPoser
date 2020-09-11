@@ -7,20 +7,20 @@ public class XR_SkeletonPoser : MonoBehaviour
     // [SerializeField] private XR_SkeletonPose activePose;
 
     public GameObject leftHand = null;
+
+    private bool _showLeft;
     
-    public bool leftToggled = false;
-    
-    // Functions used by XR_SkeletonPoserEditor
+    // Functions used by XR_SkeletonPoserEditor.
     
     public GameObject ShowLeftPreview()
     {
-        return Instantiate(leftHand);
+        GameObject left = Instantiate(leftHand);
+        return left;
     }
     
-    public GameObject DestroyLeftPreview(GameObject obj)
+    public void DestroyLeftPreview(GameObject obj)
     {
         DestroyImmediate(obj);
-        return null;
     }
     
 }
