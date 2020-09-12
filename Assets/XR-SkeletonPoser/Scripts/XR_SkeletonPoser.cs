@@ -3,19 +3,17 @@ using UnityEngine;
 
 public class XR_SkeletonPoser : MonoBehaviour
 {
-
-    // [SerializeField] private XR_SkeletonPose activePose;
-
-    public GameObject leftHand = null;
-
-    private bool _showLeft;
     
+    public GameObject leftHand = null;
+    
+    [HideInInspector]
+    public bool showLeft;
+
     // Functions used by XR_SkeletonPoserEditor.
     
     public GameObject ShowLeftPreview()
     {
-        GameObject left = Instantiate(leftHand);
-        return left;
+        return Instantiate(leftHand);
     }
     
     public void DestroyLeftPreview(GameObject obj)
