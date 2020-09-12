@@ -6,7 +6,7 @@ public class XR_SkeletonPoserEditor : Editor
 {
     private XR_SkeletonPoser _poser = null;
     
-    // private SerializedProperty _propertyShowLeft = null;
+    private SerializedProperty _propertyShowLeft = null;
     private GameObject _leftGameObject = null;
     private bool _leftIsShown;
 
@@ -14,7 +14,7 @@ public class XR_SkeletonPoserEditor : Editor
     {
         _poser = (XR_SkeletonPoser) target;
 
-        // _propertyShowLeft = serializedObject.FindProperty("_showLeft");
+        _propertyShowLeft = serializedObject.FindProperty("_showLeft");
     }
 
     public override void OnInspectorGUI()
@@ -57,23 +57,40 @@ public class XR_SkeletonPoserEditor : Editor
 
             // if (_propertyShowLeft.boolValue)
             // {
+            //     if (GUILayout.Button("Show Hand"))
+            //     {
+            //         if (!_leftIsShown)
+            //         {
+            //             _leftGameObject = _poser.ShowLeftPreview();
+            //             _leftIsShown = true;
+            //         }
+            //     }
+            //     if (GUILayout.Button("Hide Hand"))
+            //     {
+            //         if (_leftIsShown)
+            //         {
+            //             _poser.DestroyLeftPreview(_leftGameObject);
+            //             _leftIsShown = false;
+            //         }
+            //     }
+            // }
+
+            if (!_leftIsShown)
+            {
                 if (GUILayout.Button("Show Hand"))
                 {
-                    if (!_leftIsShown)
-                    {
-                        _leftGameObject = _poser.ShowLeftPreview();
-                        _leftIsShown = true;
-                    }
+                    _leftGameObject = _poser.ShowLeftPreview();
+                    _leftIsShown = true;
                 }
+            }
+            else
+            {
                 if (GUILayout.Button("Hide Hand"))
                 {
-                    if (_leftIsShown)
-                    {
-                        _poser.DestroyLeftPreview(_leftGameObject);
-                        _leftIsShown = false;
-                    }
+                    _poser.DestroyLeftPreview(_leftGameObject);
+                    _leftIsShown = false;
                 }
-            // }
+            }
         }
     }
 }
