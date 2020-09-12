@@ -1,16 +1,16 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class XR_SkeletonPoser : MonoBehaviour
 {
     
     public GameObject leftHand = null;
+    public GameObject rightHand = null;
     
-    [HideInInspector]
-    public bool showLeft;
+    [HideInInspector] public bool showLeft;
+    [HideInInspector] public GameObject tempLeft;
     
-    [HideInInspector]
-    public GameObject tempLeft;
+    [HideInInspector] public bool showRight;
+    [HideInInspector] public GameObject tempRight;
 
     // Functions used by XR_SkeletonPoserEditor.
     
@@ -24,4 +24,14 @@ public class XR_SkeletonPoser : MonoBehaviour
         DestroyImmediate(obj);
     }
     
+    public GameObject ShowRightPreview()
+    {
+        return Instantiate(rightHand);
+    }
+    
+    public void DestroyRightPreview(GameObject obj)
+    {
+        DestroyImmediate(obj);
+    }
+
 }
