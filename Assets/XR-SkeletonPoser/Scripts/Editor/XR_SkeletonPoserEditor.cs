@@ -7,6 +7,7 @@ public class XR_SkeletonPoserEditor : Editor
     private XR_SkeletonPoser _poser = null;
     
     private SerializedProperty _propertyShowLeft = null;
+    private SerializedProperty _propertyTempLeft = null;
     
     private GameObject _leftGameObject = null;
 
@@ -15,6 +16,7 @@ public class XR_SkeletonPoserEditor : Editor
         _poser = (XR_SkeletonPoser) target;
 
         _propertyShowLeft = serializedObject.FindProperty("showLeft");
+        _propertyTempLeft = serializedObject.FindProperty("tempLeft");
     }
 
     public override void OnInspectorGUI()
@@ -49,13 +51,15 @@ public class XR_SkeletonPoserEditor : Editor
                     _leftGameObject.transform.localRotation = Quaternion.identity;
                     
                     _propertyShowLeft.boolValue = true;
+
+                    _propertyTempLeft.objectReferenceValue = _leftGameObject;
                 }
             }
             else
             {
                 if (GUILayout.Button("Hide Hand"))
                 {
-                    _poser.DestroyLeftPreview(_leftGameObject);
+                    _poser.DestroyLeftPreview(_propertyTempLeft.objectReferenceValue as GameObject);
                     _propertyShowLeft.boolValue = false;
                 }
             }

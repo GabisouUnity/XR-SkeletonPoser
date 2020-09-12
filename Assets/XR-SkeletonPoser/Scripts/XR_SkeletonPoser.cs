@@ -8,6 +8,9 @@ public class XR_SkeletonPoser : MonoBehaviour
     
     [HideInInspector]
     public bool showLeft;
+    
+    [HideInInspector]
+    public GameObject tempLeft;
 
     // Functions used by XR_SkeletonPoserEditor.
     

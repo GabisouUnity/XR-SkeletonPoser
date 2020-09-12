@@ -279,7 +279,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   leftHand: {fileID: 100060, guid: 65d8eda911e0ba548a3674f65c43308b, type: 3}
-  showLeft: 1
+  showLeft: 0
+  tempLeft: {fileID: 0}
 --- !u!65 &210984512
 BoxCollider:
   m_ObjectHideFlags: 0
