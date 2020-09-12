@@ -2,6 +2,8 @@
 
 public class XR_SkeletonPoser : MonoBehaviour
 {
+
+    public XR_SkeletonPose currentPose;
     
     public GameObject leftHand = null;
     public GameObject rightHand = null;

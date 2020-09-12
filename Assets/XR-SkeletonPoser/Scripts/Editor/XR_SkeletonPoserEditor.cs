@@ -97,6 +97,23 @@ public class XR_SkeletonPoserEditor : Editor
             }
 
             EditorGUILayout.EndHorizontal();
+            
+            // Save pose button
+            
+            EditorGUILayout.Space();
+
+            if (GUILayout.Button("Save Pose"))
+            {
+                
+            }
+            
+            // Reset Pose
+
+            if (GUILayout.Button("Reset Pose"))
+            {
+                
+            }
+            
         }
     }
 }
