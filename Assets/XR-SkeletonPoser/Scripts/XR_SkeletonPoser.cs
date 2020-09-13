@@ -58,7 +58,18 @@ public class XR_SkeletonPoser : MonoBehaviour
         float mirrorY = -normalQuat.y;
         float mirrorZ = -normalQuat.z;
         
-        return new Quaternion(boneRot.x, mirrorY, mirrorZ, boneRot.w);
+        Quaternion newQuat = new Quaternion(boneRot.x, mirrorY, mirrorZ, boneRot.w);
+        return newQuat;
+    }
+
+    public Vector3 InverseBonePositions(Vector3 bonePos)
+    {
+        Vector3 normalVector3 = bonePos;
+        float mirrorY = -normalVector3.y;
+        float mirrorZ = normalVector3.z;
+        
+        Vector3 newVector3 = new Vector3(bonePos.x, mirrorY, mirrorZ);
+        return newVector3;
     }
 
 }

@@ -108,12 +108,17 @@ public class XR_SkeletonPoserEditor : Editor
             
             EditorGUILayout.PropertyField(_propertyActivePose);
             
+            EditorGUILayout.Space();
+            
+            // Grey it out if hands aren't active
+            EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false && _propertyShowRight.boolValue == false);
+
+            XR_SkeletonPose newPose = CreateInstance<XR_SkeletonPose>();
+            
             if (GUILayout.Button("Save Pose"))
             {
                 // Create new instance of XR_SkeletonPose
                 
-                XR_SkeletonPose newPose = CreateInstance<XR_SkeletonPose>();
-
                 // Set newPose bonepos and bonerot to the tempLeft's modified poses
                 
                 newPose.leftBonePositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
@@ -123,10 +128,18 @@ public class XR_SkeletonPoserEditor : Editor
 
                 // Set bone rots to left bone rots so we have something to inverse
                 newPose.rightBoneRotations = newPose.leftBoneRotations;
-                
-                for (int i = 0; i < newPose.leftBoneRotations.Length; i++)
+
+                for (var i = 0; i < newPose.leftBoneRotations.Length; i++)
                 {
                     newPose.rightBoneRotations[i] = _poser.InverseBoneRotations(newPose.leftBoneRotations[i]);
+                }
+
+                // Set bone pos to left bone pos so we have something to inverse
+                newPose.rightBonePositions = newPose.leftBonePositions;
+                
+                for (int i = 0; i < newPose.leftBonePositions.Length; i++)
+                {
+                    newPose.rightBonePositions[i] = _poser.InverseBonePositions(newPose.leftBonePositions[i]);
                 }
                 
                 if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))
@@ -146,8 +159,10 @@ public class XR_SkeletonPoserEditor : Editor
 
             if (GUILayout.Button("Reset Pose"))
             {
-                
+
             }
+            
+            EditorGUI.EndDisabledGroup();
             
         }
     }
