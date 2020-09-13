@@ -2,8 +2,6 @@
 
 public class XR_SkeletonPoser : MonoBehaviour
 {
-
-    public XR_SkeletonPose currentPose;
     
     public GameObject leftHand = null;
     public GameObject rightHand = null;
@@ -11,6 +9,7 @@ public class XR_SkeletonPoser : MonoBehaviour
     [HideInInspector] public bool showLeft;
     [HideInInspector] public GameObject tempLeft;
     
+    [HideInInspector] public XR_SkeletonPose currentPose;
     [HideInInspector] public bool showRight;
     [HideInInspector] public GameObject tempRight;
 
