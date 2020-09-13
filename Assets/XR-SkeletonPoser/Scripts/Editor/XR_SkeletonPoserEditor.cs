@@ -116,12 +116,12 @@ public class XR_SkeletonPoserEditor : Editor
                 {
                     // Folder doesn't exist, create new
                     AssetDatabase.CreateFolder("Assets", "XRPoses");
-                    AssetDatabase.CreateAsset(newPose, "Assets/XRPoses/" + _poser.gameObject.name + ".asset");
+                    AssetDatabase.CreateAsset(newPose, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
                 }
                 else
                 {
                     // Folder exists
-                    AssetDatabase.CreateAsset(newPose, "Assets/XRPoses/" + _poser.gameObject.name + ".asset");
+                    AssetDatabase.CreateAsset(newPose, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
                 }
             }
             
