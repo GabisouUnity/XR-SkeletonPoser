@@ -278,12 +278,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f1eceacd75691a4d9fb4fb19618e242, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentPose: {fileID: 0}
   leftHand: {fileID: 100060, guid: 65d8eda911e0ba548a3674f65c43308b, type: 3}
   rightHand: {fileID: 100060, guid: 641e9d2f5c6b4cb438161abef3be8300, type: 3}
   showLeft: 0
   tempLeft: {fileID: 0}
-  showRight: 0
+  currentPose: {fileID: 0}
+  showRight: 1
   tempRight: {fileID: 0}
 --- !u!65 &210984512
 BoxCollider:

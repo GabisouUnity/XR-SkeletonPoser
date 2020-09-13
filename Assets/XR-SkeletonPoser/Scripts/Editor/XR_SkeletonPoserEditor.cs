@@ -110,7 +110,19 @@ public class XR_SkeletonPoserEditor : Editor
             
             if (GUILayout.Button("Save Pose"))
             {
-                
+                XR_SkeletonPose newPose = CreateInstance<XR_SkeletonPose>();
+
+                if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))
+                {
+                    // Folder doesn't exist, create new
+                    AssetDatabase.CreateFolder("Assets", "XRPoses");
+                    AssetDatabase.CreateAsset(newPose, "Assets/XRPoses/" + _poser.gameObject.name + ".asset");
+                }
+                else
+                {
+                    // Folder exists
+                    AssetDatabase.CreateAsset(newPose, "Assets/XRPoses/" + _poser.gameObject.name + ".asset");
+                }
             }
             
             // Reset Pose
