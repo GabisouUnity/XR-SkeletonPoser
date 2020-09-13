@@ -192,6 +192,19 @@ public class XR_SkeletonPoserEditor : Editor
                     {
                         newPose.rightBoneRotations[i] = Quaternion.identity;
                     }
+                    
+                    // Save and overwrite
+                    if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))
+                    {
+                        // Folder doesn't exist, create new
+                        AssetDatabase.CreateFolder("Assets", "XRPoses");
+                        AssetDatabase.CreateAsset(newPose, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
+                    }
+                    else
+                    {
+                        // Folder exists
+                        AssetDatabase.CreateAsset(newPose, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
+                    }
                 }
             }
             
