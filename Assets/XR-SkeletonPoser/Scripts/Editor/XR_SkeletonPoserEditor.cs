@@ -5,6 +5,8 @@ using UnityEngine;
 public class XR_SkeletonPoserEditor : Editor
 {
     private XR_SkeletonPoser _poser = null;
+
+    private SerializedProperty _propertyActivePose = null;
     
     private SerializedProperty _propertyShowLeft = null;
     private SerializedProperty _propertyTempLeft = null;
@@ -15,6 +17,8 @@ public class XR_SkeletonPoserEditor : Editor
     private void OnEnable()
     {
         _poser = (XR_SkeletonPoser) target;
+
+        _propertyActivePose = serializedObject.FindProperty("currentPose");
 
         _propertyShowLeft = serializedObject.FindProperty("showLeft");
         _propertyTempLeft = serializedObject.FindProperty("tempLeft");
@@ -101,7 +105,9 @@ public class XR_SkeletonPoserEditor : Editor
             // Save pose button
             
             EditorGUILayout.Space();
-
+            
+            EditorGUILayout.PropertyField(_propertyActivePose);
+            
             if (GUILayout.Button("Save Pose"))
             {
                 
