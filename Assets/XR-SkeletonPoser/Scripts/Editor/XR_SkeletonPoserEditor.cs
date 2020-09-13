@@ -110,8 +110,20 @@ public class XR_SkeletonPoserEditor : Editor
             
             if (GUILayout.Button("Save Pose"))
             {
+                // Create new instance of XR_SkeletonPose
+                
                 XR_SkeletonPose newPose = CreateInstance<XR_SkeletonPose>();
 
+                // Set newPose bonepos and bonerot to the tempLeft's modified poses
+                
+                newPose.leftBonePositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
+                newPose.leftBoneRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
+
+                // Inverse previous values for the right
+                
+                // newPose.rightBonePositions = 
+                // newPose.rightBoneRotations = Quaternion.Inverse(newPose.leftBoneRotations);
+                
                 if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))
                 {
                     // Folder doesn't exist, create new
