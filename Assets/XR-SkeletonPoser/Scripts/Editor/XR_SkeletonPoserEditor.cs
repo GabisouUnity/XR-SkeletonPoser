@@ -120,9 +120,14 @@ public class XR_SkeletonPoserEditor : Editor
                 newPose.leftBoneRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
 
                 // Inverse previous values for the right
+
+                // Set bone rots to left bone rots so we have something to inverse
+                newPose.rightBoneRotations = newPose.leftBoneRotations;
                 
-                // newPose.rightBonePositions = 
-                // newPose.rightBoneRotations = Quaternion.Inverse(newPose.leftBoneRotations);
+                for (int i = 0; i < newPose.leftBoneRotations.Length; i++)
+                {
+                    newPose.rightBoneRotations[i] = _poser.InverseBoneRotations(newPose.leftBoneRotations[i]);
+                }
                 
                 if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))
                 {

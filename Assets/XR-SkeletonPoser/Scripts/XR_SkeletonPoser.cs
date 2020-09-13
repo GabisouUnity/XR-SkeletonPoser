@@ -52,4 +52,13 @@ public class XR_SkeletonPoser : MonoBehaviour
         return target.GetComponentsInChildren<Transform>().Select(x => x.rotation).ToArray();
     }
 
+    public Quaternion InverseBoneRotations(Quaternion boneRot)
+    {
+        Quaternion normalQuat = boneRot;
+        float mirrorY = -normalQuat.y;
+        float mirrorZ = -normalQuat.z;
+        
+        return new Quaternion(boneRot.x, mirrorY, mirrorZ, boneRot.w);
+    }
+
 }
