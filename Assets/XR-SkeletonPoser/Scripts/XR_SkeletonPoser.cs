@@ -14,6 +14,12 @@ public class XR_SkeletonPoser : MonoBehaviour
     [HideInInspector] public bool showRight;
     [HideInInspector] public GameObject tempRight;
 
+    private void Awake()
+    {
+        DestroyLeftPreview(tempLeft);
+        DestroyRightPreview(tempRight);
+    }
+
     // Functions used by XR_SkeletonPoserEditor.
     
     public GameObject ShowLeftPreview()
