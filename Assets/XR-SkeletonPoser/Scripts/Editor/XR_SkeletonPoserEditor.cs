@@ -5,6 +5,8 @@ using UnityEngine;
 public class XR_SkeletonPoserEditor : Editor
 {
     private XR_SkeletonPoser _poser = null;
+    
+    private XR_SkeletonPose _defaultPose = null;
 
     private SerializedProperty _propertyActivePose = null;
     
@@ -18,6 +20,9 @@ public class XR_SkeletonPoserEditor : Editor
     {
         _poser = (XR_SkeletonPoser) target;
 
+        _defaultPose = CreateInstance<XR_SkeletonPose>();
+        GetDefaultPose();
+
         _propertyActivePose = serializedObject.FindProperty("currentPose");
 
         _propertyShowLeft = serializedObject.FindProperty("showLeft");
@@ -27,6 +32,17 @@ public class XR_SkeletonPoserEditor : Editor
         _propertyTempRight = serializedObject.FindProperty("tempRight");
     }
 
+    private void GetDefaultPose()
+    {
+        // Get default values
+        
+        _defaultPose.leftBonePositions = _poser.GetBonePositions(_poser.leftHand);
+        _defaultPose.leftBoneRotations = _poser.GetBoneRotations(_poser.leftHand);
+
+        _defaultPose.rightBonePositions = _poser.GetBonePositions(_poser.rightHand);
+        _defaultPose.rightBoneRotations = _poser.GetBoneRotations(_poser.rightHand);
+    }
+    
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
@@ -110,12 +126,12 @@ public class XR_SkeletonPoserEditor : Editor
             
             EditorGUILayout.Space();
             
-            // Grey it out if hands aren't active
-            EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false && _propertyShowRight.boolValue == false);
-            
             // Create new instance of XR_SkeletonPose, this is the one that is edited
             XR_SkeletonPose newPose = CreateInstance<XR_SkeletonPose>();
             
+            // Grey it out if hands aren't active
+            EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false && _propertyShowRight.boolValue == false);
+
             if (GUILayout.Button("Save Pose"))
             {
                 
@@ -123,16 +139,17 @@ public class XR_SkeletonPoserEditor : Editor
                 
                 newPose.leftBonePositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
                 newPose.leftBoneRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
-
                 
                 // Inverse previous values for the right
 
                 // Set bone rots to left bone rots so we have something to inverse
                 newPose.rightBoneRotations = newPose.leftBoneRotations;
+                // Debug.Log("Set bone rots to left bone rots so we have something to inverse");
 
                 for (var i = 0; i < newPose.leftBoneRotations.Length; i++)
                 {
                     newPose.rightBoneRotations[i] = _poser.InverseBoneRotations(newPose.leftBoneRotations[i]);
+                    // Debug.Log("Inverse bone rotations on right hand");
                 }
 
                 // Set bone pos to left bone pos so we have something to inverse
@@ -141,6 +158,7 @@ public class XR_SkeletonPoserEditor : Editor
                 for (int i = 0; i < newPose.leftBonePositions.Length; i++)
                 {
                     newPose.rightBonePositions[i] = _poser.InverseBonePositions(newPose.leftBonePositions[i]);
+                    // Debug.Log("Inverse bone positions on right hand");
                 }
                 
                 if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))
@@ -158,56 +176,48 @@ public class XR_SkeletonPoserEditor : Editor
             
             // Reset Pose
 
-            // if (GUILayout.Button("Reset Pose"))
-            // {
-            //     // Make sure we warn the user before they reset their pose
-            //     if (EditorUtility.DisplayDialog("Reset Pose?", "Are you sure you want to do this? You will lose your pose on this object!", "Yes", "No"))
-            //     {
-            //         // They are sure, reset pose
-            //         
-            //         newPose.leftBonePositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
-            //         newPose.leftBoneRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
-            //         
-            //         // Set right bones to be the same as left bones (stops null ref)
-            //         // Note: There might be a better way to do this, but it stops a null ref and it's being set to be reset anyways
-            //         newPose.rightBonePositions = newPose.leftBonePositions;
-            //         newPose.rightBoneRotations = newPose.leftBoneRotations;
-            //
-            //         // Reset leftBonePos
-            //         for (var i = 0; i < newPose.leftBonePositions.Length; i++)
-            //         {
-            //             newPose.leftBonePositions[i] = defaultPose.leftBonePositions[i];
-            //         }
-            //         // Reset leftBoneRot
-            //         for (var i = 0; i < newPose.leftBoneRotations.Length; i++)
-            //         {
-            //             newPose.leftBoneRotations[i] = defaultPose.leftBoneRotations[i];
-            //         }
-            //         // Reset rightBonePos
-            //         for (int i = 0; i < newPose.rightBonePositions.Length; i++)
-            //         {
-            //             newPose.rightBonePositions[i] = defaultPose.rightBonePositions[i];
-            //         }
-            //         // Reset rightBoneRot
-            //         for (int i = 0; i < newPose.rightBoneRotations.Length; i++)
-            //         {
-            //             newPose.rightBoneRotations[i] = defaultPose.rightBoneRotations[i];
-            //         }
-            //         
-            //         // Save and overwrite
-            //         if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))
-            //         {
-            //             // Folder doesn't exist, create new
-            //             AssetDatabase.CreateFolder("Assets", "XRPoses");
-            //             AssetDatabase.CreateAsset(newPose, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
-            //         }
-            //         else
-            //         {
-            //             // Folder exists
-            //             AssetDatabase.CreateAsset(newPose, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
-            //         }
-            //     }
-            // }
+            if (GUILayout.Button("Reset Pose"))
+            {
+                // Make sure we warn the user before they reset their pose
+                if (EditorUtility.DisplayDialog("Reset Pose?", "Are you sure you want to do this? You will lose your pose on this object!", "Yes", "No"))
+                {
+                    // They are sure, reset pose
+                    
+                    // Set newPose (instance) to default pose
+                    for (int i = 0; i < newPose.leftBonePositions.Length; i++)
+                    {
+                        newPose.leftBonePositions[i] = _defaultPose.leftBonePositions[i];
+                    }
+
+                    for (int i = 0; i < newPose.leftBoneRotations.Length; i++)
+                    {
+                        newPose.leftBoneRotations[i] = _defaultPose.leftBoneRotations[i];
+                    }
+
+                    for (int i = 0; i < newPose.rightBonePositions.Length; i++)
+                    {
+                        newPose.rightBonePositions[i] = _defaultPose.rightBonePositions[i];
+                    }
+
+                    for (int i = 0; i < newPose.rightBoneRotations.Length; i++)
+                    {
+                        newPose.rightBoneRotations[i] = _defaultPose.rightBoneRotations[i];
+                    }
+                    
+                    // Save and overwrite
+                    if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))
+                    {
+                        // Folder doesn't exist, create new
+                        AssetDatabase.CreateFolder("Assets", "XRPoses");
+                        AssetDatabase.CreateAsset(newPose, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
+                    }
+                    else
+                    {
+                        // Folder exists
+                        AssetDatabase.CreateAsset(newPose, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
+                    }
+                }
+            }
             
             EditorGUI.EndDisabledGroup();
             

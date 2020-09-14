@@ -280,7 +280,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftHand: {fileID: 100060, guid: 65d8eda911e0ba548a3674f65c43308b, type: 3}
   rightHand: {fileID: 100060, guid: 641e9d2f5c6b4cb438161abef3be8300, type: 3}
-  showLeft: 0
+  showLeft: 1
   tempLeft: {fileID: 0}
   currentPose: {fileID: 0}
   showRight: 0
