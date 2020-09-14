@@ -1,4 +1,6 @@
-﻿using UnityEditor;
+﻿using System.Linq;
+
+using UnityEditor;
 using UnityEngine;
 
 [CustomEditor(typeof(XR_SkeletonPoser))]
@@ -12,9 +14,11 @@ public class XR_SkeletonPoserEditor : Editor
     
     private SerializedProperty _propertyShowLeft = null;
     private SerializedProperty _propertyTempLeft = null;
+    private GameObject _leftGameObject = null;
 
     private SerializedProperty _propertyShowRight = null;
     private SerializedProperty _propertyTempRight = null;
+    private GameObject _rightGameObject = null;
 
     private void OnEnable()
     {
@@ -34,7 +38,7 @@ public class XR_SkeletonPoserEditor : Editor
 
     private void GetDefaultPose()
     {
-        // Get default values
+        // Get default values from the hand prefab.
         
         _defaultPose.leftBonePositions = _poser.GetBonePositions(_poser.leftHand);
         _defaultPose.leftBoneRotations = _poser.GetBoneRotations(_poser.leftHand);
@@ -70,15 +74,15 @@ public class XR_SkeletonPoserEditor : Editor
             {
                 if (GUILayout.Button("Show Left Hand"))
                 {
-                    var leftGameObject = _poser.ShowLeftPreview();
+                    _leftGameObject = _poser.ShowLeftPreview();
 
-                    leftGameObject.transform.parent = _poser.transform;
-                    leftGameObject.transform.localPosition = Vector3.zero;
-                    leftGameObject.transform.localRotation = Quaternion.identity;
+                    _leftGameObject.transform.parent = _poser.transform;
+                    _leftGameObject.transform.localPosition = Vector3.zero;
+                    _leftGameObject.transform.localRotation = Quaternion.identity;
                     
                     _propertyShowLeft.boolValue = true;
 
-                    _propertyTempLeft.objectReferenceValue = leftGameObject;
+                    _propertyTempLeft.objectReferenceValue = _leftGameObject;
                 }
             }
             else
@@ -96,15 +100,15 @@ public class XR_SkeletonPoserEditor : Editor
             {
                 if (GUILayout.Button("Show Right Hand"))
                 {
-                    var rightGameObject = _poser.ShowRightPreview();
+                    _rightGameObject = _poser.ShowRightPreview();
 
-                    rightGameObject.transform.parent = _poser.transform;
-                    rightGameObject.transform.localPosition = Vector3.zero;
-                    rightGameObject.transform.localRotation = Quaternion.identity;
+                    _rightGameObject.transform.parent = _poser.transform;
+                    _rightGameObject.transform.localPosition = Vector3.zero;
+                    _rightGameObject.transform.localRotation = Quaternion.identity;
                     
                     _propertyShowRight.boolValue = true;
 
-                    _propertyTempRight.objectReferenceValue = rightGameObject;
+                    _propertyTempRight.objectReferenceValue = _rightGameObject;
                 }
             }
             else
@@ -118,11 +122,68 @@ public class XR_SkeletonPoserEditor : Editor
 
             EditorGUILayout.EndHorizontal();
             
-            // Save pose button
-            
             EditorGUILayout.Space();
+
+            EditorGUILayout.BeginHorizontal();
             
             EditorGUILayout.PropertyField(_propertyActivePose);
+            
+            // Load pose button
+
+            if (GUILayout.Button("Load Pose"))
+            {
+                XR_SkeletonPose loadedPose = _poser.GetLoadedPose();
+
+                var leftBonePositions = _poser.GetBonePositions(_leftGameObject);
+                var leftBoneRotations = _poser.GetBoneRotations(_leftGameObject);
+
+                var leftTransforms = _leftGameObject.GetComponentsInChildren<Transform>().ToArray();
+                
+                // Set left values to loaded pose
+                for (int i = 0; i < leftBonePositions.Length; i++)
+                {
+                    leftTransforms[i].position = leftBonePositions[i];
+                }
+
+                for (int i = 0; i < leftBoneRotations.Length; i++)
+                {
+                    leftTransforms[i].rotation = leftBoneRotations[i];
+                }
+                
+                // Declare right values
+                
+                var rightTransforms = _rightGameObject.GetComponentsInChildren<Transform>().ToArray();
+
+                // Inverse right values
+
+                var rightBonePositions = leftBonePositions;
+                var rightBoneRotations = leftBoneRotations;
+
+                for (var i = 0; i < leftBoneRotations.Length; i++)
+                {
+                    rightBoneRotations[i] = _poser.InverseBoneRotations(leftBoneRotations[i]);
+                }
+
+                for (int i = 0; i < leftBonePositions.Length; i++)
+                {
+                    rightBonePositions[i] = _poser.InverseBonePositions(leftBonePositions[i]);
+                }
+
+                // Set right transform values to loaded pose
+                
+                for (int i = 0; i < rightBonePositions.Length; i++)
+                {
+                    rightTransforms[i].position = rightBonePositions[i];
+                }
+
+                for (int i = 0; i < leftBoneRotations.Length; i++)
+                {
+                    rightTransforms[i].rotation = rightBoneRotations[i];
+                }
+
+            }
+            
+            EditorGUILayout.EndHorizontal();
             
             EditorGUILayout.Space();
             
@@ -131,7 +192,9 @@ public class XR_SkeletonPoserEditor : Editor
             
             // Grey it out if hands aren't active
             EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false && _propertyShowRight.boolValue == false);
-
+            
+            // Save pose button
+            
             if (GUILayout.Button("Save Pose"))
             {
                 
@@ -144,12 +207,10 @@ public class XR_SkeletonPoserEditor : Editor
 
                 // Set bone rots to left bone rots so we have something to inverse
                 newPose.rightBoneRotations = newPose.leftBoneRotations;
-                // Debug.Log("Set bone rots to left bone rots so we have something to inverse");
 
                 for (var i = 0; i < newPose.leftBoneRotations.Length; i++)
                 {
                     newPose.rightBoneRotations[i] = _poser.InverseBoneRotations(newPose.leftBoneRotations[i]);
-                    // Debug.Log("Inverse bone rotations on right hand");
                 }
 
                 // Set bone pos to left bone pos so we have something to inverse
@@ -158,7 +219,6 @@ public class XR_SkeletonPoserEditor : Editor
                 for (int i = 0; i < newPose.leftBonePositions.Length; i++)
                 {
                     newPose.rightBonePositions[i] = _poser.InverseBonePositions(newPose.leftBonePositions[i]);
-                    // Debug.Log("Inverse bone positions on right hand");
                 }
                 
                 if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))

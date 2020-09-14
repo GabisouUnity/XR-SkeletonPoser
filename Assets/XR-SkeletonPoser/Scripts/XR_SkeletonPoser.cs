@@ -42,6 +42,11 @@ public class XR_SkeletonPoser : MonoBehaviour
         DestroyImmediate(obj);
     }
 
+    public XR_SkeletonPose GetLoadedPose()
+    {
+        return currentPose;
+    }
+    
     public Vector3[] GetBonePositions(GameObject target)
     {
         return target.GetComponentsInChildren<Transform>().Select(x => x.position).ToArray();
