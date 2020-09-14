@@ -130,59 +130,65 @@ public class XR_SkeletonPoserEditor : Editor
             
             // Load pose button
 
+            // Grey it out if hands aren't active
+            EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false && _propertyShowRight.boolValue == false);
+
             if (GUILayout.Button("Load Pose"))
             {
                 XR_SkeletonPose loadedPose = _poser.GetLoadedPose();
 
-                var leftBonePositions = _poser.GetBonePositions(_leftGameObject);
-                var leftBoneRotations = _poser.GetBoneRotations(_leftGameObject);
+                var leftBonePositions = loadedPose.leftBonePositions;
+                var leftBoneRotations = loadedPose.leftBoneRotations;
 
                 var leftTransforms = _leftGameObject.GetComponentsInChildren<Transform>().ToArray();
                 
                 // Set left values to loaded pose
                 for (int i = 0; i < leftBonePositions.Length; i++)
                 {
-                    leftTransforms[i].position = leftBonePositions[i];
+                    leftTransforms[i].localPosition = leftBonePositions[i];
                 }
 
                 for (int i = 0; i < leftBoneRotations.Length; i++)
                 {
-                    leftTransforms[i].rotation = leftBoneRotations[i];
+                    leftTransforms[i].localRotation = leftBoneRotations[i];
                 }
                 
                 // Declare right values
                 
                 var rightTransforms = _rightGameObject.GetComponentsInChildren<Transform>().ToArray();
-
+                
                 // Inverse right values
-
+                
                 var rightBonePositions = leftBonePositions;
                 var rightBoneRotations = leftBoneRotations;
-
+                
                 for (var i = 0; i < leftBoneRotations.Length; i++)
                 {
                     rightBoneRotations[i] = _poser.InverseBoneRotations(leftBoneRotations[i]);
                 }
-
+                
                 for (int i = 0; i < leftBonePositions.Length; i++)
                 {
                     rightBonePositions[i] = _poser.InverseBonePositions(leftBonePositions[i]);
                 }
-
+                
                 // Set right transform values to loaded pose
                 
                 for (int i = 0; i < rightBonePositions.Length; i++)
                 {
-                    rightTransforms[i].position = rightBonePositions[i];
+                    rightTransforms[i].localPosition = rightBonePositions[i];
                 }
-
+                
                 for (int i = 0; i < leftBoneRotations.Length; i++)
                 {
-                    rightTransforms[i].rotation = rightBoneRotations[i];
+                    rightTransforms[i].localRotation = rightBoneRotations[i];
                 }
 
             }
             
+            // Grey it out if hands aren't active
+            EditorGUI.EndDisabledGroup();
+
             EditorGUILayout.EndHorizontal();
             
             EditorGUILayout.Space();

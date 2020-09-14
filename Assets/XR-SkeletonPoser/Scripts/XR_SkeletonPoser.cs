@@ -49,12 +49,12 @@ public class XR_SkeletonPoser : MonoBehaviour
     
     public Vector3[] GetBonePositions(GameObject target)
     {
-        return target.GetComponentsInChildren<Transform>().Select(x => x.position).ToArray();
+        return target.GetComponentsInChildren<Transform>().Select(x => x.localPosition).ToArray();
     }
 
     public Quaternion[] GetBoneRotations(GameObject target)
     {
-        return target.GetComponentsInChildren<Transform>().Select(x => x.rotation).ToArray();
+        return target.GetComponentsInChildren<Transform>().Select(x => x.localRotation).ToArray();
     }
 
     public Quaternion InverseBoneRotations(Quaternion boneRot)
