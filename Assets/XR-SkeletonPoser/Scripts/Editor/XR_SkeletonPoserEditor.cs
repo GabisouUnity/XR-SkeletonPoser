@@ -183,38 +183,21 @@ public class XR_SkeletonPoserEditor : Editor
                 {
                     // They are sure, reset pose
                     
-                    // Set newPose (instance) to default pose
-                    for (int i = 0; i < newPose.leftBonePositions.Length; i++)
-                    {
-                        newPose.leftBonePositions[i] = _defaultPose.leftBonePositions[i];
-                    }
-
-                    for (int i = 0; i < newPose.leftBoneRotations.Length; i++)
-                    {
-                        newPose.leftBoneRotations[i] = _defaultPose.leftBoneRotations[i];
-                    }
-
-                    for (int i = 0; i < newPose.rightBonePositions.Length; i++)
-                    {
-                        newPose.rightBonePositions[i] = _defaultPose.rightBonePositions[i];
-                    }
-
-                    for (int i = 0; i < newPose.rightBoneRotations.Length; i++)
-                    {
-                        newPose.rightBoneRotations[i] = _defaultPose.rightBoneRotations[i];
-                    }
-                    
                     // Save and overwrite
                     if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))
                     {
                         // Folder doesn't exist, create new
                         AssetDatabase.CreateFolder("Assets", "XRPoses");
-                        AssetDatabase.CreateAsset(newPose, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
+                        
+                        // Overwrite the pose with a default pose
+                        AssetDatabase.CreateAsset(_defaultPose, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
                     }
                     else
                     {
                         // Folder exists
-                        AssetDatabase.CreateAsset(newPose, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
+                        
+                        // Overwrite the pose with a default pose
+                        AssetDatabase.CreateAsset(_defaultPose, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
                     }
                 }
             }
