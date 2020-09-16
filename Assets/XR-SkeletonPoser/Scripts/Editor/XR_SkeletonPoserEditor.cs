@@ -217,27 +217,25 @@ public class XR_SkeletonPoserEditor : Editor
                 
                 newPose.leftBonePositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
                 newPose.leftBoneRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
-                
-                // Inverse left values
-                
-                // Inverse previous values for the right
-
-                // Set bone rots to left bone rots so we have something to inverse
-                newPose.rightBoneRotations = newPose.leftBoneRotations;
-                
-                for (var i = 0; i < newPose.leftBoneRotations.Length; i++)
-                {
-                    newPose.rightBoneRotations[i] = _poser.InverseBoneRotations(newPose.leftBoneRotations[i]);
-                }
-                
-                // Set bone pos to left bone pos so we have something to inverse
-                newPose.rightBonePositions = newPose.leftBonePositions;
-                
-                for (int i = 0; i < newPose.leftBonePositions.Length; i++)
-                {
-                    newPose.rightBonePositions[i] = _poser.InverseBonePositions(newPose.leftBonePositions[i]);
-                }
-                
+                //
+                // // Inverse previous values for the right
+                //
+                // // Set bone rots to left bone rots so we have something to inverse
+                // newPose.rightBoneRotations = newPose.leftBoneRotations;
+                //
+                // for (var i = 0; i < newPose.leftBoneRotations.Length; i++)
+                // {
+                //     newPose.rightBoneRotations[i] = _poser.InverseBoneRotations(newPose.leftBoneRotations[i]);
+                // }
+                //
+                // // Set bone pos to left bone pos so we have something to inverse
+                // newPose.rightBonePositions = newPose.leftBonePositions;
+                //
+                // for (int i = 0; i < newPose.leftBonePositions.Length; i++)
+                // {
+                //     newPose.rightBonePositions[i] = _poser.InverseBonePositions(newPose.leftBonePositions[i]);
+                // }
+                //
                 if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))
                 {
                     // Folder doesn't exist, create new
