@@ -11,6 +11,7 @@ public class XR_SkeletonPoserEditor : Editor
     private XR_SkeletonPose _defaultPose = null;
 
     private SerializedProperty _propertyActivePose = null;
+    private SerializedProperty _propertyIgnoredBones = null;
     
     private SerializedProperty _propertyShowLeft = null;
     private SerializedProperty _propertyTempLeft = null;
@@ -28,6 +29,7 @@ public class XR_SkeletonPoserEditor : Editor
         GetDefaultPose();
 
         _propertyActivePose = serializedObject.FindProperty("currentPose");
+        _propertyIgnoredBones = serializedObject.FindProperty("ignoredBones");
 
         _propertyShowLeft = serializedObject.FindProperty("showLeft");
         _propertyTempLeft = serializedObject.FindProperty("tempLeft");
@@ -136,53 +138,60 @@ public class XR_SkeletonPoserEditor : Editor
             if (GUILayout.Button("Load Pose"))
             {
                 XR_SkeletonPose loadedPose = _poser.GetLoadedPose();
-
-                var leftBonePositions = loadedPose.leftBonePositions;
-                var leftBoneRotations = loadedPose.leftBoneRotations;
-
-                var leftTransforms = _leftGameObject.GetComponentsInChildren<Transform>().ToArray();
                 
-                // Set left values to loaded pose
-                for (int i = 0; i < leftBonePositions.Length; i++)
+                if (_leftGameObject != null)
                 {
-                    leftTransforms[i].localPosition = leftBonePositions[i];
-                }
+                    var leftBonePositions = loadedPose.leftBonePositions;
+                    var leftBoneRotations = loadedPose.leftBoneRotations;
 
-                for (int i = 0; i < leftBoneRotations.Length; i++)
-                {
-                    leftTransforms[i].localRotation = leftBoneRotations[i];
+                    var leftTransforms = _leftGameObject.GetComponentsInChildren<Transform>().ToArray();
+                    
+                    // Set left values to loaded pose
+                    for (int i = 0; i < leftBonePositions.Length; i++)
+                    {
+                        leftTransforms[i].localPosition = leftBonePositions[i];
+                    }
+                    
+                    for (int i = 0; i < leftBoneRotations.Length; i++)
+                    {
+                        leftTransforms[i].localRotation = leftBoneRotations[i];
+                    }
                 }
                 
                 // Declare right values
-                
-                var rightTransforms = _rightGameObject.GetComponentsInChildren<Transform>().ToArray();
-                
-                // Inverse right values
-                
-                var rightBonePositions = leftBonePositions;
-                var rightBoneRotations = leftBoneRotations;
-                
-                for (var i = 0; i < leftBoneRotations.Length; i++)
-                {
-                    rightBoneRotations[i] = _poser.InverseBoneRotations(leftBoneRotations[i]);
-                }
-                
-                for (int i = 0; i < leftBonePositions.Length; i++)
-                {
-                    rightBonePositions[i] = _poser.InverseBonePositions(leftBonePositions[i]);
-                }
-                
-                // Set right transform values to loaded pose
-                
-                for (int i = 0; i < rightBonePositions.Length; i++)
-                {
-                    rightTransforms[i].localPosition = rightBonePositions[i];
-                }
-                
-                for (int i = 0; i < leftBoneRotations.Length; i++)
-                {
-                    rightTransforms[i].localRotation = rightBoneRotations[i];
-                }
+
+                // broken
+                // if (_rightGameObject != null)
+                // {
+                //     var rightTransforms = _rightGameObject.GetComponentsInChildren<Transform>().ToArray();
+                //     
+                //     // Inverse right values
+                //     
+                //     var rightBonePositions = leftBonePositions;
+                //     var rightBoneRotations = leftBoneRotations;
+                //     
+                //     for (var i = 0; i < leftBoneRotations.Length; i++)
+                //     {
+                //         rightBoneRotations[i] = _poser.InverseBoneRotations(leftBoneRotations[i]);
+                //     }
+                //     
+                //     for (int i = 0; i < leftBonePositions.Length; i++)
+                //     {
+                //         rightBonePositions[i] = _poser.InverseBonePositions(leftBonePositions[i]);
+                //     }
+                //     
+                //     // Set right transform values to loaded pose
+                //     
+                //     for (int i = 0; i < rightBonePositions.Length; i++)
+                //     {
+                //         rightTransforms[i].localPosition = rightBonePositions[i];
+                //     }
+                //     
+                //     for (int i = 0; i < leftBoneRotations.Length; i++)
+                //     {
+                //         rightTransforms[i].localRotation = rightBoneRotations[i];
+                //     }
+                // }
 
             }
             
@@ -209,16 +218,18 @@ public class XR_SkeletonPoserEditor : Editor
                 newPose.leftBonePositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
                 newPose.leftBoneRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
                 
+                // Inverse left values
+                
                 // Inverse previous values for the right
 
                 // Set bone rots to left bone rots so we have something to inverse
                 newPose.rightBoneRotations = newPose.leftBoneRotations;
-
+                
                 for (var i = 0; i < newPose.leftBoneRotations.Length; i++)
                 {
                     newPose.rightBoneRotations[i] = _poser.InverseBoneRotations(newPose.leftBoneRotations[i]);
                 }
-
+                
                 // Set bone pos to left bone pos so we have something to inverse
                 newPose.rightBonePositions = newPose.leftBonePositions;
                 

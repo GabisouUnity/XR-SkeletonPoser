@@ -7,6 +7,8 @@ public class XR_SkeletonPoser : MonoBehaviour
     public GameObject leftHand = null;
     public GameObject rightHand = null;
 
+    [HideInInspector] public GameObject[] ignoredBones;
+    
     [HideInInspector] public bool showLeft;
     [HideInInspector] public GameObject tempLeft;
 

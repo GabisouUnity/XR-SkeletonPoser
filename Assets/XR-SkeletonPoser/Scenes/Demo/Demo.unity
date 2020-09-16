@@ -280,6 +280,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftHand: {fileID: 100060, guid: 65d8eda911e0ba548a3674f65c43308b, type: 3}
   rightHand: {fileID: 100060, guid: 641e9d2f5c6b4cb438161abef3be8300, type: 3}
+  ignoredBones: []
   showLeft: 0
   tempLeft: {fileID: 0}
   currentPose: {fileID: 0}
@@ -353,7 +354,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 210984510}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.771, y: 0.947, z: 0.107}
+  m_LocalPosition: {x: 1.771, y: 0.947, z: 0.1193}
   m_LocalScale: {x: 0.06726936, y: 0.06726936, z: 0.06726936}
   m_Children: []
   m_Father: {fileID: 97602749}
