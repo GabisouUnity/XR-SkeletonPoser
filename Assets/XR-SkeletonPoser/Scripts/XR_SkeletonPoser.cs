@@ -1,82 +1,87 @@
 ﻿using UnityEngine;
 using System.Linq;
+using UnityEngine.XR.Interaction.Toolkit;
 
-public class XR_SkeletonPoser : MonoBehaviour
+namespace yellowyears.SkeletonPoser
 {
-
-    public GameObject leftHand = null;
-    public GameObject rightHand = null;
-
-    [HideInInspector] public GameObject[] ignoredBones;
-    
-    [HideInInspector] public bool showLeft;
-    [HideInInspector] public GameObject tempLeft;
-
-    [HideInInspector] public XR_SkeletonPose currentPose;
-    [HideInInspector] public bool showRight;
-    [HideInInspector] public GameObject tempRight;
-
-    private void Awake()
+    [RequireComponent(typeof(XRGrabInteractable))]
+    public class XR_SkeletonPoser : MonoBehaviour
     {
-        DestroyLeftPreview(tempLeft);
-        DestroyRightPreview(tempRight);
-    }
 
-    // Functions used by XR_SkeletonPoserEditor.
+        public GameObject leftHand = null;
+        public GameObject rightHand = null;
 
-    public GameObject ShowLeftPreview()
-    {
-        return Instantiate(leftHand);
-    }
-
-    public void DestroyLeftPreview(GameObject obj)
-    {
-        DestroyImmediate(obj);
-    }
-
-    public GameObject ShowRightPreview()
-    {
-        return Instantiate(rightHand);
-    }
-
-    public void DestroyRightPreview(GameObject obj)
-    {
-        DestroyImmediate(obj);
-    }
-
-    public XR_SkeletonPose GetLoadedPose()
-    {
-        return currentPose;
-    }
-    
-    public Vector3[] GetBonePositions(GameObject target)
-    {
-        return target.GetComponentsInChildren<Transform>().Select(x => x.localPosition).ToArray();
-    }
-
-    public Quaternion[] GetBoneRotations(GameObject target)
-    {
-        return target.GetComponentsInChildren<Transform>().Select(x => x.localRotation).ToArray();
-    }
-
-    public Quaternion InverseBoneRotations(Quaternion boneRot)
-    {
-        Quaternion normalQuat = boneRot;
-        float mirrorY = -normalQuat.y;
-        float mirrorZ = -normalQuat.z;
+        [HideInInspector] public GameObject[] ignoredBones;
         
-        Quaternion newQuat = new Quaternion(boneRot.x, mirrorY, mirrorZ, boneRot.w);
-        return newQuat;
-    }
+        [HideInInspector] public bool showLeft;
+        [HideInInspector] public GameObject tempLeft;
 
-    public Vector3 InverseBonePositions(Vector3 bonePos)
-    {
-        Vector3 normalVector3 = bonePos;
-        float mirrorY = -normalVector3.y;
-        float mirrorZ = normalVector3.z;
+        [HideInInspector] public XR_SkeletonPose currentPose;
+        [HideInInspector] public bool showRight;
+        [HideInInspector] public GameObject tempRight;
+
+        private void Awake()
+        {
+            DestroyLeftPreview(tempLeft);
+            DestroyRightPreview(tempRight);
+        }
         
-        Vector3 newVector3 = new Vector3(bonePos.x, mirrorY, mirrorZ);
-        return newVector3;
-    }
+        // Functions used by XR_SkeletonPoserEditor.
 
+        public GameObject ShowLeftPreview()
+        {
+            return Instantiate(leftHand);
+        }
+
+        public void DestroyLeftPreview(GameObject obj)
+        {
+            DestroyImmediate(obj);
+        }
+
+        public GameObject ShowRightPreview()
+        {
+            return Instantiate(rightHand);
+        }
+
+        public void DestroyRightPreview(GameObject obj)
+        {
+            DestroyImmediate(obj);
+        }
+
+        public XR_SkeletonPose GetLoadedPose()
+        {
+            return currentPose;
+        }
+        
+        public Vector3[] GetBonePositions(GameObject target)
+        {
+            return target.GetComponentsInChildren<Transform>().Select(x => x.localPosition).ToArray();
+        }
+
+        public Quaternion[] GetBoneRotations(GameObject target)
+        {
+            return target.GetComponentsInChildren<Transform>().Select(x => x.localRotation).ToArray();
+        }
+
+        // public Quaternion InverseBoneRotations(Quaternion boneRot)
+        // {
+        //     Quaternion normalQuat = boneRot;
+        //     float mirrorY = -normalQuat.y;
+        //     float mirrorZ = -normalQuat.z;
+        //     
+        //     Quaternion newQuat = new Quaternion(boneRot.x, mirrorY, mirrorZ, boneRot.w);
+        //     return newQuat;
+        // }
+        //
+        // public Vector3 InverseBonePositions(Vector3 bonePos)
+        // {
+        //     Vector3 normalVector3 = bonePos;
+        //     float mirrorY = -normalVector3.y;
+        //     float mirrorZ = normalVector3.z;
+        //     
+        //     Vector3 newVector3 = new Vector3(bonePos.x, mirrorY, mirrorZ);
+        //     return newVector3;
+        // }
+
+    }
 }

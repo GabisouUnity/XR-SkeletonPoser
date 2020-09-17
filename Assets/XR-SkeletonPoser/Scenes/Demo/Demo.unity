@@ -281,10 +281,10 @@ MonoBehaviour:
   leftHand: {fileID: 100060, guid: 65d8eda911e0ba548a3674f65c43308b, type: 3}
   rightHand: {fileID: 100060, guid: 641e9d2f5c6b4cb438161abef3be8300, type: 3}
   ignoredBones: []
-  showLeft: 1
+  showLeft: 0
   tempLeft: {fileID: 0}
   currentPose: {fileID: 11400000, guid: 37eb9d650575c6d44b9f6e6ee2117ce2, type: 2}
-  showRight: 1
+  showRight: 0
   tempRight: {fileID: 0}
 --- !u!65 &210984512
 BoxCollider:
