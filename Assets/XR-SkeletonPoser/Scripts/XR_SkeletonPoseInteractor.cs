@@ -11,8 +11,25 @@ namespace yellowyears.SkeletonPoser
         // public XR_SkeletonPose pose;
         
         private Transform[] _handBones = null;
+
+        private Vector3[] _defaultBonePos = null;
+        private Quaternion[] _defaultBoneRot = null;
+        
+        [Space]
         public GameObject handObject;
 
+        private void SetDefaultPose()
+        {
+            _handBones = handObject.GetComponentsInChildren<Transform>().ToArray();
+
+            for (int i = 0; i < _handBones.Length; i++)
+            {
+                // Error here, value is null. Stops select exit :/
+                _defaultBonePos[i] = _handBones[i].localPosition;
+                _defaultBoneRot[i] = _handBones[i].localRotation;
+            }
+        }
+        
         private void SetPose(XR_SkeletonPose pose)
         {
             // Get hand bones
@@ -46,10 +63,17 @@ namespace yellowyears.SkeletonPoser
             
             if(interactable.TryGetComponent(out XR_SkeletonPoser poser))
             {
-                pose = poser.GetLoadedPose();
+                XR_SkeletonPose pose = poser.GetLoadedPose();
                 
                 SetPose(pose);
             }
+        }
+
+        protected override void OnSelectExit(XRBaseInteractable interactable)
+        {
+            base.OnSelectExit(interactable);
+            
+            SetDefaultPose();
         }
     }
 }
