@@ -168,19 +168,25 @@ namespace yellowyears.SkeletonPoser
                         // Inverse right values
                         
                         var rightTransforms = _rightGameObject.GetComponentsInChildren<Transform>().ToArray();
+                        Debug.Log("Create left bone array");
                         
                         var rightBonePositions = loadedPose.rightBonePositions;
                         var rightBoneRotations = loadedPose.rightBoneRotations;
-                        
+                        Debug.Log("Set positions");
+
                         for (int i = 0; i < rightBonePositions.Length; i++)
                         {
                             rightTransforms[i].localPosition = rightBonePositions[i];
+                            Debug.Log("Start position loop");
                         }
-                        
+                        Debug.Log("End position loop");
+
                         for (int i = 0; i < rightBoneRotations.Length; i++)
                         {
                             rightTransforms[i].localRotation = rightBoneRotations[i];
+                            Debug.Log("Start rotation loop");
                         }
+                        Debug.Log("End rotation loop");
                     }
 
                 }
@@ -202,12 +208,18 @@ namespace yellowyears.SkeletonPoser
                 
                 if (GUILayout.Button("Save Pose"))
                 {
-                    
-                    newPose.leftBonePositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
-                    newPose.leftBoneRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
 
-                    newPose.rightBonePositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
-                    newPose.rightBoneRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
+                    if (_propertyTempLeft.objectReferenceValue != null)
+                    {
+                        newPose.leftBonePositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
+                        newPose.leftBoneRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
+                    }
+
+                    if (_propertyTempRight.objectReferenceValue != null)
+                    {
+                        newPose.rightBonePositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
+                        newPose.rightBoneRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
+                    }
                     
                     if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))
                     {
