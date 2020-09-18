@@ -82,7 +82,10 @@ namespace yellowyears.SkeletonPoser
 
         private void SetOffset()
         {
-            // Set offset to transform index 0 on the hand (first offset)
+            // Set offset of transform index 0 on the hand to the cube
+
+            // Broken
+            handObject.transform.position = ((XRGrabInteractable) selectTarget).attachTransform.position;
         }
         
         private void SetPose(XR_SkeletonPose pose)
@@ -91,14 +94,29 @@ namespace yellowyears.SkeletonPoser
             
             _handBones = handObject.GetComponentsInChildren<Transform>().ToArray();
 
-            Vector3[] posePos = pose.leftBonePositions;
-            Quaternion[] poseRot = pose.leftBoneRotations;
+            Vector3[] leftPosePos = pose.leftBonePositions;
+            Quaternion[] leftPoseRot = pose.leftBoneRotations;
+
+            Vector3[] rightPosePos = pose.rightBonePositions;
+            Quaternion[] rightPoseRot = pose.rightBoneRotations;
             
             // Set values to loaded pose
-            for (int i = 0; i < _handBones.Length; i++)
+
+            if (handType == HandType.Left)
             {
-                _handBones[i].localPosition = posePos[i];
-                _handBones[i].localRotation = poseRot[i];
+                for (int i = 0; i < _handBones.Length; i++)
+                {
+                    _handBones[i].localPosition = leftPosePos[i];
+                    _handBones[i].localRotation = leftPoseRot[i];
+                }
+            }
+            else if (handType == HandType.Right)
+            {
+                for (int i = 0; i < _handBones.Length; i++)
+                {
+                    _handBones[i].localPosition = rightPosePos[i];
+                    _handBones[i].localRotation = rightPoseRot[i];
+                }
             }
             
             // Reset main hand object to local 0,0,0
@@ -116,6 +134,7 @@ namespace yellowyears.SkeletonPoser
                 XR_SkeletonPose pose = poser.GetLoadedPose();
                 
                 SetPose(pose);
+                SetOffset();
             }
         }
 
