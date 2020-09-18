@@ -135,7 +135,7 @@ namespace yellowyears.SkeletonPoser
                 // Load pose button
 
                 // Grey it out if hands aren't active
-                EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false && _propertyShowRight.boolValue == false);
+                EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false && _propertyShowRight.boolValue == false || _poser.GetLoadedPose() == null);
 
                 if (GUILayout.Button("Load Pose"))
                 {
@@ -168,25 +168,19 @@ namespace yellowyears.SkeletonPoser
                         // Inverse right values
                         
                         var rightTransforms = _rightGameObject.GetComponentsInChildren<Transform>().ToArray();
-                        Debug.Log("Create left bone array");
                         
                         var rightBonePositions = loadedPose.rightBonePositions;
                         var rightBoneRotations = loadedPose.rightBoneRotations;
-                        Debug.Log("Set positions");
 
                         for (int i = 0; i < rightBonePositions.Length; i++)
                         {
                             rightTransforms[i].localPosition = rightBonePositions[i];
-                            Debug.Log("Start position loop");
                         }
-                        Debug.Log("End position loop");
 
                         for (int i = 0; i < rightBoneRotations.Length; i++)
                         {
                             rightTransforms[i].localRotation = rightBoneRotations[i];
-                            Debug.Log("Start rotation loop");
                         }
-                        Debug.Log("End rotation loop");
                     }
 
                 }
