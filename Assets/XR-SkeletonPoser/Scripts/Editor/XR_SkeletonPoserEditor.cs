@@ -13,7 +13,6 @@ namespace yellowyears.SkeletonPoser
         private XR_SkeletonPose _defaultPose = null;
 
         private SerializedProperty _propertyActivePose = null;
-        private SerializedProperty _propertyIgnoredBones = null;
         
         private SerializedProperty _propertyShowLeft = null;
         private SerializedProperty _propertyTempLeft = null;
@@ -31,7 +30,6 @@ namespace yellowyears.SkeletonPoser
             GetDefaultPose();
 
             _propertyActivePose = serializedObject.FindProperty("currentPose");
-            _propertyIgnoredBones = serializedObject.FindProperty("ignoredBones");
 
             _propertyShowLeft = serializedObject.FindProperty("showLeft");
             _propertyTempLeft = serializedObject.FindProperty("tempLeft");
@@ -144,9 +142,11 @@ namespace yellowyears.SkeletonPoser
                     var leftBonePositions = loadedPose.leftBonePositions;
                     var leftBoneRotations = loadedPose.leftBoneRotations;
 
+                    var rightBonePositions = loadedPose.rightBonePositions;
+                    var rightBoneRotations = loadedPose.rightBoneRotations;
+
                     if (_leftGameObject != null)
                     {
-
                         var leftTransforms = _leftGameObject.GetComponentsInChildren<Transform>().ToArray();
                         
                         // Set left values to loaded pose
@@ -169,9 +169,6 @@ namespace yellowyears.SkeletonPoser
                         
                         var rightTransforms = _rightGameObject.GetComponentsInChildren<Transform>().ToArray();
                         
-                        var rightBonePositions = loadedPose.rightBonePositions;
-                        var rightBoneRotations = loadedPose.rightBoneRotations;
-
                         for (int i = 0; i < rightBonePositions.Length; i++)
                         {
                             rightTransforms[i].localPosition = rightBonePositions[i];
