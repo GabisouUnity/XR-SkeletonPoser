@@ -57,7 +57,7 @@ namespace yellowyears.SkeletonPoser
         {
             return target.GetComponentsInChildren<Transform>().Select(x => x.localPosition).ToArray();
         }
-
+        
         public Quaternion[] GetBoneRotations(GameObject target)
         {
             return target.GetComponentsInChildren<Transform>().Select(x => x.localRotation).ToArray();

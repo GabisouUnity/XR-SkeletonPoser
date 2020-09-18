@@ -8,27 +8,36 @@ namespace yellowyears.SkeletonPoser
     public class XR_SkeletonPoseInteractor : XRDirectInteractor
     {
 
-        public Transform[] _handBones = null;
+        // public XR_SkeletonPose pose;
+        
+        private Transform[] _handBones = null;
+        public GameObject handObject;
 
         private void SetPose(XR_SkeletonPose pose)
         {
             // Get hand bones
             
-            // Bug: Gets attach models, and also the controller. Need to remove everything that isn't under the glove model
-            _handBones = GetComponentsInChildren<Transform>().ToArray();
+            _handBones = handObject.GetComponentsInChildren<Transform>().ToArray();
 
             Vector3[] posePos = pose.leftBonePositions;
             Quaternion[] poseRot = pose.leftBoneRotations;
             
-            // Vector3[] rightPosePos = pose.rightBonePositions;
-            // Quaternion[] rightPoseRot = pose.rightBoneRotations;
-
             // Set values to loaded pose
             for (int i = 0; i < _handBones.Length; i++)
             {
                 _handBones[i].localPosition = posePos[i];
                 _handBones[i].localRotation = poseRot[i];
             }
+            
+            // Reset main hand object to local 0,0,0
+
+            _handBones[0].localPosition = Vector3.zero;
+            _handBones[0].localRotation = Quaternion.identity;
+        }
+
+        private void OffsetHand()
+        {
+            
         }
         
         protected override void OnSelectEnter(XRBaseInteractable interactable)
@@ -37,7 +46,7 @@ namespace yellowyears.SkeletonPoser
             
             if(interactable.TryGetComponent(out XR_SkeletonPoser poser))
             {
-                XR_SkeletonPose pose = poser.GetLoadedPose();
+                pose = poser.GetLoadedPose();
                 
                 SetPose(pose);
             }
