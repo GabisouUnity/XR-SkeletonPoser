@@ -16,9 +16,6 @@ namespace yellowyears.SkeletonPoser
 
         public HandType handType;
         
-        private Vector3[] _defaultBonePos = null;
-        private Quaternion[] _defaultBoneRot = null;
-
         private XR_SkeletonPose _defaultPose;
         
         [Space]
@@ -83,8 +80,7 @@ namespace yellowyears.SkeletonPoser
         private void SetOffset()
         {
             // Set offset of transform index 0 on the hand to the cube
-
-            // Broken
+            
             handObject.transform.position = ((XRGrabInteractable) selectTarget).attachTransform.position;
         }
         

@@ -11,7 +11,7 @@ namespace yellowyears.SkeletonPoser
         public GameObject leftHand = null;
         public GameObject rightHand = null;
 
-        [HideInInspector] public GameObject[] ignoredBones;
+        [HideInInspector] public bool showPoseEditor;
         
         [HideInInspector] public bool showLeft;
         [HideInInspector] public GameObject tempLeft;
