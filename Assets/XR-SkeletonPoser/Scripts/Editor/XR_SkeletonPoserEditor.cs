@@ -219,7 +219,10 @@ namespace yellowyears.SkeletonPoser
                            newPose.rightBonePositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
                            newPose.rightBoneRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
                        }
-                       
+
+                       // Set pose to new pose data to avoid the need for reassignment after saving
+                       _poser.currentPose = newPose;
+
                        if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))
                        {
                            // Folder doesn't exist, create new
@@ -242,6 +245,9 @@ namespace yellowyears.SkeletonPoser
                        {
                            // They are sure, reset pose
                            
+                           // Set pose to new pose data to avoid the need for reassignment after saving the file
+                           _poser.currentPose = _defaultPose;
+
                            // Save and overwrite
                            if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))
                            {
