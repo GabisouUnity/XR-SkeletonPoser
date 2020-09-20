@@ -2,7 +2,7 @@
 Skeleton poser tool for the Unity XR Interaction Toolkit
 A skeleton poser is useful to author poses in the scene view easily, which can scale better than animations, where you would have to create animations for each object in the project.
 
-![https://github.com/yellowyears/XR-SkeletonPoser/blob/master/LICENSE](https://img.shields.io/badge/license-MIT-yellow) ![https://discord.gg/Y6GpkRF](https://img.shields.io/badge/discord-%20-blue)
+[![License](https://img.shields.io/badge/license-MIT-yellow)](https://github.com/yellowyears/XR-SkeletonPoser/blob/master/LICENSE) [![Discord](https://img.shields.io/badge/discord-%20-blue)](https://discord.gg/Y6GpkRF)
 
 <!--GIF of Skeleton Pose Interaction goes here-->
 
