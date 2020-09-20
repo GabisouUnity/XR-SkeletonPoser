@@ -17,7 +17,7 @@ namespace yellowyears.SkeletonPoser
         // Serialized Properties
         
         [HideInInspector] public XR_SkeletonPose activePose;
-        [HideInInspector] public bool showPoseEditor; // Used in editor foldout
+        [HideInInspector] public bool showPoseEditor = false; // Used in editor foldout
         
         [HideInInspector] public bool showLeft;
         [HideInInspector] public GameObject tempLeft;
@@ -61,12 +61,22 @@ namespace yellowyears.SkeletonPoser
         
         public Vector3[] GetBonePositions(GameObject target)
         {
-            return target.GetComponentsInChildren<Transform>().Select(x => x.localPosition).ToArray();
+            if (target != null)
+            {
+                return target.GetComponentsInChildren<Transform>().Select(x => x.localPosition).ToArray();
+            }
+
+            return null;
         }
         
         public Quaternion[] GetBoneRotations(GameObject target)
         {
-            return target.GetComponentsInChildren<Transform>().Select(x => x.localRotation).ToArray();
+            if (target != null)
+            {
+                return target.GetComponentsInChildren<Transform>().Select(x => x.localRotation).ToArray();
+            }
+
+            return null;
         }
 
         // public Quaternion InverseBoneRotations(Quaternion boneRot)

@@ -78,6 +78,8 @@ namespace yellowyears.SkeletonPoser
                 {
                    EditorGUILayout.BeginHorizontal();
 
+                   EditorGUI.BeginDisabledGroup(_poser.leftHand == null);
+                   
                    if (!_propertyShowLeft.boolValue)
                    {
                        if (GUILayout.Button("Show Left Hand"))
@@ -102,7 +104,11 @@ namespace yellowyears.SkeletonPoser
                        }
                    }
                    
+                   EditorGUI.EndDisabledGroup();
+                   
                    // Preview Right Button
+                   
+                   EditorGUI.BeginDisabledGroup(_poser.rightHand == null);
                    
                    if (!_propertyShowRight.boolValue)
                    {
@@ -128,6 +134,8 @@ namespace yellowyears.SkeletonPoser
                        }
                    }
 
+                   EditorGUI.EndDisabledGroup();
+                   
                    EditorGUILayout.EndHorizontal();
 
                    // TODO: copy pose data to opposite hand

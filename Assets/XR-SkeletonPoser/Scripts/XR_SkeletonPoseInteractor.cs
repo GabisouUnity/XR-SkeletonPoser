@@ -82,7 +82,7 @@ namespace yellowyears.SkeletonPoser
             // Get grabbable's attach point
             var selectTargetAttach = ((XRGrabInteractable) selectTarget).attachTransform;
 
-            // Set offset of transform index 0 on the hand to the cube
+            // Move first index (hand model parent) to the grabbable's attach transform
             _handBones[0].localPosition = selectTargetAttach.localPosition;
             _handBones[0].localRotation = selectTargetAttach.localRotation;
         }
