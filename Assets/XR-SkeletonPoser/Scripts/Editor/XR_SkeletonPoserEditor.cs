@@ -129,9 +129,23 @@ namespace yellowyears.SkeletonPoser
                    }
 
                    EditorGUILayout.EndHorizontal();
-                   
-                   EditorGUILayout.Space();
 
+                   // TODO: copy pose data to opposite hand
+                   
+                   // EditorGUILayout.BeginHorizontal();
+                   //
+                   // if (GUILayout.Button("Copy Left Pose to right hand"))
+                   // {
+                   //     
+                   // }
+                   //
+                   // if (GUILayout.Button("Copy Right Pose to left hand"))
+                   // {
+                   //     
+                   // }
+                   //
+                   // EditorGUILayout.EndHorizontal();
+                   
                    EditorGUILayout.BeginHorizontal();
                    
                    EditorGUILayout.PropertyField(_propertyActivePose);
@@ -171,8 +185,6 @@ namespace yellowyears.SkeletonPoser
                        
                        if (_rightGameObject != null)
                        {
-                           // Inverse right values
-                           
                            var rightTransforms = _rightGameObject.GetComponentsInChildren<Transform>().ToArray();
                            
                            for (int i = 0; i < rightBonePositions.Length; i++)
@@ -206,7 +218,7 @@ namespace yellowyears.SkeletonPoser
                    if (GUILayout.Button("Save Pose"))
                    {
 
-                       // Todo: Only overwrite the data from the active hand(s)
+                       // Todo: Only overwrite the data from the active hand(s). Although it might not be possible?
 
                        if (_propertyTempLeft.objectReferenceValue != null)
                        {
@@ -262,16 +274,20 @@ namespace yellowyears.SkeletonPoser
                                // Folder exists
                                
                                // Overwrite the pose with a default pose
+                               
                                AssetDatabase.CreateAsset(_defaultPose, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
+                               
+                               // if (AssetDatabase.Contains(_defaultPose))
+                               // {
+                               //     AssetDatabase.CreateAsset(_defaultPose, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
+                               // }
                            }
                        }
                    }
                    
                    EditorGUI.EndDisabledGroup();
- 
                 }
                 
-
                 EditorGUILayout.EndFoldoutHeaderGroup();
             }
         }

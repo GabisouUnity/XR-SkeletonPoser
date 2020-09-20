@@ -8,6 +8,7 @@ namespace yellowyears.SkeletonPoser
     public class XR_SkeletonPoseInteractor : XRDirectInteractor
     {
         public Transform[] _handBones = null;
+        // private Transform _defaultOffset = null;
 
         public enum HandType
         {
@@ -81,7 +82,16 @@ namespace yellowyears.SkeletonPoser
         {
             // Set offset of transform index 0 on the hand to the cube
             
-            handObject.transform.position = ((XRGrabInteractable) selectTarget).attachTransform.position;
+            // Cache default attachpoint 
+            // _defaultOffset.position = attachTransform.position;
+            
+            Transform selectTargetAttach = ((XRGrabInteractable) selectTarget).attachTransform;
+
+            _handBones[0].localPosition = selectTargetAttach.localPosition;
+            _handBones[0].localRotation = selectTargetAttach.localRotation;
+            
+            // attachTransform.localPosition = selectTargetAttach.localPosition;
+            // attachTransform.localRotation = selectTargetAttach.localRotation;
         }
         
         private void SetPose(XR_SkeletonPose pose)
@@ -137,7 +147,8 @@ namespace yellowyears.SkeletonPoser
         protected override void OnSelectExit(XRBaseInteractable interactable)
         {
             base.OnSelectExit(interactable);
-            
+
+            // attachTransform.position = _defaultOffset.position;
             SetDefaultPose(); // Reset back to default bone pose on select exit
         }
 
