@@ -1,2 +1,28 @@
 # XR-SkeletonPoser
 Skeleton poser tool for the Unity XR Interaction Toolkit
+A skeleton poser is useful to author poses in the scene view easily, which can scale better than animations, where you would have to create animations for each object in the project.
+
+![](https://img.shields.io/badge/license-MIT-yellow)
+
+<!--GIF of Skeleton Pose Interaction goes here-->
+
+## Setup
+
+<!--Video tutorial goes here-->
+
+### Pre-setup
+
+To do some prep work for working with the skeleton poser you will need to add some components and create some gameobjects on your controllers.
+
+1. Download the Unity package from the releases tab, or directly download the repository and take the "Scripts" folder out.
+2. Setup your XR Rig, and replace the XRDirectInteractor with the XR_SkeletonPoseInteractor component.
+3. Add your hand prefab (the same one you want to use the skeleton poser with!) as a child of the controller. This hand prefab should have an "AttachTransform" empty gameobject as the **last** child gameobject of the hand.
+4. On your XR_SkeletonPoseInteractor component you need to assign the AttachTransform gameobject from the hand onto the interactor, then scroll down and you'll see the "HandObject" and "HandType" variables. You want to assign the HandObject variable as your hand prefab from earlier. Also make sure to set the HandType to be Left/Right depending on what hand it corresponds to.
+
+### Object setup
+
+1. Get a 3D object inside of your scene and add the XR_SkeletonPoser script to it. Also make sure to add an attachment point 
+2. From here you can assign the hand preview prefabs and press the "Show Left Hand" and "Show Right Hand" buttons.
+3. Morph the bones around your object and make sure your attachment point on the hand is in the correct position, basically where the object is on your pose.
+4. Hit "Save Pose" and you will see a ScriptableObject gets saved under "Assets/XRPoses". This folder will contain all of your poses, but you don't have to worry about that other than assigning and loading poses.
+5. Now that should be it all setup! Go into your game and pick up the object and your hand bones will morph to fit around the object, just as the pose you created is!
