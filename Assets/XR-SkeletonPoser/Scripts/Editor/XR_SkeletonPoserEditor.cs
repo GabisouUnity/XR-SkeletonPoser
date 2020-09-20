@@ -30,7 +30,7 @@ namespace yellowyears.SkeletonPoser
             _defaultPose = CreateInstance<XR_SkeletonPose>();
             GetDefaultPose();
 
-            _propertyActivePose = serializedObject.FindProperty("currentPose");
+            _propertyActivePose = serializedObject.FindProperty("activePose");
             _propertyShowPoseEditor = serializedObject.FindProperty("showPoseEditor");
             
             _propertyShowLeft = serializedObject.FindProperty("showLeft");
@@ -157,7 +157,7 @@ namespace yellowyears.SkeletonPoser
 
                    if (GUILayout.Button("Load Pose"))
                    {
-                       XR_SkeletonPose loadedPose = _poser.GetLoadedPose();
+                       var loadedPose = _poser.GetLoadedPose();
                        
                        var leftBonePositions = loadedPose.leftBonePositions;
                        var leftBoneRotations = loadedPose.leftBoneRotations;
@@ -233,7 +233,7 @@ namespace yellowyears.SkeletonPoser
                        }
 
                        // Set pose to new pose data to avoid the need for reassignment after saving
-                       _poser.currentPose = newPose;
+                       _poser.activePose = newPose;
 
                        if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))
                        {
@@ -258,7 +258,7 @@ namespace yellowyears.SkeletonPoser
                            // They are sure, reset pose
                            
                            // Set pose to new pose data to avoid the need for reassignment after saving the file
-                           _poser.currentPose = _defaultPose;
+                           _poser.activePose = _defaultPose;
 
                            // Save and overwrite
                            if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))
@@ -293,4 +293,3 @@ namespace yellowyears.SkeletonPoser
         }
     }    
 }
-

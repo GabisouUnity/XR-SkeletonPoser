@@ -8,20 +8,26 @@ namespace yellowyears.SkeletonPoser
     public class XR_SkeletonPoser : MonoBehaviour
     {
 
+        [Tooltip("Left hand model to be spawned in as a left preview. Should be the same as your in game left hand")]
         public GameObject leftHand = null;
+        
+        [Tooltip("Left hand model to be spawned in as a left preview. Should be the same as your in game left hand")] 
         public GameObject rightHand = null;
 
-        [HideInInspector] public bool showPoseEditor;
+        // Serialized Properties
+        
+        [HideInInspector] public XR_SkeletonPose activePose;
+        [HideInInspector] public bool showPoseEditor; // Used in editor foldout
         
         [HideInInspector] public bool showLeft;
         [HideInInspector] public GameObject tempLeft;
 
-        [HideInInspector] public XR_SkeletonPose currentPose;
         [HideInInspector] public bool showRight;
         [HideInInspector] public GameObject tempRight;
 
         private void Awake()
         {
+            // Destroy preview hands on awake so they are not visible as we play the game.
             DestroyLeftPreview(tempLeft);
             DestroyRightPreview(tempRight);
         }
@@ -50,7 +56,7 @@ namespace yellowyears.SkeletonPoser
 
         public XR_SkeletonPose GetLoadedPose()
         {
-            return currentPose;
+            return activePose;
         }
         
         public Vector3[] GetBonePositions(GameObject target)

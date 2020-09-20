@@ -5,18 +5,16 @@ using UnityEngine;
 
 namespace yellowyears.SkeletonPoser
 {
-    public class XRSkeletonPoseInteractor : XRDirectInteractor
+    public class XR_SkeletonPoseInteractor : XRDirectInteractor
     {
-        public Transform[] handBones = null;
+        [Space] [Tooltip("What hand is a child of the controller?")] public GameObject handObject;
         
-        [Space]
-        public GameObject handObject;
-
         public enum HandType { Left, Right }
-        public HandType handType;
+        [Tooltip("What hand is attached to the XR_SkeletonPoseInteractor?")] public HandType handType;
         
         private XR_SkeletonPose _defaultPose;
-        
+        private Transform[] _handBones = null;
+
         protected override void Awake()
         {
             base.Awake();
@@ -27,7 +25,7 @@ namespace yellowyears.SkeletonPoser
 
         private XR_SkeletonPose GetDefaultPose()
         {
-            XR_SkeletonPose pose = ScriptableObject.CreateInstance<XR_SkeletonPose>();
+            var pose = ScriptableObject.CreateInstance<XR_SkeletonPose>();
 
             switch (handType)
             {
@@ -50,30 +48,30 @@ namespace yellowyears.SkeletonPoser
             {
                 case HandType.Left:
                 {
-                    for (int i = 0; i < handBones.Length; i++)
+                    for (int i = 0; i < _handBones.Length; i++)
                     {
-                        handBones[i].localPosition = _defaultPose.leftBonePositions[i];
-                        handBones[i].localRotation = _defaultPose.leftBoneRotations[i];
+                        _handBones[i].localPosition = _defaultPose.leftBonePositions[i];
+                        _handBones[i].localRotation = _defaultPose.leftBoneRotations[i];
                     }
                 
                     // Reset main hand object to local 0,0,0
 
-                    handBones[0].localPosition = Vector3.zero;
-                    handBones[0].localRotation = Quaternion.identity;
+                    _handBones[0].localPosition = Vector3.zero;
+                    _handBones[0].localRotation = Quaternion.identity;
                     break;
                 }
                 case HandType.Right:
                 {
-                    for (int i = 0; i < handBones.Length; i++)
+                    for (int i = 0; i < _handBones.Length; i++)
                     {
-                        handBones[i].localPosition = _defaultPose.rightBonePositions[i];
-                        handBones[i].localRotation = _defaultPose.rightBoneRotations[i];
+                        _handBones[i].localPosition = _defaultPose.rightBonePositions[i];
+                        _handBones[i].localRotation = _defaultPose.rightBoneRotations[i];
                     }
                 
                     // Reset main hand object to local 0,0,0
 
-                    handBones[0].localPosition = Vector3.zero;
-                    handBones[0].localRotation = Quaternion.identity;
+                    _handBones[0].localPosition = Vector3.zero;
+                    _handBones[0].localRotation = Quaternion.identity;
                     break;
                 }
             }
@@ -85,15 +83,15 @@ namespace yellowyears.SkeletonPoser
             var selectTargetAttach = ((XRGrabInteractable) selectTarget).attachTransform;
 
             // Set offset of transform index 0 on the hand to the cube
-            handBones[0].localPosition = selectTargetAttach.localPosition;
-            handBones[0].localRotation = selectTargetAttach.localRotation;
+            _handBones[0].localPosition = selectTargetAttach.localPosition;
+            _handBones[0].localRotation = selectTargetAttach.localRotation;
         }
         
         private void SetPose(XR_SkeletonPose pose)
         {
             // Get hand bones
             
-            handBones = handObject.GetComponentsInChildren<Transform>().ToArray();
+            _handBones = handObject.GetComponentsInChildren<Transform>().ToArray();
 
             var leftPosePos = pose.leftBonePositions;
             var leftPoseRot = pose.leftBoneRotations;
@@ -107,20 +105,20 @@ namespace yellowyears.SkeletonPoser
             {
                 case HandType.Left:
                 {
-                    for (int i = 0; i < handBones.Length; i++)
+                    for (int i = 0; i < _handBones.Length; i++)
                     {
-                        handBones[i].localPosition = leftPosePos[i];
-                        handBones[i].localRotation = leftPoseRot[i];
+                        _handBones[i].localPosition = leftPosePos[i];
+                        _handBones[i].localRotation = leftPoseRot[i];
                     }
 
                     break;
                 }
                 case HandType.Right:
                 {
-                    for (int i = 0; i < handBones.Length; i++)
+                    for (int i = 0; i < _handBones.Length; i++)
                     {
-                        handBones[i].localPosition = rightPosePos[i];
-                        handBones[i].localRotation = rightPoseRot[i];
+                        _handBones[i].localPosition = rightPosePos[i];
+                        _handBones[i].localRotation = rightPoseRot[i];
                     }
 
                     break;
@@ -129,8 +127,8 @@ namespace yellowyears.SkeletonPoser
             
             // Reset main hand object to local 0,0,0
 
-            handBones[0].localPosition = Vector3.zero;
-            handBones[0].localRotation = Quaternion.identity;
+            _handBones[0].localPosition = Vector3.zero;
+            _handBones[0].localRotation = Quaternion.identity;
         }
         
         protected override void OnSelectEnter(XRBaseInteractable interactable)
@@ -138,7 +136,7 @@ namespace yellowyears.SkeletonPoser
             base.OnSelectEnter(interactable);
 
             if (!interactable.TryGetComponent(out XR_SkeletonPoser poser)) return;
-            XR_SkeletonPose pose = poser.GetLoadedPose();
+            var pose = poser.GetLoadedPose();
                 
             SetPose(pose);
             SetOffset();
@@ -148,7 +146,6 @@ namespace yellowyears.SkeletonPoser
         {
             base.OnSelectExit(interactable);
 
-            // attachTransform.position = _defaultOffset.position;
             SetDefaultPose(); // Reset back to default bone pose on select exit
         }
 
