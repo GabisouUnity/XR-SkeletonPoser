@@ -9,7 +9,7 @@ namespace yellowyears.SkeletonPoser
     {
         [Space] [Tooltip("What hand is a child of the controller?")] public GameObject handObject;
         
-        public enum HandType { Left, Right } // Could possibly be accessed and set from the XRController?
+        public enum HandType { Left, Right } // TODO: Could possibly be accessed and set from the XRController?
         [Tooltip("What hand is attached to the XR_SkeletonPoseInteractor?")] public HandType handType;
         
         private XR_SkeletonPose _defaultPose;

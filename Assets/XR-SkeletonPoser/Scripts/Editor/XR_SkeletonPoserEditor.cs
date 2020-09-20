@@ -216,12 +216,12 @@ namespace yellowyears.SkeletonPoser
                    EditorGUILayout.Space();
                    
                    // Create new instance of XR_SkeletonPose, this is the one that is edited
-                   XR_SkeletonPose newPose = CreateInstance<XR_SkeletonPose>();
+                   var newPose = CreateInstance<XR_SkeletonPose>();
                    
                    // Grey it out if hands aren't active
-                   EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false && _propertyShowRight.boolValue == false);
+                   EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false || _propertyShowRight.boolValue == false);
                    
-                   // Save pose button
+                   // Save pose
                    
                    if (GUILayout.Button("Save Pose"))
                    {
@@ -256,8 +256,12 @@ namespace yellowyears.SkeletonPoser
                        }
                    }
                    
+                   EditorGUI.EndDisabledGroup();
+                   
                    // Reset Pose
-
+                   
+                   EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false && _propertyShowRight.boolValue == false || _poser.GetLoadedPose() == null);
+                   
                    if (GUILayout.Button("Reset Pose"))
                    {
                        // Make sure we warn the user before they reset their pose
@@ -284,11 +288,6 @@ namespace yellowyears.SkeletonPoser
                                // Overwrite the pose with a default pose
                                
                                AssetDatabase.CreateAsset(_defaultPose, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
-                               
-                               // if (AssetDatabase.Contains(_defaultPose))
-                               // {
-                               //     AssetDatabase.CreateAsset(_defaultPose, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
-                               // }
                            }
                        }
                    }

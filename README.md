@@ -31,7 +31,7 @@ Finding this hard to understand? [Check out the video tutorial!]()
 
 # Troubleshooting
 
-Troubleshooting: Send an [issue report](https://github.com/yellowyears/XR-SkeletonPoser/issues), contact me on [Discord](https://discord.gg/Y6GpkRF) 
+Send an [issue report](https://github.com/yellowyears/XR-SkeletonPoser/issues), contact me on [Discord](https://discord.gg/Y6GpkRF) 
 
 ## FAQ
 **Question:** "Why do my hands change to the pose but my object doesn't get grabbed?"
@@ -43,7 +43,9 @@ Troubleshooting: Send an [issue report](https://github.com/yellowyears/XR-Skelet
 For the forseeable future I will be updating this package with quality of life and useful features. My current plan is to implement the following:
 
 Copy pose to opposite hand
+
 Animation blending
+
 Multiple poses on one object
 
 And bug fixes (hopefully there aren't any)
