@@ -2,7 +2,7 @@
 Skeleton poser tool for the Unity XR Interaction Toolkit
 A skeleton poser is useful to author poses in the scene view easily, which can scale better than animations, where you would have to create animations for each object in the project.
 
-![](https://img.shields.io/badge/license-MIT-yellow)
+![https://github.com/yellowyears/XR-SkeletonPoser/blob/master/LICENSE](https://img.shields.io/badge/license-MIT-yellow) ![https://discord.gg/Y6GpkRF](https://img.shields.io/badge/discord-%20-blue)
 
 <!--GIF of Skeleton Pose Interaction goes here-->
 
@@ -26,3 +26,29 @@ To do some prep work for working with the skeleton poser you will need to add so
 3. Morph the bones around your object and make sure your attachment point on the hand is in the correct position, basically where the object is on your pose.
 4. Hit "Save Pose" and you will see a ScriptableObject gets saved under "Assets/XRPoses". This folder will contain all of your poses, but you don't have to worry about that other than assigning and loading poses.
 5. Now that should be it all setup! Go into your game and pick up the object and your hand bones will morph to fit around the object, just as the pose you created is!
+
+Finding this hard to understand? [Check out the video tutorial!]()
+
+# Troubleshooting
+
+Troubleshooting: Send an [issue report](https://github.com/yellowyears/XR-SkeletonPoser/issues), contact me on [Discord](https://discord.gg/Y6GpkRF) 
+
+## FAQ
+**Question:** "Why do my hands change to the pose but my object doesn't get grabbed?"
+
+**Answer:** This occurs when you don't assign an attach transform on your XRGrabInteractable.
+
+# Future updates
+
+For the forseeable future I will be updating this package with quality of life and useful features. My current plan is to implement the following:
+
+Copy pose to opposite hand
+Animation blending
+Multiple poses on one object
+
+And bug fixes (hopefully there aren't any)
+
+
+# Thanks to..
+
+All the folks who helped me get this up and running, and all the folks who use it. 
