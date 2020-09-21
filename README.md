@@ -4,7 +4,7 @@ A skeleton poser is useful to author poses in the scene view easily, which can s
 
 [![License](https://img.shields.io/badge/license-MIT-yellow)](https://github.com/yellowyears/XR-SkeletonPoser/blob/master/LICENSE) [![Discord](https://img.shields.io/badge/discord-%20-blue)](https://discord.gg/Y6GpkRF)
 
-<!--GIF of Skeleton Pose Interaction goes here-->
+![Preview](https://raw.githubusercontent.com/yellowyears/XR-SkeletonPoser/master/img/xr-skeletonposer-preview.gif)
 
 ## Setup
 
