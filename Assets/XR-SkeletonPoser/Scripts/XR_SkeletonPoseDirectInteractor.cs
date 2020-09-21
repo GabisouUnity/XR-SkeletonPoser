@@ -5,13 +5,18 @@ using UnityEngine;
 
 namespace yellowyears.SkeletonPoser
 {
-    public class XR_SkeletonPoseInteractor : XRDirectInteractor
+    public class XR_SkeletonPoseDirectInteractor : XRDirectInteractor
     {
+
+        #region Editor storage
+
         [Space] [Tooltip("What hand is a child of the controller?")] public GameObject handObject;
         
         public enum HandType { Left, Right } // TODO: Could possibly be accessed and set from the XRController?
         [Tooltip("What hand is attached to the XR_SkeletonPoseInteractor?")] public HandType handType;
         
+        #endregion
+
         private XR_SkeletonPose _defaultPose;
         private Transform[] _handBones = null;
 
