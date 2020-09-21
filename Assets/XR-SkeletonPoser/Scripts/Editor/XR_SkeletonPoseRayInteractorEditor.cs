@@ -3,13 +3,12 @@ using UnityEditor;
 
 namespace yellowyears.SkeletonPoser
 {
-    [CustomEditor(typeof(XR_SkeletonPoseDirectInteractor))]
-    internal class XR_SkeletonPoseDirectInteractorEditor : Editor
+    [CustomEditor(typeof(XR_SkeletonPoseRayInteractor))]
+    [CanEditMultipleObjects]
+    internal class XR_SkeletonPoseRayInteractorEditor : Editor
     {
-        
-        // Copied from the XRDirectInteractorEditor to maintain editor formatting from a derivative class for XR_SkeletonPoseDirectInteractor
 
-        #region XR_SkeletonPoseDirectInteractor variables
+        #region XR_SkeletonPoseRayInteractor variables
 
         private SerializedProperty _propertyHandObject = null;
         private SerializedProperty _propertyHandType = null;
@@ -45,10 +44,33 @@ namespace yellowyears.SkeletonPoser
         SerializedProperty m_HapticHoverExitIntensity;
         SerializedProperty m_HapticHoverExitDuration;
 
+        SerializedProperty m_MaxRaycastDistance;
+        SerializedProperty m_HitDetectionType;
+        SerializedProperty m_SphereCastRadius;        
+        SerializedProperty m_RaycastMask;
+        SerializedProperty m_RaycastTriggerInteraction;
+        SerializedProperty m_HoverToSelect;
+        SerializedProperty m_HoverTimeToSelect;
+        SerializedProperty m_EnableUIInteraction;
+
+        SerializedProperty m_LineType;
+        SerializedProperty m_EndPointDistance;
+        SerializedProperty m_EndPointHeight;
+        SerializedProperty m_ControlPointDistance;
+        SerializedProperty m_ControlPointHeight;
+        SerializedProperty m_SampleFrequency;
+
+        SerializedProperty m_Velocity;
+        SerializedProperty m_Acceleration;
+        SerializedProperty m_AdditionalFlightTime;
+        SerializedProperty m_ReferenceFrame;
+
         SerializedProperty m_OnHoverEnter;
         SerializedProperty m_OnHoverExit;
         SerializedProperty m_OnSelectEnter;
         SerializedProperty m_OnSelectExit;
+
+
         bool m_ShowInteractorEvents;
         bool m_ShowSoundEvents = false;
         bool m_ShowHapticEvents = false;
@@ -59,7 +81,7 @@ namespace yellowyears.SkeletonPoser
             public static readonly GUIContent interactionLayerMask = new GUIContent("Interaction Layer Mask", "Only interactables with this Layer Mask will respond to this interactor.");
             public static readonly GUIContent attachTransform = new GUIContent("Attach Transform", "Attach Transform to use for this Interactor.  Will create empty GameObject if none set.");
             public static readonly GUIContent startingSelectedInteractable = new GUIContent("Starting Selected Interactable", "Interactable that will be selected upon start.");
-            public static readonly GUIContent selectActionTrigger = new GUIContent("Select Action Trigger", "Choose whether the select action is triggered by current state or state transitions.");
+            public static readonly GUIContent selectActionTrigger = new GUIContent("Select Action Trigger", "Choose how the select action is triggered by current state, state transitions, toggle when the select button is pressed, or [Sticky] toggle on when the select button is pressed and off the second time the select button is depressed.");
             public static readonly GUIContent hideControllerOnSelect = new GUIContent("Hide Controller On Select", "Hide controller on select.");
             public static readonly GUIContent PlayAudioClipOnSelectEnter = new GUIContent("Play AudioClip On Select Enter", "Play an audio clip when the Select state is entered.");
             public static readonly GUIContent AudioClipForOnSelectEnter = new GUIContent("AudioClip To Play On Select Enter", "The audio clip to play when the Select state is entered.");
@@ -81,6 +103,24 @@ namespace yellowyears.SkeletonPoser
             public static readonly GUIContent playHapticsOnHoverExit = new GUIContent("Play Haptics On Hover Exit", "Play haptics when the hover state is exited.");
             public static readonly GUIContent hapticHoverExitIntensity = new GUIContent("Haptic Hover Exit Intensity", "Haptics intensity to play when the hover state is exited.");
             public static readonly GUIContent hapticHoverExitDuration = new GUIContent("Haptic Hover Exit Duration", "Haptics Duration to play when the hover state is exited.");
+            public static readonly GUIContent maxRaycastDistance = new GUIContent("Max Raycast Distance", "Max distance of ray cast. Increase this value will let you reach further.");
+            public static readonly GUIContent sphereCastRadius = new GUIContent("Sphere Cast Radius", "Radius of this Interactor's ray, used for spherecasting.");
+            public static readonly GUIContent raycastMask = new GUIContent("Raycast Mask", "Layer mask used for limiting raycast targets.");
+            public static readonly GUIContent raycastTriggerInteraction = new GUIContent("Raycast Trigger Interaction", "Type of interaction with trigger colliders via raycast.");
+            public static readonly GUIContent hoverToSelect = new GUIContent("Hover To Select", "If true, this interactor will simulate a Select event if hovered over an Interactable for some amount of time. Selection will be exited when the Interactor is no longer hovering over the Interactable.");
+            public static readonly GUIContent hoverTimeToSelect = new GUIContent("Hover Time To Select", "Number of seconds for which this interactor must hover over an object to select it.");
+            public static readonly GUIContent enableUIInteraction = new GUIContent("Enable Interaction with UI GameObjects", "If checked, this interactor will be able to affect UI.");
+            public static readonly GUIContent lineType = new GUIContent("Line Type", "Line type of the ray cast.");
+            public static readonly GUIContent endPointDistance = new GUIContent("End Point Distance", "Increase this value distance will make the end of curve further from the start point.");
+            public static readonly GUIContent controlPointDistance = new GUIContent("Control Point Distance", "Increase this value will make the peak of the curve further from the start point.");
+            public static readonly GUIContent endPointHeight = new GUIContent("End Point Height", "Decrease this value will make the end of the curve drop lower relative to the start point.");
+            public static readonly GUIContent controlPointHeight = new GUIContent("Control Point Height", "Increase this value will make the peak of the curve higher relative to the start point.");
+            public static readonly GUIContent sampleFrequency = new GUIContent("Sample Frequency", "Gets or sets the number of sample points of the curve, should be at least 3, the higher the better quality.");
+            public static readonly GUIContent velocity = new GUIContent("Velocity", "Initial velocity of the projectile. Increase this value will make the curve reach further.");
+            public static readonly GUIContent acceleration = new GUIContent("Acceleration", "Gravity of the projectile in the reference frame.");
+            public static readonly GUIContent additionalFlightTime = new GUIContent("Additional FlightTime", "Additional flight time after the projectile lands at the same height of the start point in the tracking space. Increase this value will make the end point drop lower in height.");
+            public static readonly GUIContent referenceFrame = new GUIContent("Reference Frame", "The reference frame of the projectile. If not set it will try to find the XRRig object, if the XRRig does not exist it will use self");
+            public static readonly GUIContent hitDetectionType = new GUIContent("Hit Detection Type", "The type of hit detection used to hit interactable objects.");
             public static readonly string startingInteractableWarning = "A Starting Selected Interactable will be instantly deselected unless the Interactor's Toggle Select Mode is set to 'Toggle' or 'Sticky'.";
         }
 
@@ -115,20 +155,40 @@ namespace yellowyears.SkeletonPoser
             m_PlayHapticsOnHoverExit = serializedObject.FindProperty("m_PlayHapticsOnHoverExit");
             m_HapticHoverExitIntensity = serializedObject.FindProperty("m_HapticHoverExitIntensity");
             m_HapticHoverExitDuration = serializedObject.FindProperty("m_HapticHoverExitDuration");
+            m_MaxRaycastDistance = serializedObject.FindProperty("m_MaxRaycastDistance");
+            m_SphereCastRadius = serializedObject.FindProperty("m_SphereCastRadius");
+            m_HitDetectionType = serializedObject.FindProperty("m_HitDetectionType");
+            m_RaycastMask = serializedObject.FindProperty("m_RaycastMask");
+            m_RaycastTriggerInteraction = serializedObject.FindProperty("m_RaycastTriggerInteraction");
+            m_HoverToSelect = serializedObject.FindProperty("m_HoverToSelect");
+            m_HoverTimeToSelect = serializedObject.FindProperty("m_HoverTimeToSelect");
+            m_EnableUIInteraction = serializedObject.FindProperty("m_EnableUIInteraction");
 
-            m_OnSelectEnter = serializedObject.FindProperty("m_OnSelectEnter");
-            m_OnSelectExit = serializedObject.FindProperty("m_OnSelectExit");
+            m_LineType = serializedObject.FindProperty("m_LineType");
+            m_EndPointDistance = serializedObject.FindProperty("m_EndPointDistance");
+            m_EndPointHeight = serializedObject.FindProperty("m_EndPointHeight");
+            m_ControlPointDistance = serializedObject.FindProperty("m_ControlPointDistance");
+            m_ControlPointHeight = serializedObject.FindProperty("m_ControlPointHeight");
+            m_SampleFrequency = serializedObject.FindProperty("m_SampleFrequency");
+
+            m_ReferenceFrame = serializedObject.FindProperty("m_ReferenceFrame");
+            m_Velocity = serializedObject.FindProperty("m_Velocity");
+            m_Acceleration = serializedObject.FindProperty("m_Acceleration");
+            m_AdditionalFlightTime = serializedObject.FindProperty("m_AdditionalFlightTime");
+
             m_OnHoverEnter = serializedObject.FindProperty("m_OnHoverEnter");
             m_OnHoverExit = serializedObject.FindProperty("m_OnHoverExit");
-
+            m_OnSelectEnter = serializedObject.FindProperty("m_OnSelectEnter");
+            m_OnSelectExit = serializedObject.FindProperty("m_OnSelectExit");
         }
 
         public override void OnInspectorGUI()
         {
+
             GUI.enabled = false;
-            EditorGUILayout.ObjectField("Script", MonoScript.FromMonoBehaviour((XR_SkeletonPoseDirectInteractor)target), typeof(XR_SkeletonPoseDirectInteractor), false);
+            EditorGUILayout.ObjectField("Script", MonoScript.FromMonoBehaviour((XR_SkeletonPoseRayInteractor)target), typeof(XR_SkeletonPoseRayInteractor), false);
             GUI.enabled = true;
-            
+
             serializedObject.Update();
 
             EditorGUILayout.PropertyField(m_InteractionManager, Tooltips.interactionManager);
@@ -136,7 +196,6 @@ namespace yellowyears.SkeletonPoser
             EditorGUILayout.PropertyField(m_AttachTransform, Tooltips.attachTransform);
             EditorGUILayout.PropertyField(m_StartingSelectedInteractable, Tooltips.startingSelectedInteractable);
             EditorGUILayout.PropertyField(m_SelectActionTrigger, Tooltips.selectActionTrigger);
-            
             if (m_StartingSelectedInteractable.objectReferenceValue != null 
                 && (m_SelectActionTrigger.enumValueIndex == 2 || m_SelectActionTrigger.enumValueIndex == 3))
             {
@@ -146,10 +205,65 @@ namespace yellowyears.SkeletonPoser
 
             EditorGUILayout.Space();
 
+            EditorGUILayout.PropertyField(m_LineType, Tooltips.lineType);
+
+            EditorGUI.indentLevel++;
+            if(m_LineType.enumValueIndex  == 0) // straight line
+            {
+                 EditorGUILayout.PropertyField(m_MaxRaycastDistance, Tooltips.maxRaycastDistance);
+            }
+            else if (m_LineType.enumValueIndex == 1) // projectile
+            {
+                EditorGUILayout.PropertyField(m_ReferenceFrame, Tooltips.referenceFrame);
+                EditorGUILayout.PropertyField(m_Velocity, Tooltips.velocity);
+                EditorGUILayout.PropertyField(m_Acceleration, Tooltips.acceleration);
+                EditorGUILayout.PropertyField(m_AdditionalFlightTime, Tooltips.additionalFlightTime);
+                EditorGUILayout.PropertyField(m_SampleFrequency, Tooltips.sampleFrequency);
+            }
+
+            else if (m_LineType.enumValueIndex == 2) // bezier
+            {
+                EditorGUILayout.PropertyField(m_EndPointDistance, Tooltips.endPointDistance);
+                EditorGUILayout.PropertyField(m_EndPointHeight, Tooltips.endPointHeight);
+                EditorGUILayout.PropertyField(m_ControlPointDistance, Tooltips.controlPointDistance);
+                EditorGUILayout.PropertyField(m_ControlPointHeight, Tooltips.controlPointHeight);
+                EditorGUILayout.PropertyField(m_SampleFrequency, Tooltips.sampleFrequency);
+            }
+            EditorGUI.indentLevel--;
+
+            EditorGUILayout.Space();
+
+            EditorGUILayout.PropertyField(m_HitDetectionType, Tooltips.hitDetectionType);
+            using (new EditorGUI.DisabledScope(m_HitDetectionType.enumValueIndex != (int)XR_SkeletonPoseRayInteractor.HitDetectionType.SphereCast))
+            {
+                EditorGUI.indentLevel++;
+                EditorGUILayout.PropertyField(m_SphereCastRadius, Tooltips.sphereCastRadius);
+                EditorGUI.indentLevel--;
+            }
+        
+            EditorGUILayout.Space();
+
+
+            EditorGUILayout.PropertyField(m_RaycastMask, Tooltips.raycastMask);
+            EditorGUILayout.PropertyField(m_RaycastTriggerInteraction, Tooltips.raycastTriggerInteraction);
+
+            EditorGUILayout.Space();
+
+            EditorGUILayout.PropertyField(m_HoverToSelect, Tooltips.hoverToSelect);
+            if (m_HoverToSelect.boolValue)
+            {
+                EditorGUI.indentLevel++;
+                EditorGUILayout.PropertyField(m_HoverTimeToSelect, Tooltips.hoverTimeToSelect);
+                EditorGUI.indentLevel--;
+            }
+
+            EditorGUILayout.PropertyField(m_EnableUIInteraction, Tooltips.enableUIInteraction);
+
+            EditorGUILayout.Space();
+
             m_ShowSoundEvents = EditorGUILayout.Foldout(m_ShowSoundEvents, "Sound Events");
             if (m_ShowSoundEvents)
             {
-
                 EditorGUILayout.PropertyField(m_PlayAudioClipOnSelectEnter, Tooltips.PlayAudioClipOnSelectEnter);
                 if (m_PlayAudioClipOnSelectEnter.boolValue)
                 {
@@ -227,7 +341,8 @@ namespace yellowyears.SkeletonPoser
 
             EditorGUILayout.Space();
 
-            m_ShowInteractorEvents = EditorGUILayout.Toggle("Show Interactor Events", m_ShowInteractorEvents);
+            m_ShowInteractorEvents = EditorGUILayout.Foldout(m_ShowInteractorEvents, "Interactor Events");
+
             if (m_ShowInteractorEvents)
             {
                 // UnityEvents have not yet supported Tooltips
@@ -239,7 +354,7 @@ namespace yellowyears.SkeletonPoser
 
             EditorGUILayout.PropertyField(_propertyHandObject);
             EditorGUILayout.PropertyField(_propertyHandType);
-
+            
             serializedObject.ApplyModifiedProperties();
         }
     }
