@@ -8,7 +8,7 @@ A skeleton poser is useful to author poses in the scene view easily, which can s
 
 ## Setup
 
-<!--Video tutorial goes here-->
+![Video Tutorial](https://youtu.be/M7WA779XA0E)
 
 ### Pre-setup
 
@@ -27,7 +27,8 @@ To do some prep work for working with the skeleton poser you will need to add so
 4. Hit "Save Pose" and you will see a ScriptableObject gets saved under "Assets/XRPoses". This folder will contain all of your poses, but you don't have to worry about that other than assigning and loading poses.
 5. Now that should be it all setup! Go into your game and pick up the object and your hand bones will morph to fit around the object, just as the pose you created is!
 
-Finding this hard to understand? [Check out the video tutorial!]()
+Finding this hard to understand? [Check out the video tutorial!](https://youtu.be/M7WA779XA0E)
+
 
 # Troubleshooting
 
