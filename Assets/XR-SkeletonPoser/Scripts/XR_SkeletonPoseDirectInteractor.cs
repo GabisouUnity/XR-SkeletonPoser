@@ -139,10 +139,10 @@ namespace yellowyears.SkeletonPoser
         protected override void OnSelectEnter(XRBaseInteractable interactable)
         {
             base.OnSelectEnter(interactable);
-
+            
             if (!interactable.TryGetComponent(out XR_SkeletonPoser poser)) return;
             var pose = poser.GetLoadedPose();
-                
+
             SetPose(pose);
             SetOffset();
         }

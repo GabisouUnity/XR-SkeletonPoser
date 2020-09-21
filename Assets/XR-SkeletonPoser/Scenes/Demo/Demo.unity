@@ -281,7 +281,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f1eceacd75691a4d9fb4fb19618e242, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftHand: {fileID: 8733126800919252444, guid: f8b105d384322824d9a47e0f4f527df3,
+  leftHand: {fileID: 3509768977297426757, guid: f8b105d384322824d9a47e0f4f527df3,
     type: 3}
   rightHand: {fileID: 126567881452638359, guid: fa7a20ddd8e285b4abd7a6a6b7f8881c,
     type: 3}
@@ -852,6 +852,12 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &971194450 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8997105683479858960, guid: f8b105d384322824d9a47e0f4f527df3,
+    type: 3}
+  m_PrefabInstance: {fileID: 3579715074354902065}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1050799237 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 126567881452473591, guid: fa7a20ddd8e285b4abd7a6a6b7f8881c,
@@ -913,7 +919,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f1eceacd75691a4d9fb4fb19618e242, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftHand: {fileID: 8733126800919252444, guid: f8b105d384322824d9a47e0f4f527df3,
+  leftHand: {fileID: 3509768977297426757, guid: f8b105d384322824d9a47e0f4f527df3,
     type: 3}
   rightHand: {fileID: 126567881452638359, guid: fa7a20ddd8e285b4abd7a6a6b7f8881c,
     type: 3}
@@ -1281,7 +1287,7 @@ MonoBehaviour:
   m_InteractionLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_AttachTransform: {fileID: 0}
+  m_AttachTransform: {fileID: 971194450}
   m_StartingSelectedInteractable: {fileID: 0}
   m_OnHoverEnter:
     m_PersistentCalls:
@@ -1317,8 +1323,7 @@ MonoBehaviour:
   m_PlayHapticsOnHoverExit: 0
   m_HapticHoverExitIntensity: 0
   m_HapticHoverExitDuration: 0
-  handObject: {fileID: 3509768977297426757, guid: f8b105d384322824d9a47e0f4f527df3,
-    type: 3}
+  handObject: {fileID: 78962178420850036}
   handType: 0
 --- !u!135 &2036468504
 SphereCollider:
@@ -1418,9 +1423,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2138438219}
   - component: {fileID: 2138438223}
-  - component: {fileID: 2138438220}
   - component: {fileID: 2138438222}
   - component: {fileID: 2138438221}
+  - component: {fileID: 2138438220}
   m_Layer: 0
   m_Name: RightHand Controller
   m_TagString: Untagged
@@ -1459,7 +1464,7 @@ MonoBehaviour:
   m_InteractionLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_AttachTransform: {fileID: 126567882079543411}
+  m_AttachTransform: {fileID: 0}
   m_StartingSelectedInteractable: {fileID: 0}
   m_OnHoverEnter:
     m_PersistentCalls:
@@ -1637,7 +1642,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1754,6 +1759,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 3579715074354902065}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &78962178420850036 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3509768977297426757, guid: f8b105d384322824d9a47e0f4f527df3,
+    type: 3}
+  m_PrefabInstance: {fileID: 3579715074354902065}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &126567882079543410
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1823,12 +1834,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fa7a20ddd8e285b4abd7a6a6b7f8881c, type: 3}
---- !u!4 &126567882079543411 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8652863585340271426, guid: fa7a20ddd8e285b4abd7a6a6b7f8881c,
-    type: 3}
-  m_PrefabInstance: {fileID: 126567882079543410}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &543450651856380813
 Transform:
   m_ObjectHideFlags: 0
