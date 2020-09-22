@@ -139,7 +139,7 @@ namespace yellowyears.SkeletonPoser
                    
                    EditorGUILayout.BeginHorizontal();
                    
-                   EditorGUI.BeginDisabledGroup(_leftGameObject == null || _rightGameObject == null);
+                   EditorGUI.BeginDisabledGroup(_propertyTempLeft.objectReferenceValue == null || _propertyTempRight.objectReferenceValue == null);
                    
                    if (GUILayout.Button("Copy Left Pose to right hand"))
                    {
@@ -148,12 +148,17 @@ namespace yellowyears.SkeletonPoser
                        {
                            newPose = CopyToRight();
                            _poser.activePose = newPose;
+                           
+                           LoadPose(); // Load pose for convenience 
                        }
                    }
 
                    if (GUILayout.Button("Copy Right Pose to left hand"))
                    {
-                       // CopyToOpposite();
+                       // newPose = CopyToOpposite();
+                       // poser.activePose = newPose;
+                       
+                       LoadPose(); // Load pose for convenience 
                    }
                    
                    EditorGUI.EndDisabledGroup();
@@ -209,25 +214,26 @@ namespace yellowyears.SkeletonPoser
 
         private XR_SkeletonPose CopyToRight()
         {
-            // Completely broken, inverse or not it doesn't copy and gets mangled...
-            
             var copiedPose = CreateInstance<XR_SkeletonPose>();
             
-            copiedPose.leftBonePositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
-            copiedPose.leftBoneRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
+            // Copy left to right
+            copiedPose.rightBonePositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
+            copiedPose.rightBoneRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
             
-            // Set right bones to left bones so we can inverse them
-            copiedPose.rightBonePositions = copiedPose.leftBonePositions;
-            copiedPose.rightBoneRotations = copiedPose.leftBoneRotations;
-            
+            copiedPose.rightBonePositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
+            copiedPose.rightBoneRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
+
+            Debug.Log("Start set inverse " + copiedPose.rightBoneRotations + " " + copiedPose.rightBonePositions);
+
             for (int i = 0; i < copiedPose.rightBonePositions.Length; i++)
             {
-                copiedPose.rightBonePositions[i] = _poser.InverseBonePositions(copiedPose.leftBonePositions[i]);
-            }            
+                // returns null
+                copiedPose.rightBonePositions[i] = copiedPose.leftBonePositions[i];
+            }
             
             for (int i = 0; i < copiedPose.rightBoneRotations.Length; i++)
             {
-                copiedPose.rightBoneRotations[i] = _poser.InverseBoneRotations(copiedPose.leftBoneRotations[i]);
+                copiedPose.rightBoneRotations[i] = copiedPose.leftBoneRotations[i];
             }
             
             return copiedPose;
@@ -242,17 +248,11 @@ namespace yellowyears.SkeletonPoser
         {
             // Todo: Only overwrite the data from the active hand(s). Although it might not be possible?
 
-            if (_propertyTempLeft.objectReferenceValue != null)
-            {
-                newPose.leftBonePositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
-                newPose.leftBoneRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
-            }
+            newPose.leftBonePositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
+            newPose.leftBoneRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
 
-            if (_propertyTempRight.objectReferenceValue != null)
-            {
-                newPose.rightBonePositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
-                newPose.rightBoneRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
-            }
+            newPose.rightBonePositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
+            newPose.rightBoneRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
 
             // Set pose to new pose data to avoid the need for reassignment after saving
             _poser.activePose = newPose;
@@ -276,6 +276,8 @@ namespace yellowyears.SkeletonPoser
             pose = _defaultPose;
             _poser.activePose = pose;
 
+            LoadPose(); // Load pose automatically for convenience
+            
             // Save and overwrite
             if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))
             {
@@ -320,9 +322,7 @@ namespace yellowyears.SkeletonPoser
                     leftTransforms[i].localRotation = leftBoneRotations[i];
                 }
             }
-
-            // Declare right values
-
+            
             if (_rightGameObject != null)
             {
                 var rightTransforms = _rightGameObject.GetComponentsInChildren<Transform>().ToArray();
