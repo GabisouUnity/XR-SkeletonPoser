@@ -72,6 +72,9 @@ namespace yellowyears.SkeletonPoser
             {
                 // Preview Left button
                 
+                // Create new instance of XR_SkeletonPose, this is the one that is edited
+                var newPose = CreateInstance<XR_SkeletonPose>();
+
                 _propertyShowPoseEditor.boolValue = EditorGUILayout.BeginFoldoutHeaderGroup(_propertyShowPoseEditor.boolValue, "Show Pose Editor");
 
                 if (_propertyShowPoseEditor.boolValue)
@@ -136,15 +139,24 @@ namespace yellowyears.SkeletonPoser
                    
                    EditorGUILayout.BeginHorizontal();
                    
+                   EditorGUI.BeginDisabledGroup(_leftGameObject == null || _rightGameObject == null);
+                   
                    if (GUILayout.Button("Copy Left Pose to right hand"))
                    {
-                       CopyToRight();
+                       if (EditorUtility.DisplayDialog("Copy left pose to right hand?",
+                           "Are you sure? This will overwrite your right hand's pose data", "Yes", "No"))
+                       {
+                           newPose = CopyToRight();
+                           _poser.activePose = newPose;
+                       }
                    }
-                   
+
                    if (GUILayout.Button("Copy Right Pose to left hand"))
                    {
-                       CopyToLeft();
+                       // CopyToOpposite();
                    }
+                   
+                   EditorGUI.EndDisabledGroup();
                    
                    EditorGUILayout.EndHorizontal();
                    
@@ -164,9 +176,6 @@ namespace yellowyears.SkeletonPoser
                    EditorGUI.EndDisabledGroup(); EditorGUILayout.EndHorizontal();
                    
                    EditorGUILayout.Space();
-                   
-                   // Create new instance of XR_SkeletonPose, this is the one that is edited
-                   var newPose = CreateInstance<XR_SkeletonPose>();
                    
                    // Grey it out if hands aren't active
                    EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false || _propertyShowRight.boolValue == false);
@@ -198,15 +207,36 @@ namespace yellowyears.SkeletonPoser
             }
         }
 
-        private void CopyToRight()
+        private XR_SkeletonPose CopyToRight()
         {
-            // Copy left pose data to right
+            // Completely broken, inverse or not it doesn't copy and gets mangled...
+            
+            var copiedPose = CreateInstance<XR_SkeletonPose>();
+            
+            copiedPose.leftBonePositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
+            copiedPose.leftBoneRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
+            
+            // Set right bones to left bones so we can inverse them
+            copiedPose.rightBonePositions = copiedPose.leftBonePositions;
+            copiedPose.rightBoneRotations = copiedPose.leftBoneRotations;
+            
+            for (int i = 0; i < copiedPose.rightBonePositions.Length; i++)
+            {
+                copiedPose.rightBonePositions[i] = _poser.InverseBonePositions(copiedPose.leftBonePositions[i]);
+            }            
+            
+            for (int i = 0; i < copiedPose.rightBoneRotations.Length; i++)
+            {
+                copiedPose.rightBoneRotations[i] = _poser.InverseBoneRotations(copiedPose.leftBoneRotations[i]);
+            }
+            
+            return copiedPose;
         }
 
-        private void CopyToLeft()
-        {
-            // Copy right pose data to left
-        }
+        // private void CopyToLeft()
+        // {
+        //     // Copy right pose data to left
+        // }
         
         private void SavePose(XR_SkeletonPose newPose)
         {

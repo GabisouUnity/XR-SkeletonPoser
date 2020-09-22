@@ -6,6 +6,9 @@ A skeleton poser is useful to author poses in the scene view easily, which can s
 
 ![Preview](https://raw.githubusercontent.com/yellowyears/XR-SkeletonPoser/master/img/xr-skeletonposer-preview.gif)
 
+## Installation
+Check the releases tab on this repository and download the .unitypackage for the latest release. Make sure you have the XR Interaction Toolkit installed.
+
 ## Setup
 
 [Video Tutorial](https://youtu.be/M7WA779XA0E)

@@ -79,25 +79,25 @@ namespace yellowyears.SkeletonPoser
             return null;
         }
 
-        // public Quaternion InverseBoneRotations(Quaternion boneRot)
-        // {
-        //     Quaternion normalQuat = boneRot;
-        //     float mirrorY = -normalQuat.y;
-        //     float mirrorZ = -normalQuat.z;
-        //     
-        //     Quaternion newQuat = new Quaternion(boneRot.x, mirrorY, mirrorZ, boneRot.w);
-        //     return newQuat;
-        // }
-        //
-        // public Vector3 InverseBonePositions(Vector3 bonePos)
-        // {
-        //     Vector3 normalVector3 = bonePos;
-        //     float mirrorY = -normalVector3.y;
-        //     float mirrorZ = normalVector3.z;
-        //     
-        //     Vector3 newVector3 = new Vector3(bonePos.x, mirrorY, mirrorZ);
-        //     return newVector3;
-        // }
+        public Quaternion InverseBoneRotations(Quaternion boneRot)
+        {
+            Quaternion normalQuat = boneRot;
+            float mirrorY = -normalQuat.y;
+            float mirrorZ = -normalQuat.z;
+            
+            Quaternion newQuat = new Quaternion(boneRot.x, mirrorY, mirrorZ, boneRot.w);
+            return newQuat;
+        }
+        
+        public Vector3 InverseBonePositions(Vector3 bonePos)
+        {
+            Vector3 normalVector3 = bonePos;
+            float mirrorY = -normalVector3.y;
+            float mirrorZ = normalVector3.z;
+            
+            Vector3 newVector3 = new Vector3(bonePos.x, mirrorY, mirrorZ);
+            return newVector3;
+        }
 
     }
 }
