@@ -8,7 +8,7 @@ A skeleton poser is useful to author poses in the scene view easily, which can s
 
 ## Setup
 
-![Video Tutorial](https://youtu.be/M7WA779XA0E)
+[Video Tutorial](https://youtu.be/M7WA779XA0E)
 
 ### Pre-setup
 
