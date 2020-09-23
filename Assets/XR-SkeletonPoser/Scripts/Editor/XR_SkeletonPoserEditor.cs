@@ -217,17 +217,28 @@ namespace yellowyears.SkeletonPoser
             var copiedPose = CreateInstance<XR_SkeletonPose>();
             
             // Copy left to right
-            copiedPose.rightBonePositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
-            copiedPose.rightBoneRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
+            copiedPose.leftBonePositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
+            copiedPose.leftBoneRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
             
             copiedPose.rightBonePositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
             copiedPose.rightBoneRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
 
             Debug.Log("Start set inverse " + copiedPose.rightBoneRotations + " " + copiedPose.rightBonePositions);
 
+            
+            // for (int i = 0; i < copiedPose.rightBonePositions.Length; i++)
+            // {
+            //     // returns null?
+            //     copiedPose.rightBonePositions[i] = _poser.InverseBonePositions(copiedPose.rightBonePositions[i]);
+            // }
+            //
+            // for (int i = 0; i < copiedPose.rightBoneRotations.Length; i++)
+            // {
+            //     copiedPose.rightBoneRotations[i] = _poser.InverseBoneRotations(copiedPose.rightBoneRotations[i]);
+            // }
+            
             for (int i = 0; i < copiedPose.rightBonePositions.Length; i++)
             {
-                // returns null
                 copiedPose.rightBonePositions[i] = copiedPose.leftBonePositions[i];
             }
             
@@ -235,7 +246,7 @@ namespace yellowyears.SkeletonPoser
             {
                 copiedPose.rightBoneRotations[i] = copiedPose.leftBoneRotations[i];
             }
-            
+
             return copiedPose;
         }
 
