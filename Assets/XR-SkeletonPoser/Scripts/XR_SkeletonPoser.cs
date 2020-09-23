@@ -61,22 +61,12 @@ namespace yellowyears.SkeletonPoser
         
         public Vector3[] GetBonePositions(GameObject target)
         {
-            if (target != null)
-            {
-                return target.GetComponentsInChildren<Transform>().Select(x => x.localPosition).ToArray();
-            }
-
-            return null;
+            return target != null ? target.GetComponentsInChildren<Transform>().Select(x => x.localPosition).ToArray() : null;
         }
         
         public Quaternion[] GetBoneRotations(GameObject target)
         {
-            if (target != null)
-            {
-                return target.GetComponentsInChildren<Transform>().Select(x => x.localRotation).ToArray();
-            }
-
-            return null;
+            return target != null ? target.GetComponentsInChildren<Transform>().Select(x => x.localRotation).ToArray() : null;
         }
 
         public Quaternion InverseBoneRotations(Quaternion boneRot)

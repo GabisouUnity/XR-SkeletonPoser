@@ -146,10 +146,11 @@ namespace yellowyears.SkeletonPoser
                        if (EditorUtility.DisplayDialog("Copy left pose to right hand?",
                            "Are you sure? This will overwrite your right hand's pose data", "Yes", "No"))
                        {
-                           newPose = CopyToRight();
-                           _poser.activePose = newPose;
+                           CopyToRight(newPose);
                            
-                           LoadPose(); // Load pose for convenience 
+                           // _poser.activePose = newPose;
+                           
+                           // LoadPose(); // Load pose for convenience 
                        }
                    }
 
@@ -212,50 +213,40 @@ namespace yellowyears.SkeletonPoser
             }
         }
 
-        private XR_SkeletonPose CopyToRight()
+        private void CopyToRight(XR_SkeletonPose basePose)
         {
-            var copiedPose = CreateInstance<XR_SkeletonPose>();
-            
             // Copy left to right
-            copiedPose.leftBonePositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
-            copiedPose.leftBoneRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
             
-            copiedPose.rightBonePositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
-            copiedPose.rightBoneRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
+            var rightBonePositions = basePose.leftBonePositions;
+            var rightBoneRotations = basePose.leftBoneRotations;
 
-            Debug.Log("Start set inverse " + copiedPose.rightBoneRotations + " " + copiedPose.rightBonePositions);
+            var currentPose = CreateInstance<XR_SkeletonPose>();
+            currentPose = GetPose(currentPose);
+            
+            if (_propertyTempRight.objectReferenceValue as GameObject == null) return;
+            Debug.Log("Start flip " + _propertyTempRight.objectReferenceValue);
+            
+            var rightTransforms = _poser.rightHand.GetComponentsInChildren<Transform>().ToArray();
 
+            Debug.Log("Get right transforms" + rightTransforms);
             
-            // for (int i = 0; i < copiedPose.rightBonePositions.Length; i++)
-            // {
-            //     // returns null?
-            //     copiedPose.rightBonePositions[i] = _poser.InverseBonePositions(copiedPose.rightBonePositions[i]);
-            // }
-            //
-            // for (int i = 0; i < copiedPose.rightBoneRotations.Length; i++)
-            // {
-            //     copiedPose.rightBoneRotations[i] = _poser.InverseBoneRotations(copiedPose.rightBoneRotations[i]);
-            // }
-            
-            for (int i = 0; i < copiedPose.rightBonePositions.Length; i++)
+            for (int i = 0; i < rightBonePositions.Length; i++)
             {
-                copiedPose.rightBonePositions[i] = copiedPose.leftBonePositions[i];
-            }
-            
-            for (int i = 0; i < copiedPose.rightBoneRotations.Length; i++)
-            {
-                copiedPose.rightBoneRotations[i] = copiedPose.leftBoneRotations[i];
+                rightTransforms[i].position = rightBonePositions[i];
             }
 
-            return copiedPose;
+            for (int i = 0; i < rightBoneRotations.Length; i++)
+            {
+                rightTransforms[i].rotation = rightBoneRotations[i];
+            }
         }
 
         // private void CopyToLeft()
         // {
         //     // Copy right pose data to left
         // }
-        
-        private void SavePose(XR_SkeletonPose newPose)
+
+        private XR_SkeletonPose GetPose(XR_SkeletonPose newPose)
         {
             // Todo: Only overwrite the data from the active hand(s). Although it might not be possible?
 
@@ -265,6 +256,11 @@ namespace yellowyears.SkeletonPoser
             newPose.rightBonePositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
             newPose.rightBoneRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
 
+            return newPose;
+        }
+        
+        private void SavePose(XR_SkeletonPose newPose)
+        {
             // Set pose to new pose data to avoid the need for reassignment after saving
             _poser.activePose = newPose;
 
@@ -334,7 +330,7 @@ namespace yellowyears.SkeletonPoser
                 }
             }
             
-            if (_rightGameObject != null)
+            else if (_rightGameObject != null)
             {
                 var rightTransforms = _rightGameObject.GetComponentsInChildren<Transform>().ToArray();
 
