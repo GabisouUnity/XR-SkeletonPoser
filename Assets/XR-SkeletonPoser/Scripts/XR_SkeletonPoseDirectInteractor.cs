@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-
+using System.Net.Configuration;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine;
 
@@ -16,10 +16,12 @@ namespace yellowyears.SkeletonPoser
         [Tooltip("What hand is attached to the XR_SkeletonPoseInteractor?")] public HandType handType;
         
         #endregion
-
+        
         private XR_SkeletonPose _defaultPose;
         private Transform[] _handBones = null;
 
+        private bool _isSkeletonPoseInteractable = false;
+        
         protected override void Awake()
         {
             base.Awake();
@@ -85,11 +87,16 @@ namespace yellowyears.SkeletonPoser
         private void SetOffset()
         {
             // Get grabbable's attach point
-            var selectTargetAttach = ((XRGrabInteractable) selectTarget).attachTransform;
+            var selectTargetVar = ((XRGrabInteractable) selectTarget);
+            
+            // var selectTargetAttach = ((XRGrabInteractable) selectTarget).attachTransform;
 
             // Move first index (hand model parent) to the grabbable's attach transform
-            _handBones[0].localPosition = selectTargetAttach.localPosition;
-            _handBones[0].localRotation = selectTargetAttach.localRotation;
+            if (selectTargetVar.attachTransform != null)
+            {
+                _handBones[0].localPosition = selectTargetVar.attachTransform.localPosition;
+                _handBones[0].localRotation = selectTargetVar.attachTransform.localRotation;
+            }
         }
         
         private void SetPose(XR_SkeletonPose pose)
@@ -140,18 +147,23 @@ namespace yellowyears.SkeletonPoser
         {
             base.OnSelectEnter(interactable);
             
+            // Do not run the below code if the object isn't a skeleton poser, ie do not pose hand if not a poser interactable
             if (!interactable.TryGetComponent(out XR_SkeletonPoser poser)) return;
+            
             var pose = poser.GetLoadedPose();
-
+            
             SetPose(pose);
             SetOffset();
+            _isSkeletonPoseInteractable = true;
         }
 
         protected override void OnSelectExit(XRBaseInteractable interactable)
         {
             base.OnSelectExit(interactable);
 
-            SetDefaultPose(); // Reset back to default bone pose on select exit
+            if(_isSkeletonPoseInteractable) SetDefaultPose(); // Reset back to default bone pose on select exit if it was a skeleton poser
+            
+            _isSkeletonPoseInteractable = false;
         }
 
     }
