@@ -146,11 +146,11 @@ namespace yellowyears.SkeletonPoser
                        if (EditorUtility.DisplayDialog("Copy left pose to right hand?",
                            "Are you sure? This will overwrite your right hand's pose data", "Yes", "No"))
                        {
-                           CopyToRight(newPose);
+                           newPose = CopyToRight(newPose, _poser.activePose);
                            
-                           // _poser.activePose = newPose;
+                           _poser.activePose = newPose;
                            
-                           // LoadPose(); // Load pose for convenience 
+                           LoadPose(); // Load pose for convenience 
                        }
                    }
 
@@ -213,32 +213,17 @@ namespace yellowyears.SkeletonPoser
             }
         }
 
-        private void CopyToRight(XR_SkeletonPose basePose)
+        private XR_SkeletonPose CopyToRight(XR_SkeletonPose source, XR_SkeletonPose destination)
         {
-            // Copy left to right
+            // Not sure what is going wrong here but copying the pose nulls out the fields and then saves them??
             
-            var rightBonePositions = basePose.leftBonePositions;
-            var rightBoneRotations = basePose.leftBoneRotations;
+            destination.leftBonePositions = source.leftBonePositions;
+            destination.leftBoneRotations = source.leftBoneRotations;
 
-            var currentPose = CreateInstance<XR_SkeletonPose>();
-            currentPose = GetPose(currentPose);
+            destination.rightBonePositions = source.leftBonePositions;
+            destination.rightBoneRotations = source.leftBoneRotations;
             
-            if (_propertyTempRight.objectReferenceValue as GameObject == null) return;
-            Debug.Log("Start flip " + _propertyTempRight.objectReferenceValue);
-            
-            var rightTransforms = _poser.rightHand.GetComponentsInChildren<Transform>().ToArray();
-
-            Debug.Log("Get right transforms" + rightTransforms);
-            
-            for (int i = 0; i < rightBonePositions.Length; i++)
-            {
-                rightTransforms[i].position = rightBonePositions[i];
-            }
-
-            for (int i = 0; i < rightBoneRotations.Length; i++)
-            {
-                rightTransforms[i].rotation = rightBoneRotations[i];
-            }
+            return destination;
         }
 
         // private void CopyToLeft()
@@ -246,7 +231,7 @@ namespace yellowyears.SkeletonPoser
         //     // Copy right pose data to left
         // }
 
-        private XR_SkeletonPose GetPose(XR_SkeletonPose newPose)
+        private void SavePose(XR_SkeletonPose newPose)
         {
             // Todo: Only overwrite the data from the active hand(s). Although it might not be possible?
 
@@ -256,11 +241,6 @@ namespace yellowyears.SkeletonPoser
             newPose.rightBonePositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
             newPose.rightBoneRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
 
-            return newPose;
-        }
-        
-        private void SavePose(XR_SkeletonPose newPose)
-        {
             // Set pose to new pose data to avoid the need for reassignment after saving
             _poser.activePose = newPose;
 
@@ -330,7 +310,7 @@ namespace yellowyears.SkeletonPoser
                 }
             }
             
-            else if (_rightGameObject != null)
+            if (_rightGameObject != null)
             {
                 var rightTransforms = _rightGameObject.GetComponentsInChildren<Transform>().ToArray();
 
