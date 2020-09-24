@@ -146,11 +146,20 @@ namespace yellowyears.SkeletonPoser
                        if (EditorUtility.DisplayDialog("Copy left pose to right hand?",
                            "Are you sure? This will overwrite your right hand's pose data", "Yes", "No"))
                        {
-                           newPose = CopyToRight(newPose, _poser.activePose);
+                           newPose = GetPose(newPose); // Get pose without saving
+                           Debug.Log("Get pose");
                            
-                           _poser.activePose = newPose;
+                           newPose = CopyToRight(newPose, _poser.activePose);
+                           Debug.Log("Copy pose");
+                           
+                           SavePose(newPose);
+                           Debug.Log("Save pose");
+                           
+                           // _poser.activePose = newPose;
+                           // Debug.Log("Set active pose to pose");
                            
                            LoadPose(); // Load pose for convenience 
+                           Debug.Log("Load pose");
                        }
                    }
 
@@ -220,9 +229,23 @@ namespace yellowyears.SkeletonPoser
             destination.leftBonePositions = source.leftBonePositions;
             destination.leftBoneRotations = source.leftBoneRotations;
 
-            destination.rightBonePositions = source.leftBonePositions;
-            destination.rightBoneRotations = source.leftBoneRotations;
+            Debug.Log("Set dest left to source left");
             
+            // destination.rightBonePositions = source.leftBonePositions;
+            // destination.rightBoneRotations = source.leftBoneRotations;
+
+            for (int i = 0; i < destination.rightBoneRotations.Length; i++)
+            {
+                destination.rightBoneRotations[i] = source.rightBoneRotations[i];
+                Debug.Log("Set dest right bone rot to source right rot");
+            }
+            
+            for (int i = 0; i < destination.rightBonePositions.Length; i++)
+            {
+                destination.rightBonePositions[i] = source.rightBonePositions[i];
+                Debug.Log("Set dest right bone pos to source right pos");
+            }
+
             return destination;
         }
 
@@ -281,9 +304,25 @@ namespace yellowyears.SkeletonPoser
                 // Overwrite the pose with a default pose
 
                 AssetDatabase.CreateAsset(_defaultPose, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
+                AssetDatabase.SaveAssets();
             }
         }
 
+        /// <summary>
+        /// Get pose without saving
+        /// </summary>
+        private XR_SkeletonPose GetPose(XR_SkeletonPose inputPose)
+        {
+            inputPose.leftBonePositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
+            inputPose.leftBoneRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
+
+            inputPose.rightBonePositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
+            inputPose.rightBoneRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
+
+            // Get input XRPose instance and return it but full from scene
+            return inputPose;
+        }
+        
         private void LoadPose()
         {
             var loadedPose = _poser.GetLoadedPose();
