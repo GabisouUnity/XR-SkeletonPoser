@@ -231,8 +231,8 @@ namespace yellowyears.SkeletonPoser
 
             Debug.Log("Set dest left to source left");
             
-            // destination.rightBonePositions = source.leftBonePositions;
-            // destination.rightBoneRotations = source.leftBoneRotations;
+            source.rightBonePositions = source.leftBonePositions;
+            source.rightBoneRotations = source.leftBoneRotations;
 
             for (int i = 0; i < destination.rightBoneRotations.Length; i++)
             {
@@ -258,33 +258,40 @@ namespace yellowyears.SkeletonPoser
         {
             // Todo: Only overwrite the data from the active hand(s). Although it might not be possible?
 
-            savedPose.leftBonePositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
-            savedPose.leftBoneRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
+            // Create copy of pose to stop error whilst saving ("Object already exists")
+            var copy = ScriptableObject.Instantiate(savedPose);
+            
+            copy.leftBonePositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
+            copy.leftBoneRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
 
-            savedPose.rightBonePositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
-            savedPose.rightBoneRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
+            copy.rightBonePositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
+            copy.rightBoneRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
 
             // Set pose to new pose data to avoid the need for reassignment after saving
-            _poser.activePose = savedPose;
+            _poser.activePose = copy;
 
             if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))
             {
                 // Folder doesn't exist, create new
                 AssetDatabase.CreateFolder("Assets", "XRPoses");
-                AssetDatabase.CreateAsset(savedPose, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
+                AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
             }
             else
             {
                 // Folder exists
-                AssetDatabase.CreateAsset(savedPose, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
+                AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
             }
         }
 
         private void ResetPose(XR_SkeletonPose pose)
         {
             // Set pose to new pose data to avoid the need for reassignment after saving the file
-            pose = _defaultPose;
-            _poser.activePose = pose;
+            
+            // Create copy of pose to stop error whilst saving ("Object already exists")
+            var copy = ScriptableObject.Instantiate(pose);
+
+            copy = _defaultPose;
+            _poser.activePose = copy;
 
             LoadPose(); // Load pose automatically for convenience
             
@@ -295,7 +302,7 @@ namespace yellowyears.SkeletonPoser
                 AssetDatabase.CreateFolder("Assets", "XRPoses");
 
                 // Overwrite the pose with a default pose
-                AssetDatabase.CreateAsset(_defaultPose, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
+                AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
             }
             else
             {
@@ -303,8 +310,8 @@ namespace yellowyears.SkeletonPoser
 
                 // Overwrite the pose with a default pose
 
-                AssetDatabase.CreateAsset(_defaultPose, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
-                AssetDatabase.SaveAssets();
+                AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
+                // AssetDatabase.SaveAssets();
             }
         }
 
