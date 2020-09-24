@@ -231,29 +231,29 @@ namespace yellowyears.SkeletonPoser
         //     // Copy right pose data to left
         // }
 
-        private void SavePose(XR_SkeletonPose newPose)
+        private void SavePose(XR_SkeletonPose savedPose)
         {
             // Todo: Only overwrite the data from the active hand(s). Although it might not be possible?
 
-            newPose.leftBonePositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
-            newPose.leftBoneRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
+            savedPose.leftBonePositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
+            savedPose.leftBoneRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
 
-            newPose.rightBonePositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
-            newPose.rightBoneRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
+            savedPose.rightBonePositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
+            savedPose.rightBoneRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
 
             // Set pose to new pose data to avoid the need for reassignment after saving
-            _poser.activePose = newPose;
+            _poser.activePose = savedPose;
 
             if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))
             {
                 // Folder doesn't exist, create new
                 AssetDatabase.CreateFolder("Assets", "XRPoses");
-                AssetDatabase.CreateAsset(newPose, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
+                AssetDatabase.CreateAsset(savedPose, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
             }
             else
             {
                 // Folder exists
-                AssetDatabase.CreateAsset(newPose, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
+                AssetDatabase.CreateAsset(savedPose, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
             }
         }
 
