@@ -290,7 +290,12 @@ namespace yellowyears.SkeletonPoser
             // Create copy of pose to stop error whilst saving ("Object already exists")
             var copy = ScriptableObject.Instantiate(pose);
 
-            copy = _defaultPose;
+            copy.leftBonePositions = _defaultPose.leftBonePositions;
+            copy.leftBoneRotations = _defaultPose.leftBoneRotations;
+
+            copy.rightBonePositions = _defaultPose.rightBonePositions;
+            copy.rightBoneRotations = _defaultPose.rightBoneRotations;
+            
             _poser.activePose = copy;
 
             LoadPose(); // Load pose automatically for convenience
