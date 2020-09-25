@@ -147,16 +147,16 @@ namespace yellowyears.SkeletonPoser
                            "Are you sure? This will overwrite your right hand's pose data", "Yes", "No"))
                        {
                            newPose = GetPose(newPose); // Get pose without saving
-                           Debug.Log("Get pose");
+                           Debug.Log($"Get pose {newPose.leftBonePositions} {newPose.leftBoneRotations}, {newPose.rightBonePositions} {newPose.rightBoneRotations}");
                            
-                           newPose = CopyToRight(newPose, _poser.activePose);
+                           CopyToRight(newPose, _poser.activePose);
                            Debug.Log("Copy pose");
                            
-                           SavePose(newPose);
+                           // SavePose(newPose);
                            Debug.Log("Save pose");
                            
                            // _poser.activePose = newPose;
-                           // Debug.Log("Set active pose to pose");
+                           Debug.Log("Set active pose to pose");
                            
                            LoadPose(); // Load pose for convenience 
                            Debug.Log("Load pose");
@@ -211,7 +211,7 @@ namespace yellowyears.SkeletonPoser
                            "Are you sure you want to do this? You will lose your pose on this object!", "Yes", "No"))
                        {
                            // They are sure, reset pose
-                           ResetPose(newPose); // Reset new pose instance to default pose
+                           ResetPose(); // Reset new pose instance to default pose
                        }
                    }
                    
@@ -222,7 +222,7 @@ namespace yellowyears.SkeletonPoser
             }
         }
 
-        private XR_SkeletonPose CopyToRight(XR_SkeletonPose source, XR_SkeletonPose destination)
+        private void CopyToRight(XR_SkeletonPose source, XR_SkeletonPose destination)
         {
             // Not sure what is going wrong here but copying the pose nulls out the fields and then saves them??
             
@@ -231,22 +231,57 @@ namespace yellowyears.SkeletonPoser
 
             Debug.Log("Set dest left to source left");
             
-            source.rightBonePositions = source.leftBonePositions;
-            source.rightBoneRotations = source.leftBoneRotations;
+            // source.rightBonePositions[0] = source.leftBonePositions[0];
+            // source.rightBoneRotations[0] = source.leftBoneRotations[0];
+
+            // destination.rightBoneRotations = source.leftBoneRotations;
 
             for (int i = 0; i < destination.rightBoneRotations.Length; i++)
             {
-                destination.rightBoneRotations[i] = source.rightBoneRotations[i];
-                Debug.Log("Set dest right bone rot to source right rot");
+                Debug.Log("Start set dest right bone rot to source right rot " + destination.leftBoneRotations[i] + " " + source.leftBoneRotations[i]);
+
+                destination.rightBoneRotations[i] = source.leftBoneRotations[i];
+                
+                EditorUtility.DisplayProgressBar("Copying...", "Copying right hand pose", i / destination.leftBoneRotations.Length / 2f);
+                
+                Debug.Log("Set dest right bone rot to source right rot " + destination.leftBoneRotations[i] + " " + source.leftBoneRotations[i]);
             }
             
-            for (int i = 0; i < destination.rightBonePositions.Length; i++)
+            for (int i = 0; i < destination.leftBonePositions.Length; i++)
             {
-                destination.rightBonePositions[i] = source.rightBonePositions[i];
-                Debug.Log("Set dest right bone pos to source right pos");
+                Debug.Log("Start set dest right bone pos to source right pos " + destination.leftBonePositions[i] + " " + source.leftBonePositions[i]);
+
+                destination.rightBonePositions[i] = source.leftBonePositions[i];
+                EditorUtility.DisplayProgressBar("Copying...", "Copying right hand pose", i / destination.leftBonePositions.Length / 2f);
+                
+                Debug.Log("Set dest right bone pos to source right pos " + destination.leftBonePositions[i] + " " + source.leftBonePositions[i]);
             }
 
-            return destination;
+            // Save it
+
+            var copy = CreateInstance<XR_SkeletonPose>();
+
+            copy.leftBonePositions = destination.leftBonePositions;
+            copy.leftBoneRotations = destination.leftBoneRotations;
+
+            copy.rightBonePositions = destination.rightBonePositions;
+            copy.rightBoneRotations = destination.rightBoneRotations;
+            
+            if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))
+            {
+                // Folder doesn't exist, create new
+                AssetDatabase.CreateFolder("Assets", "XRPoses");
+                AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
+            }
+            else
+            {
+                // Folder exists
+                AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
+            }
+
+            _poser.activePose = copy;
+            
+            EditorUtility.ClearProgressBar();
         }
 
         // private void CopyToLeft()
@@ -254,12 +289,12 @@ namespace yellowyears.SkeletonPoser
         //     // Copy right pose data to left
         // }
 
-        private void SavePose(XR_SkeletonPose savedPose)
+        private void SavePose(XR_SkeletonPose inputPose)
         {
             // Todo: Only overwrite the data from the active hand(s). Although it might not be possible?
 
             // Create copy of pose to stop error whilst saving ("Object already exists")
-            var copy = ScriptableObject.Instantiate(savedPose);
+            var copy = Instantiate(inputPose);
             
             copy.leftBonePositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
             copy.leftBoneRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
@@ -283,12 +318,12 @@ namespace yellowyears.SkeletonPoser
             }
         }
 
-        private void ResetPose(XR_SkeletonPose pose)
+        private void ResetPose()
         {
             // Set pose to new pose data to avoid the need for reassignment after saving the file
             
             // Create copy of pose to stop error whilst saving ("Object already exists")
-            var copy = ScriptableObject.Instantiate(pose);
+            var copy = CreateInstance<XR_SkeletonPose>();
 
             copy.leftBonePositions = _defaultPose.leftBonePositions;
             copy.leftBoneRotations = _defaultPose.leftBoneRotations;
