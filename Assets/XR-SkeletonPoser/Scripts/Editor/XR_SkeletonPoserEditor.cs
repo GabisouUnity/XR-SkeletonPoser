@@ -153,13 +153,13 @@ namespace yellowyears.SkeletonPoser
                            Debug.Log("Copy pose");
                            
                            // SavePose(newPose);
-                           Debug.Log("Save pose");
+                           // Debug.Log("Save pose");
                            
                            // _poser.activePose = newPose;
-                           Debug.Log("Set active pose to pose");
-                           
-                           LoadPose(); // Load pose for convenience 
-                           Debug.Log("Load pose");
+                           // Debug.Log("Set active pose to pose");
+                           //
+                           // LoadPose(); // Load pose for convenience 
+                           // Debug.Log("Load pose");
                        }
                    }
 
@@ -231,33 +231,26 @@ namespace yellowyears.SkeletonPoser
 
             Debug.Log("Set dest left to source left");
             
-            // source.rightBonePositions[0] = source.leftBonePositions[0];
-            // source.rightBoneRotations[0] = source.leftBoneRotations[0];
-
             // destination.rightBoneRotations = source.leftBoneRotations;
+            // destination.rightBonePositions = source.leftBonePositions;
 
             for (int i = 0; i < destination.rightBoneRotations.Length; i++)
             {
-                Debug.Log("Start set dest right bone rot to source right rot " + destination.leftBoneRotations[i] + " " + source.leftBoneRotations[i]);
-
                 destination.rightBoneRotations[i] = source.leftBoneRotations[i];
-                
-                EditorUtility.DisplayProgressBar("Copying...", "Copying right hand pose", i / destination.leftBoneRotations.Length / 2f);
-                
-                Debug.Log("Set dest right bone rot to source right rot " + destination.leftBoneRotations[i] + " " + source.leftBoneRotations[i]);
+                // destination.rightBoneRotations[i] = _poser.InverseBoneRotations(source.leftBoneRotations[i]);
+
+                // EditorUtility.DisplayProgressBar("Copying...", "Copying right hand pose", i / destination.leftBoneRotations.Length / 2f);
             }
             
             for (int i = 0; i < destination.leftBonePositions.Length; i++)
             {
-                Debug.Log("Start set dest right bone pos to source right pos " + destination.leftBonePositions[i] + " " + source.leftBonePositions[i]);
-
                 destination.rightBonePositions[i] = source.leftBonePositions[i];
-                EditorUtility.DisplayProgressBar("Copying...", "Copying right hand pose", i / destination.leftBonePositions.Length / 2f);
-                
-                Debug.Log("Set dest right bone pos to source right pos " + destination.leftBonePositions[i] + " " + source.leftBonePositions[i]);
+                // destination.rightBonePositions[i] = _poser.InverseBonePositions(source.leftBonePositions[i]);
+
+                // EditorUtility.DisplayProgressBar("Copying...", "Copying right hand pose", i / destination.leftBonePositions.Length / 2f);
             }
 
-            // Save it
+            // Save it (if saved using SavePose() it overwrites the data for the assigned bone pos and rot)
 
             var copy = CreateInstance<XR_SkeletonPose>();
 
@@ -281,7 +274,25 @@ namespace yellowyears.SkeletonPoser
 
             _poser.activePose = copy;
             
-            EditorUtility.ClearProgressBar();
+            // Load the pose onto the right hand only
+            
+            var rightHandObject = _propertyTempRight.objectReferenceValue as GameObject;
+            
+            if (rightHandObject == null) return;
+            
+            var rightTransforms = rightHandObject.GetComponentsInChildren<Transform>().ToArray();
+
+            for (int i = 0; i < copy.rightBonePositions.Length; i++)
+            {
+                rightTransforms[i].localPosition = copy.rightBonePositions[i];
+            }
+
+            for (int i = 0; i < copy.rightBoneRotations.Length; i++)
+            {
+                rightTransforms[i].localRotation = copy.rightBoneRotations[i];
+            }
+
+            // EditorUtility.ClearProgressBar();
         }
 
         // private void CopyToLeft()
@@ -383,36 +394,35 @@ namespace yellowyears.SkeletonPoser
             var rightBonePositions = loadedPose.rightBonePositions;
             var rightBoneRotations = loadedPose.rightBoneRotations;
 
-            if (leftHandObject != null)
+            if (leftHandObject == null) return;
+
+            var leftTransforms = leftHandObject.GetComponentsInChildren<Transform>().ToArray();
+
+            // Set left values to loaded pose
+            for (int i = 0; i < leftBonePositions.Length; i++)
             {
-                var leftTransforms = leftHandObject.GetComponentsInChildren<Transform>().ToArray();
+                leftTransforms[i].localPosition = leftBonePositions[i];
+            }
 
-                // Set left values to loaded pose
-                for (int i = 0; i < leftBonePositions.Length; i++)
-                {
-                    leftTransforms[i].localPosition = leftBonePositions[i];
-                }
+            for (int i = 0; i < leftBoneRotations.Length; i++)
+            {
+                leftTransforms[i].localRotation = leftBoneRotations[i];
+            }
 
-                for (int i = 0; i < leftBoneRotations.Length; i++)
-                {
-                    leftTransforms[i].localRotation = leftBoneRotations[i];
-                }
+            if (rightHandObject == null) return;
+            
+            var rightTransforms = rightHandObject.GetComponentsInChildren<Transform>().ToArray();
+
+            for (int i = 0; i < rightBonePositions.Length; i++)
+            {
+                rightTransforms[i].localPosition = rightBonePositions[i];
+            }
+
+            for (int i = 0; i < rightBoneRotations.Length; i++)
+            {
+                rightTransforms[i].localRotation = rightBoneRotations[i];
             }
             
-            if (rightHandObject != null)
-            {
-                var rightTransforms = rightHandObject.GetComponentsInChildren<Transform>().ToArray();
-
-                for (int i = 0; i < rightBonePositions.Length; i++)
-                {
-                    rightTransforms[i].localPosition = rightBonePositions[i];
-                }
-
-                for (int i = 0; i < rightBoneRotations.Length; i++)
-                {
-                    rightTransforms[i].localRotation = rightBoneRotations[i];
-                }
-            }
         }
     }    
 }
