@@ -17,11 +17,11 @@ namespace yellowyears.SkeletonPoser
         
         private SerializedProperty _propertyShowLeft = null;
         private SerializedProperty _propertyTempLeft = null;
-        private GameObject _leftGameObject = null;
+        // private GameObject _leftGameObject = null;
 
         private SerializedProperty _propertyShowRight = null;
         private SerializedProperty _propertyTempRight = null;
-        private GameObject _rightGameObject = null;
+        // private GameObject _rightGameObject = null;
 
         private void OnEnable()
         {
@@ -85,15 +85,15 @@ namespace yellowyears.SkeletonPoser
                    {
                        if (GUILayout.Button("Show Left Hand"))
                        {
-                           _leftGameObject = _poser.ShowLeftPreview();
+                           var leftGameObject = _poser.ShowLeftPreview();
 
-                           _leftGameObject.transform.parent = _poser.transform;
-                           _leftGameObject.transform.localPosition = Vector3.zero;
-                           _leftGameObject.transform.localRotation = Quaternion.identity;
+                           leftGameObject.transform.parent = _poser.transform;
+                           leftGameObject.transform.localPosition = Vector3.zero;
+                           leftGameObject.transform.localRotation = Quaternion.identity;
                            
                            _propertyShowLeft.boolValue = true;
 
-                           _propertyTempLeft.objectReferenceValue = _leftGameObject;
+                           _propertyTempLeft.objectReferenceValue = leftGameObject;
                        }
                    }
                    else
@@ -115,15 +115,15 @@ namespace yellowyears.SkeletonPoser
                    {
                        if (GUILayout.Button("Show Right Hand"))
                        {
-                           _rightGameObject = _poser.ShowRightPreview();
+                           var rightGameObject = _poser.ShowRightPreview();
 
-                           _rightGameObject.transform.parent = _poser.transform;
-                           _rightGameObject.transform.localPosition = Vector3.zero;
-                           _rightGameObject.transform.localRotation = Quaternion.identity;
+                           rightGameObject.transform.parent = _poser.transform;
+                           rightGameObject.transform.localPosition = Vector3.zero;
+                           rightGameObject.transform.localRotation = Quaternion.identity;
                            
                            _propertyShowRight.boolValue = true;
 
-                           _propertyTempRight.objectReferenceValue = _rightGameObject;
+                           _propertyTempRight.objectReferenceValue = rightGameObject;
                        }
                    }
                    else
@@ -374,15 +374,18 @@ namespace yellowyears.SkeletonPoser
         {
             var loadedPose = _poser.GetLoadedPose();
 
+            var leftHandObject = _propertyTempLeft.objectReferenceValue as GameObject;
+            var rightHandObject = _propertyTempRight.objectReferenceValue as GameObject;
+            
             var leftBonePositions = loadedPose.leftBonePositions;
             var leftBoneRotations = loadedPose.leftBoneRotations;
 
             var rightBonePositions = loadedPose.rightBonePositions;
             var rightBoneRotations = loadedPose.rightBoneRotations;
 
-            if (_leftGameObject != null)
+            if (leftHandObject != null)
             {
-                var leftTransforms = _leftGameObject.GetComponentsInChildren<Transform>().ToArray();
+                var leftTransforms = leftHandObject.GetComponentsInChildren<Transform>().ToArray();
 
                 // Set left values to loaded pose
                 for (int i = 0; i < leftBonePositions.Length; i++)
@@ -396,9 +399,9 @@ namespace yellowyears.SkeletonPoser
                 }
             }
             
-            if (_rightGameObject != null)
+            if (rightHandObject != null)
             {
-                var rightTransforms = _rightGameObject.GetComponentsInChildren<Transform>().ToArray();
+                var rightTransforms = rightHandObject.GetComponentsInChildren<Transform>().ToArray();
 
                 for (int i = 0; i < rightBonePositions.Length; i++)
                 {
