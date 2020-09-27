@@ -137,41 +137,41 @@ namespace yellowyears.SkeletonPoser
 
                    EditorGUI.EndDisabledGroup(); EditorGUILayout.EndHorizontal();
                    
-                   EditorGUILayout.BeginHorizontal();
-                   
-                   EditorGUI.BeginDisabledGroup(_propertyTempLeft.objectReferenceValue == null || _propertyTempRight.objectReferenceValue == null);
-                   
-                   if (GUILayout.Button("Copy Left Pose to right hand"))
-                   {
-                       if (EditorUtility.DisplayDialog("Copy left pose to right hand?",
-                           "Are you sure? This will overwrite your right hand's pose data", "Yes", "No"))
-                       {
-                           newPose = GetPose(newPose); // Get pose without saving
-                           
-                           CopyToRight(newPose, _poser.activePose);
-                           
-                           // SavePose(newPose);
-                           // Debug.Log("Save pose");
-                           
-                           // _poser.activePose = newPose;
-                           // Debug.Log("Set active pose to pose");
-                           //
-                           // LoadPose(); // Load pose for convenience 
-                           // Debug.Log("Load pose");
-                       }
-                   }
-
-                   if (GUILayout.Button("Copy Right Pose to left hand"))
-                   {
-                       // newPose = CopyToOpposite();
-                       // poser.activePose = newPose;
-                       
-                       LoadPose(); // Load pose for convenience 
-                   }
-                   
-                   EditorGUI.EndDisabledGroup();
-                   
-                   EditorGUILayout.EndHorizontal();
+                   // EditorGUILayout.BeginHorizontal();
+                   //
+                   // EditorGUI.BeginDisabledGroup(_propertyTempLeft.objectReferenceValue == null || _propertyTempRight.objectReferenceValue == null);
+                   //
+                   // if (GUILayout.Button("Copy Left Pose to right hand"))
+                   // {
+                   //     if (EditorUtility.DisplayDialog("Copy left pose to right hand?",
+                   //         "Are you sure? This will overwrite your right hand's pose data", "Yes", "No"))
+                   //     {
+                   //         newPose = GetPose(newPose); // Get pose without saving
+                   //         
+                   //         CopyToRight(newPose, _poser.activePose);
+                   //         
+                   //         // SavePose(newPose);
+                   //         // Debug.Log("Save pose");
+                   //         
+                   //         // _poser.activePose = newPose;
+                   //         // Debug.Log("Set active pose to pose");
+                   //         //
+                   //         // LoadPose(); // Load pose for convenience 
+                   //         // Debug.Log("Load pose");
+                   //     }
+                   // }
+                   //
+                   // if (GUILayout.Button("Copy Right Pose to left hand"))
+                   // {
+                   //     // newPose = CopyToOpposite();
+                   //     // poser.activePose = newPose;
+                   //     
+                   //     LoadPose(); // Load pose for convenience 
+                   // }
+                   //
+                   // EditorGUI.EndDisabledGroup();
+                   //
+                   // EditorGUILayout.EndHorizontal();
                    
                    EditorGUILayout.BeginHorizontal();
                    
@@ -220,70 +220,70 @@ namespace yellowyears.SkeletonPoser
             }
         }
 
-        private void CopyToRight(XR_SkeletonPose source, XR_SkeletonPose destination)
-        {
-            destination.leftBonePositions = source.leftBonePositions;
-            destination.leftBoneRotations = source.leftBoneRotations;
-            
-            // destination.rightBoneRotations = source.rightBoneRotations;
-            // destination.rightBonePositions = source.rightBonePositions;
-            
-            for (int i = 0; i < destination.rightBoneRotations.Length; i++)
-            {
-                // destination.rightBoneRotations[i] = source.leftBoneRotations[i];
-                // destination.rightBoneRotations[i] = _poser.MirrorBoneRotation(source.leftBoneRotations[i]);
-                
-                var reflectedRotation = new Quaternion(-source.rightBoneRotations[i].y, source.rightBoneRotations[i].y, source.rightBoneRotations[i].z, -source.rightBoneRotations[i].w);
-
-                destination.rightBoneRotations[i] = reflectedRotation;
-
-                // EditorUtility.DisplayProgressBar("Copying...", "Copying right hand pose", i / destination.leftBoneRotations.Length / 2f);
-            }
-            
-            // Save it (if saved using SavePose() it overwrites the data for the assigned bone pos and rot)
-
-            var copy = CreateInstance<XR_SkeletonPose>();
-
-            copy.leftBonePositions = destination.leftBonePositions;
-            copy.leftBoneRotations = destination.leftBoneRotations;
-
-            // copy.rightBonePositions = destination.rightBonePositions;
-            copy.rightBoneRotations = destination.rightBoneRotations;
-            
-            if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))
-            {
-                // Folder doesn't exist, create new
-                AssetDatabase.CreateFolder("Assets", "XRPoses");
-                AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
-            }
-            else
-            {
-                // Folder exists
-                AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
-            }
-
-            _poser.activePose = copy;
-            
-            // Load the pose onto the right hand only
-            
-            var rightHandObject = _propertyTempRight.objectReferenceValue as GameObject;
-            
-            if (rightHandObject == null) return;
-            
-            var rightTransforms = rightHandObject.GetComponentsInChildren<Transform>().ToArray();
-
-            // for (int i = 0; i < copy.rightBonePositions.Length; i++)
-            // {
-            //     rightTransforms[i].localPosition = copy.rightBonePositions[i];
-            // }
-            
-            for (int i = 0; i < copy.rightBoneRotations.Length; i++)
-            {
-                rightTransforms[i].localRotation = copy.rightBoneRotations[i];
-            }
-            
-            // EditorUtility.ClearProgressBar();
-        }
+        // private void CopyToRight(XR_SkeletonPose source, XR_SkeletonPose destination)
+        // {
+        //     destination.leftBonePositions = source.leftBonePositions;
+        //     destination.leftBoneRotations = source.leftBoneRotations;
+        //     
+        //     // destination.rightBoneRotations = source.rightBoneRotations;
+        //     // destination.rightBonePositions = source.rightBonePositions;
+        //     
+        //     for (int i = 0; i < destination.rightBoneRotations.Length; i++)
+        //     {
+        //         // destination.rightBoneRotations[i] = source.leftBoneRotations[i];
+        //         // destination.rightBoneRotations[i] = _poser.MirrorBoneRotation(source.leftBoneRotations[i]);
+        //         
+        //         var reflectedRotation = new Quaternion(-source.rightBoneRotations[i].y, source.rightBoneRotations[i].y, source.rightBoneRotations[i].z, -source.rightBoneRotations[i].w);
+        //
+        //         destination.rightBoneRotations[i] = reflectedRotation;
+        //
+        //         // EditorUtility.DisplayProgressBar("Copying...", "Copying right hand pose", i / destination.leftBoneRotations.Length / 2f);
+        //     }
+        //     
+        //     // Save it (if saved using SavePose() it overwrites the data for the assigned bone pos and rot)
+        //
+        //     var copy = CreateInstance<XR_SkeletonPose>();
+        //
+        //     copy.leftBonePositions = destination.leftBonePositions;
+        //     copy.leftBoneRotations = destination.leftBoneRotations;
+        //
+        //     // copy.rightBonePositions = destination.rightBonePositions;
+        //     copy.rightBoneRotations = destination.rightBoneRotations;
+        //     
+        //     if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))
+        //     {
+        //         // Folder doesn't exist, create new
+        //         AssetDatabase.CreateFolder("Assets", "XRPoses");
+        //         AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
+        //     }
+        //     else
+        //     {
+        //         // Folder exists
+        //         AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
+        //     }
+        //
+        //     _poser.activePose = copy;
+        //     
+        //     // Load the pose onto the right hand only
+        //     
+        //     var rightHandObject = _propertyTempRight.objectReferenceValue as GameObject;
+        //     
+        //     if (rightHandObject == null) return;
+        //     
+        //     var rightTransforms = rightHandObject.GetComponentsInChildren<Transform>().ToArray();
+        //
+        //     // for (int i = 0; i < copy.rightBonePositions.Length; i++)
+        //     // {
+        //     //     rightTransforms[i].localPosition = copy.rightBonePositions[i];
+        //     // }
+        //     
+        //     for (int i = 0; i < copy.rightBoneRotations.Length; i++)
+        //     {
+        //         rightTransforms[i].localRotation = copy.rightBoneRotations[i];
+        //     }
+        //     
+        //     // EditorUtility.ClearProgressBar();
+        // }
 
         // private void CopyToLeft()
         // {
@@ -356,20 +356,19 @@ namespace yellowyears.SkeletonPoser
             }
         }
 
-        /// <summary>
-        /// Get pose without saving
-        /// </summary>
-        private XR_SkeletonPose GetPose(XR_SkeletonPose inputPose)
-        {
-            inputPose.leftBonePositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
-            inputPose.leftBoneRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
-
-            inputPose.rightBonePositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
-            inputPose.rightBoneRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
-
-            // Get input XRPose instance and return it but full from scene
-            return inputPose;
-        }
+        // private XR_SkeletonPose GetPose(XR_SkeletonPose inputPose)
+        // {
+        //     // Get pose without saving
+        //     
+        //     inputPose.leftBonePositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
+        //     inputPose.leftBoneRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
+        //
+        //     inputPose.rightBonePositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
+        //     inputPose.rightBoneRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
+        //
+        //     // Get input XRPose instance and return it but full from scene
+        //     return inputPose;
+        // }
         
         private void LoadPose()
         {

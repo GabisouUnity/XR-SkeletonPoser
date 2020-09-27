@@ -89,20 +89,20 @@ namespace yellowyears.SkeletonPoser
         //     return newVector3;
         // }
 
-        public Quaternion MirrorBoneRotation(Quaternion boneRot)
-        {
-            boneRot.y = boneRot.y * -1;
-            boneRot.z = boneRot.z * -1;
-
-            return boneRot;
-        }
-
-        public Vector3 MirrorBonePosition(Vector3 bonePos)
-        {
-            bonePos = bonePos * -1;
-
-            return bonePos;
-        }
+        // public Quaternion MirrorBoneRotation(Quaternion boneRot)
+        // {
+        //     boneRot.y = boneRot.y * -1;
+        //     boneRot.z = boneRot.z * -1;
+        //
+        //     return boneRot;
+        // }
+        //
+        // public Vector3 MirrorBonePosition(Vector3 bonePos)
+        // {
+        //     bonePos = bonePos * -1;
+        //
+        //     return bonePos;
+        // }
         
     }
 }
