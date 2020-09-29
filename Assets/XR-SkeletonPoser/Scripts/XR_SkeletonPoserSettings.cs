@@ -35,5 +35,10 @@ namespace yellowyears.SkeletonPoser
             AssetDatabase.SaveAssets();
         }
         
+        // Variables
+
+        public GameObject leftHand;
+        public GameObject rightHand;
+
     }    
 }
