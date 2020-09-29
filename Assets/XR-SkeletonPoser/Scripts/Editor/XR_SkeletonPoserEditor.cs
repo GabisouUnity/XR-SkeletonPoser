@@ -78,7 +78,9 @@ namespace yellowyears.SkeletonPoser
 
                 // _propertyShowPoseEditor.boolValue = EditorGUILayout.BeginFoldoutHeaderGroup(_propertyShowPoseEditor.boolValue, "Show Pose Editor");
 
-                _propertyShowPoseEditor.boolValue = EditorGUILayout.Foldout(_propertyShowPoseEditor.boolValue, "Show Pose Editor");
+                // _propertyShowPoseEditor.boolValue = EditorGUILayout.Foldout(_propertyShowPoseEditor.boolValue, "Show Pose Editor");
+                _propertyShowPoseEditor.boolValue =
+                    IndentedFoldoutHeader(_propertyShowPoseEditor.boolValue, "Pose Editor");
 
                 if (_propertyShowPoseEditor.boolValue)
                 {
@@ -242,6 +244,18 @@ namespace yellowyears.SkeletonPoser
 
                 EditorGUILayout.EndVertical();
             }
+        }
+
+        bool IndentedFoldoutHeader(bool fold, string text, int indent = 1)
+        {
+            // Taken from the steamvr unity plugin code, just looks too good :p
+            
+            GUILayout.BeginHorizontal();
+            var boldFoldoutStyle = new GUIStyle(EditorStyles.foldout) {fontStyle = FontStyle.Bold};
+            GUILayout.Space(14f * indent);
+            fold = EditorGUILayout.Foldout(fold, text, boldFoldoutStyle);
+            GUILayout.EndHorizontal();
+            return fold;
         }
 
         // private void CopyToRight(XR_SkeletonPose source, XR_SkeletonPose destination)
