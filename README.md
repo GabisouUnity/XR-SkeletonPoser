@@ -43,9 +43,11 @@ Send an [issue report](https://github.com/yellowyears/XR-SkeletonPoser/issues), 
 **Answer:** This occurs when you don't assign an attach transform on your XRGrabInteractable.
 
 **Q:** Where is the option to set the hand preview gameobjects?
+
 **A:** As of update 1.1 this is inside of the SkeletonPoserSettings asset. You can find this in "Assets/XRPoses/Resources"
 
 **Q:** Why are some buttons not available to click?
+
 **A:** These are intentionally greyed out, generally when the option is not available under the current circumstances. For example, you cannot preview the left / right hand if it is not assigned inside of the SkeletonPoserSettings.
 Therefore, to fix this you must assign the left and right preview gameobjects, and it will be available to press.
 
