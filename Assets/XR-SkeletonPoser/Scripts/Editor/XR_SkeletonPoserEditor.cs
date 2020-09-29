@@ -56,9 +56,9 @@ namespace yellowyears.SkeletonPoser
             base.OnInspectorGUI();
             
             serializedObject.Update();
-
+            
             DrawPoseEditor();
-
+            
             serializedObject.ApplyModifiedProperties();
         }
 
@@ -70,12 +70,15 @@ namespace yellowyears.SkeletonPoser
             }
             else
             {
-                // Preview Left button
                 
+                EditorGUILayout.BeginVertical("box");
+
                 // Create new instance of XR_SkeletonPose, this is the one that is edited
                 var newPose = CreateInstance<XR_SkeletonPose>();
 
-                _propertyShowPoseEditor.boolValue = EditorGUILayout.BeginFoldoutHeaderGroup(_propertyShowPoseEditor.boolValue, "Show Pose Editor");
+                // _propertyShowPoseEditor.boolValue = EditorGUILayout.BeginFoldoutHeaderGroup(_propertyShowPoseEditor.boolValue, "Show Pose Editor");
+
+                _propertyShowPoseEditor.boolValue = EditorGUILayout.Foldout(_propertyShowPoseEditor.boolValue, "Show Pose Editor");
 
                 if (_propertyShowPoseEditor.boolValue)
                 {
@@ -176,12 +179,13 @@ namespace yellowyears.SkeletonPoser
                    EditorGUILayout.BeginHorizontal();
                    
                    // Create field in editor for active pose (also referred to as loaded pose)
-                   EditorGUILayout.PropertyField(_propertyActivePose);
+                   EditorGUIUtility.labelWidth = 76;
+                   EditorGUILayout.PropertyField(_propertyActivePose, new GUIContent("Active Pose"));
 
                    // Grey it out if hands aren't active and there is no loaded pose
                    EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false && _propertyShowRight.boolValue == false || _poser.GetLoadedPose() == null);
 
-                   if (GUILayout.Button("Load Pose"))
+                   if (GUILayout.Button("Load Pose", "button"))
                    {
                        LoadPose();
                    }
@@ -193,7 +197,7 @@ namespace yellowyears.SkeletonPoser
                    // Grey it out if hands aren't active
                    EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false || _propertyShowRight.boolValue == false);
                    
-                   if (GUILayout.Button("Save Pose"))
+                   if (GUILayout.Button("Save Pose", "button"))
                    {
                        SavePose(newPose);
                    }
@@ -201,8 +205,10 @@ namespace yellowyears.SkeletonPoser
                    EditorGUI.EndDisabledGroup();
 
                    EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false && _propertyShowRight.boolValue == false || _poser.GetLoadedPose() == null);
+
+                   EditorGUILayout.BeginHorizontal();
                    
-                   if (GUILayout.Button("Reset Pose"))
+                   if (GUILayout.Button("Reset Pose", "button"))
                    {
                        // Make sure we warn the user before they reset their pose
                        if (EditorUtility.DisplayDialog("Reset Pose?",
@@ -217,7 +223,7 @@ namespace yellowyears.SkeletonPoser
                    
                    EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false && _propertyShowRight.boolValue == false || XR_SkeletonPoserSettings.Instance.referencePose == null);
 
-                   if (GUILayout.Button("Reset To Reference Pose"))
+                   if (GUILayout.Button("Reset To Reference Pose", "button"))
                    {
                        // Make sure we warn the user before they reset their pose
                        if (EditorUtility.DisplayDialog("Reset Pose?",
@@ -229,9 +235,12 @@ namespace yellowyears.SkeletonPoser
                    }
 
                    EditorGUI.EndDisabledGroup();
+                   EditorGUILayout.EndHorizontal();
                 }
                 
-                EditorGUILayout.EndFoldoutHeaderGroup();
+                // EditorGUILayout.EndFoldoutHeaderGroup();
+
+                EditorGUILayout.EndVertical();
             }
         }
 
