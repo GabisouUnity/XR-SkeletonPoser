@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9995a4c4734888f448db7b74b8fa49db, type: 3}
   m_Name: SkeletonPoserSettings
   m_EditorClassIdentifier: 
-  leftHand: {fileID: 3509768977297426757, guid: f8b105d384322824d9a47e0f4f527df3,
-    type: 3}
-  rightHand: {fileID: 126567881452638359, guid: fa7a20ddd8e285b4abd7a6a6b7f8881c,
-    type: 3}
+  leftHand: {fileID: 0}
+  rightHand: {fileID: 0}
+  referencePose: {fileID: 0}

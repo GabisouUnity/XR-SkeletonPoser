@@ -42,8 +42,17 @@ namespace yellowyears.SkeletonPoser
         
         // Variables
 
+        [Space]
+        
+        [Tooltip("Left hand model to be spawned in as a left preview. Should be the same as your in game left hand")]
         public GameObject leftHand;
+        
+        [Tooltip("Left hand model to be spawned in as a left preview. Should be the same as your in game left hand")] 
         public GameObject rightHand;
+
+        [Space] 
+        
+        public XR_SkeletonPose referencePose;
 
     }    
 }

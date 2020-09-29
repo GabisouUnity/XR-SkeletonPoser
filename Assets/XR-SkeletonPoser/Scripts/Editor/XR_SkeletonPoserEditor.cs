@@ -39,7 +39,7 @@ namespace yellowyears.SkeletonPoser
             _propertyShowRight = serializedObject.FindProperty("showRight");
             _propertyTempRight = serializedObject.FindProperty("tempRight");
         }
-
+        
         private void GetDefaultPose()
         {
             // Get default values from the hand prefab.
@@ -214,6 +214,21 @@ namespace yellowyears.SkeletonPoser
                    }
                    
                    EditorGUI.EndDisabledGroup();
+                   
+                   EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false && _propertyShowRight.boolValue == false || XR_SkeletonPoserSettings.Instance.referencePose == null);
+
+                   if (GUILayout.Button("Reset To Reference Pose"))
+                   {
+                       // Make sure we warn the user before they reset their pose
+                       if (EditorUtility.DisplayDialog("Reset Pose?",
+                           "Are you sure you want to do this? You will lose your pose on this object!", "Yes", "No"))
+                       {
+                           // They are sure, reset pose
+                           ResetToReferencePose(); // Reset new pose instance to reference pose
+                       }
+                   }
+
+                   EditorGUI.EndDisabledGroup();
                 }
                 
                 EditorGUILayout.EndFoldoutHeaderGroup();
@@ -331,6 +346,45 @@ namespace yellowyears.SkeletonPoser
 
             copy.rightBonePositions = _defaultPose.rightBonePositions;
             copy.rightBoneRotations = _defaultPose.rightBoneRotations;
+            
+            _poser.activePose = copy;
+
+            LoadPose(); // Load pose automatically for convenience
+            
+            // Save and overwrite
+            if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))
+            {
+                // Folder doesn't exist, create new
+                AssetDatabase.CreateFolder("Assets", "XRPoses");
+
+                // Overwrite the pose with a default pose
+                AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
+            }
+            else
+            {
+                // Folder exists
+
+                // Overwrite the pose with a default pose
+
+                AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
+                // AssetDatabase.SaveAssets();
+            }
+        }
+        
+        private void ResetToReferencePose()
+        {
+            // Set pose to new pose data to avoid the need for reassignment after saving the file
+            
+            // Create copy of pose to stop error whilst saving ("Object already exists")
+            var copy = CreateInstance<XR_SkeletonPose>();
+
+            var referencePose = XR_SkeletonPoserSettings.Instance.referencePose;
+            
+            copy.leftBonePositions = referencePose.leftBonePositions;
+            copy.leftBoneRotations = referencePose.leftBoneRotations;
+
+            copy.rightBonePositions = referencePose.rightBonePositions;
+            copy.rightBoneRotations = referencePose.rightBoneRotations;
             
             _poser.activePose = copy;
 
