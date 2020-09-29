@@ -8,11 +8,11 @@ namespace yellowyears.SkeletonPoser
     public class XR_SkeletonPoser : MonoBehaviour
     {
 
-        [Tooltip("Left hand model to be spawned in as a left preview. Should be the same as your in game left hand")]
-        public GameObject leftHand = null;
-        
-        [Tooltip("Left hand model to be spawned in as a left preview. Should be the same as your in game left hand")] 
-        public GameObject rightHand = null;
+        // [Tooltip("Left hand model to be spawned in as a left preview. Should be the same as your in game left hand")]
+        // public GameObject leftHand = null;
+        //
+        // [Tooltip("Left hand model to be spawned in as a left preview. Should be the same as your in game left hand")] 
+        // public GameObject rightHand = null;
 
         // Serialized Properties
         
@@ -36,7 +36,7 @@ namespace yellowyears.SkeletonPoser
 
         public GameObject ShowLeftPreview()
         {
-            return Instantiate(leftHand);
+            return Instantiate(XR_SkeletonPoserSettings.Instance.leftHand);
         }
 
         public void DestroyLeftPreview(GameObject obj)
@@ -46,7 +46,7 @@ namespace yellowyears.SkeletonPoser
 
         public GameObject ShowRightPreview()
         {
-            return Instantiate(rightHand);
+            return Instantiate(XR_SkeletonPoserSettings.Instance.rightHand);
         }
 
         public void DestroyRightPreview(GameObject obj)
