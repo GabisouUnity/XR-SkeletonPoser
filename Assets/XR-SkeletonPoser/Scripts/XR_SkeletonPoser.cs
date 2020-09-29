@@ -36,7 +36,7 @@ namespace yellowyears.SkeletonPoser
 
         public GameObject ShowLeftPreview()
         {
-            return Instantiate(XR_SkeletonPoserSettings.instance.leftHand);
+            return Instantiate(XR_SkeletonPoserSettings.Instance.leftHand);
         }
 
         public void DestroyLeftPreview(GameObject obj)
@@ -46,7 +46,7 @@ namespace yellowyears.SkeletonPoser
 
         public GameObject ShowRightPreview()
         {
-            return Instantiate(XR_SkeletonPoserSettings.instance.rightHand);
+            return Instantiate(XR_SkeletonPoserSettings.Instance.rightHand);
         }
 
         public void DestroyRightPreview(GameObject obj)

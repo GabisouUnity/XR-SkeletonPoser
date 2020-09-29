@@ -44,11 +44,11 @@ namespace yellowyears.SkeletonPoser
         {
             // Get default values from the hand prefab.
             
-            _defaultPose.leftBonePositions = _poser.GetBonePositions(XR_SkeletonPoserSettings.instance.leftHand);
-            _defaultPose.leftBoneRotations = _poser.GetBoneRotations(XR_SkeletonPoserSettings.instance.leftHand);
+            _defaultPose.leftBonePositions = _poser.GetBonePositions(XR_SkeletonPoserSettings.Instance.leftHand);
+            _defaultPose.leftBoneRotations = _poser.GetBoneRotations(XR_SkeletonPoserSettings.Instance.leftHand);
 
-            _defaultPose.rightBonePositions = _poser.GetBonePositions(XR_SkeletonPoserSettings.instance.rightHand);
-            _defaultPose.rightBoneRotations = _poser.GetBoneRotations(XR_SkeletonPoserSettings.instance.rightHand);
+            _defaultPose.rightBonePositions = _poser.GetBonePositions(XR_SkeletonPoserSettings.Instance.rightHand);
+            _defaultPose.rightBoneRotations = _poser.GetBoneRotations(XR_SkeletonPoserSettings.Instance.rightHand);
         }
         
         public override void OnInspectorGUI()
@@ -79,7 +79,7 @@ namespace yellowyears.SkeletonPoser
 
                 if (_propertyShowPoseEditor.boolValue)
                 {
-                   EditorGUILayout.BeginHorizontal(); EditorGUI.BeginDisabledGroup(XR_SkeletonPoserSettings.instance.leftHand == null);
+                   EditorGUILayout.BeginHorizontal(); EditorGUI.BeginDisabledGroup(XR_SkeletonPoserSettings.Instance.leftHand == null);
                    
                    if (!_propertyShowLeft.boolValue)
                    {
@@ -109,7 +109,7 @@ namespace yellowyears.SkeletonPoser
                    
                    // Preview Right Button
                    
-                   EditorGUI.BeginDisabledGroup(XR_SkeletonPoserSettings.instance.rightHand == null);
+                   EditorGUI.BeginDisabledGroup(XR_SkeletonPoserSettings.Instance.rightHand == null);
                    
                    if (!_propertyShowRight.boolValue)
                    {

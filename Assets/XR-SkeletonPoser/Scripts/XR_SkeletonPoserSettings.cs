@@ -8,13 +8,13 @@ namespace yellowyears.SkeletonPoser
 
         private static XR_SkeletonPoserSettings _instance;
 
-        public static XR_SkeletonPoserSettings instance
+        public static XR_SkeletonPoserSettings Instance
         {
             get
             {
                 LoadInstance();
 
-                return instance;
+                return _instance;
             }
         }
 
@@ -23,14 +23,19 @@ namespace yellowyears.SkeletonPoser
             if (_instance != null) return;
             
             // Load settings, from a folder in Assets/XRPoses called "Resources"
-            _instance = Resources.Load<XR_SkeletonPoserSettings>("XRPoses");
-
+            _instance = (XR_SkeletonPoserSettings)AssetDatabase.LoadAssetAtPath("Assets/XRPoses/Resources", typeof(XR_SkeletonPoserSettings));
+        
             if (_instance != null) return;
                 
             // If it still is null, then it does not exist
-
+            
             _instance = CreateInstance<XR_SkeletonPoserSettings>();
-                    
+            
+            if(!AssetDatabase.IsValidFolder("Assets/XRPoses/Resources"))
+            {
+                AssetDatabase.CreateFolder("Assets/XRPoses", "Resources");
+            }
+            
             AssetDatabase.CreateAsset(_instance, "Assets/XRPoses/Resources/SkeletonPoserSettings.asset");
             AssetDatabase.SaveAssets();
         }
