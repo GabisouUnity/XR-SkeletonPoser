@@ -599,7 +599,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activePose: {fileID: 11400000, guid: 9fbfdfa493d8f46408ff5376e13a91f5, type: 2}
   showPoseEditor: 1
-  showLeft: 1
+  showLeft: 0
   tempLeft: {fileID: 0}
   showRight: 1
   tempRight: {fileID: 0}

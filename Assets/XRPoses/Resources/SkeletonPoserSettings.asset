@@ -12,17 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9995a4c4734888f448db7b74b8fa49db, type: 3}
   m_Name: SkeletonPoserSettings
   m_EditorClassIdentifier: 
-  leftHand: {fileID: 3509768977297426757, guid: f8b105d384322824d9a47e0f4f527df3,
-    type: 3}
-  rightHand: {fileID: 126567881452638359, guid: fa7a20ddd8e285b4abd7a6a6b7f8881c,
-    type: 3}
+  leftHand: {fileID: 0}
+  rightHand: {fileID: 0}
   referencePose: {fileID: 0}
   guiFont: {fileID: 0}
-  showLeftHandColour: {r: 1, g: 1, b: 1, a: 1}
-  showRightHandColour: {r: 1, g: 1, b: 1, a: 1}
-  hideLeftHandColour: {r: 1, g: 1, b: 1, a: 1}
-  hideRightHandColour: {r: 1, g: 1, b: 1, a: 1}
-  loadPoseColour: {r: 0.627451, g: 1, b: 0.25882354, a: 0.15686275}
-  savePoseColour: {r: 0.627451, g: 1, b: 0.25882354, a: 0.15686275}
-  resetPoseColour: {r: 1, g: 0.39607844, b: 0.39607844, a: 0.3764706}
-  resetToReferencePoseColour: {r: 1, g: 0.39607844, b: 0.39607844, a: 0.3764706}
+  showLeftHandColour: {r: 0, g: 0, b: 0, a: 0}
+  showRightHandColour: {r: 0, g: 0, b: 0, a: 0}
+  hideLeftHandColour: {r: 0, g: 0, b: 0, a: 0}
+  hideRightHandColour: {r: 0, g: 0, b: 0, a: 0}
+  loadPoseColour: {r: 0, g: 0, b: 0, a: 0}
+  savePoseColour: {r: 0, g: 0, b: 0, a: 0}
+  resetPoseColour: {r: 0, g: 0, b: 0, a: 0}
+  resetToReferencePoseColour: {r: 0, g: 0, b: 0, a: 0}
