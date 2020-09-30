@@ -23,8 +23,10 @@ namespace yellowyears.SkeletonPoser
             if (_instance != null) return;
             
             // Load settings, from a folder in Assets/XRPoses called "Resources"
-            _instance = (XR_SkeletonPoserSettings)AssetDatabase.LoadAssetAtPath("Assets/XRPoses/Resources", typeof(XR_SkeletonPoserSettings));
-        
+            // _instance = (XR_SkeletonPoserSettings)AssetDatabase.LoadAssetAtPath("Assets/XRPoses/Resources", typeof(XR_SkeletonPoserSettings));
+
+            _instance = Resources.Load<XR_SkeletonPoserSettings>("XRPoses");
+
             if (_instance != null) return;
                 
             // If it still is null, then it does not exist
@@ -37,8 +39,9 @@ namespace yellowyears.SkeletonPoser
             }
             
             AssetDatabase.CreateAsset(_instance, "Assets/XRPoses/Resources/SkeletonPoserSettings.asset");
-            AssetDatabase.SaveAssets();
-        }
+            // AssetDatabase.SaveAssets();
+            // EditorUtility.SetDirty(_instance);
+        }  
         
         // Variables
 
