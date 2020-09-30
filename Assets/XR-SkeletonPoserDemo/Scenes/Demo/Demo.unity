@@ -1098,9 +1098,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activePose: {fileID: 11400000, guid: a9dd64d05c651524283af80795d28bb6, type: 2}
   showPoseEditor: 1
-  showLeft: 1
+  showLeft: 0
   tempLeft: {fileID: 0}
-  showRight: 1
+  showRight: 0
   tempRight: {fileID: 0}
 --- !u!114 &956864831
 MonoBehaviour:
@@ -2410,9 +2410,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activePose: {fileID: 11400000, guid: da3330b4f1902034e88c780d5876bdd4, type: 2}
   showPoseEditor: 1
-  showLeft: 1
+  showLeft: 0
   tempLeft: {fileID: 0}
-  showRight: 1
+  showRight: 0
   tempRight: {fileID: 0}
 --- !u!114 &1166872082
 MonoBehaviour:

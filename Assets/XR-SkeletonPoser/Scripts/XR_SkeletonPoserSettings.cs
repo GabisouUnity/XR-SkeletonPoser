@@ -24,7 +24,6 @@ namespace yellowyears.SkeletonPoser
             
             // Load settings, from a folder in Assets/XRPoses called "Resources"
             // _instance = (XR_SkeletonPoserSettings)AssetDatabase.LoadAssetAtPath("Assets/XRPoses/Resources", typeof(XR_SkeletonPoserSettings));
-
             _instance = Resources.Load<XR_SkeletonPoserSettings>("XRPoses");
 
             if (_instance != null) return;
@@ -59,6 +58,12 @@ namespace yellowyears.SkeletonPoser
             _instance.resetPoseColour = new Color32(255, 101, 101, 96);
             _instance.resetToReferencePoseColour = new Color32(255, 101, 101, 96);
         }
+
+        // private void Reset()
+        // {
+        //     LoadInstance();
+        //     SetDefaultValues();
+        // }
         
         // Variables
 

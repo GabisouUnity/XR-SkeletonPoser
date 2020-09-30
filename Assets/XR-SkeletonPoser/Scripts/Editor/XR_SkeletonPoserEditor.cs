@@ -27,15 +27,15 @@ namespace yellowyears.SkeletonPoser
 
         // These are just blank unless the user chooses otherwise
         
-        public Color32 defaultShowLeftHandColour;
-        public Color32 defaultShowRightHandColour;
-        public Color32 defaultHideLeftHandColour;
-        public Color32 defaultHideRightHandColour;
-        
-        public Color32 defaultLoadPoseColour = new Color32(160, 255, 66, 100);
-        public Color32 defaultSavePoseColour = new Color32(160, 255, 66, 100);
-        public Color32 defaultResetPoseColour = new Color32(255, 101, 101, 100);
-        public Color32 defaultResetToReferencePoseColour = new Color32(255, 101, 101, 100);
+        // public Color defaultShowLeftHandColour;
+        // public Color defaultShowRightHandColour;
+        // public Color defaultHideLeftHandColour;
+        // public Color defaultHideRightHandColour;
+        //
+        // public Color defaultLoadPoseColour = new Color(160, 255, 66, 100);
+        // public Color defaultSavePoseColour = new Color(160, 255, 66, 100);
+        // public Color defaultResetPoseColour = new Color(255, 101, 101, 100);
+        // public Color defaultResetToReferencePoseColour = new Color(255, 101, 101, 100);
         
         #endregion
         
@@ -86,12 +86,13 @@ namespace yellowyears.SkeletonPoser
             }
             else
             {
-                
                 EditorGUILayout.BeginVertical("box");
 
-                if (XR_SkeletonPoserSettings.Instance.guiFont != null)
+                var poserSettings = XR_SkeletonPoserSettings.Instance;
+                
+                if (poserSettings.guiFont != null)
                 {
-                    GUI.skin.font = XR_SkeletonPoserSettings.Instance.guiFont;
+                    GUI.skin.font = poserSettings.guiFont;
                 }
 
                 // Create new instance of XR_SkeletonPose, this is the one that is edited
@@ -109,6 +110,9 @@ namespace yellowyears.SkeletonPoser
                    
                    if (!_propertyShowLeft.boolValue)
                    {
+
+                       GUI.backgroundColor = poserSettings.showLeftHandColour;
+                       
                        if (GUILayout.Button("Show Left Hand"))
                        {
                            var leftGameObject = _poser.ShowLeftPreview();
@@ -121,9 +125,12 @@ namespace yellowyears.SkeletonPoser
 
                            _propertyTempLeft.objectReferenceValue = leftGameObject;
                        }
+
                    }
                    else
                    {
+                       GUI.backgroundColor = poserSettings.hideLeftHandColour;
+                       
                        if (GUILayout.Button("Hide Left Hand"))
                        {
                            _poser.DestroyLeftPreview(_propertyTempLeft.objectReferenceValue as GameObject);
@@ -139,6 +146,8 @@ namespace yellowyears.SkeletonPoser
                    
                    if (!_propertyShowRight.boolValue)
                    {
+                       GUI.backgroundColor = poserSettings.showRightHandColour;
+                       
                        if (GUILayout.Button("Show Right Hand"))
                        {
                            var rightGameObject = _poser.ShowRightPreview();
@@ -154,6 +163,8 @@ namespace yellowyears.SkeletonPoser
                    }
                    else
                    {
+                       GUI.backgroundColor = poserSettings.hideRightHandColour;
+                       
                        if (GUILayout.Button("Hide Right Hand"))
                        {
                            _poser.DestroyRightPreview(_propertyTempRight.objectReferenceValue as GameObject);
@@ -202,6 +213,8 @@ namespace yellowyears.SkeletonPoser
                    EditorGUILayout.BeginHorizontal();
                    
                    // Create field in editor for active pose (also referred to as loaded pose)
+                   GUI.backgroundColor = Color.white;
+                   
                    EditorGUIUtility.labelWidth = 76;
                    EditorGUILayout.PropertyField(_propertyActivePose, new GUIContent("Active Pose"));
 
@@ -209,8 +222,10 @@ namespace yellowyears.SkeletonPoser
                    EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false && _propertyShowRight.boolValue == false || _poser.GetLoadedPose() == null);
 
                    // rgba(160, 255, 66, 0.4)
-                   GUI.backgroundColor = new Color32(160, 255, 66, 100);
+                   // GUI.backgroundColor = new Color32(160, 255, 66, 100);
                    // GUI.backgroundColor = Color.green;
+
+                   GUI.backgroundColor = poserSettings.loadPoseColour;
                    
                    if (GUILayout.Button("Load Pose", "button"))
                    {
@@ -223,6 +238,8 @@ namespace yellowyears.SkeletonPoser
                    
                    // Grey it out if hands aren't active
                    EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false || _propertyShowRight.boolValue == false);
+
+                   GUI.backgroundColor = poserSettings.savePoseColour;
                    
                    if (GUILayout.Button("Save Pose", "button"))
                    {
@@ -236,8 +253,10 @@ namespace yellowyears.SkeletonPoser
                    EditorGUILayout.BeginHorizontal();
                    
                    // rgba(255, 101, 101, 0.96)
-                   GUI.backgroundColor = new Color32(255, 101, 101, 100);
+                   // GUI.backgroundColor = new Color32(255, 101, 101, 100);
                    // GUI.backgroundColor = Color.red;
+
+                   GUI.backgroundColor = poserSettings.resetPoseColour;
                    
                    if (GUILayout.Button("Reset Pose", "button"))
                    {
@@ -254,6 +273,8 @@ namespace yellowyears.SkeletonPoser
                    
                    EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false && _propertyShowRight.boolValue == false || XR_SkeletonPoserSettings.Instance.referencePose == null);
 
+                   GUI.backgroundColor = poserSettings.resetToReferencePoseColour;
+                   
                    if (GUILayout.Button("Reset To Reference Pose", "button"))
                    {
                        // Make sure we warn the user before they reset their pose

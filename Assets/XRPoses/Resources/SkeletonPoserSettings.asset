@@ -16,5 +16,13 @@ MonoBehaviour:
     type: 3}
   rightHand: {fileID: 126567881452638359, guid: fa7a20ddd8e285b4abd7a6a6b7f8881c,
     type: 3}
-  referencePose: {fileID: 11400000, guid: 42c46b98194b2a540af70f39ca1d18d3, type: 2}
-  guiFont: {fileID: 12800000, guid: 9137c45cb23b3374181a11e815934df1, type: 3}
+  referencePose: {fileID: 0}
+  guiFont: {fileID: 0}
+  showLeftHandColour: {r: 1, g: 1, b: 1, a: 1}
+  showRightHandColour: {r: 1, g: 1, b: 1, a: 1}
+  hideLeftHandColour: {r: 1, g: 1, b: 1, a: 1}
+  hideRightHandColour: {r: 1, g: 1, b: 1, a: 1}
+  loadPoseColour: {r: 0.627451, g: 1, b: 0.25882354, a: 0.15686275}
+  savePoseColour: {r: 0.627451, g: 1, b: 0.25882354, a: 0.15686275}
+  resetPoseColour: {r: 1, g: 0.39607844, b: 0.39607844, a: 0.3764706}
+  resetToReferencePoseColour: {r: 1, g: 0.39607844, b: 0.39607844, a: 0.3764706}
