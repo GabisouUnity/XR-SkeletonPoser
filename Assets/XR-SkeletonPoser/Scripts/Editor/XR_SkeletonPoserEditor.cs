@@ -82,8 +82,8 @@ namespace yellowyears.SkeletonPoser
                 var newPose = CreateInstance<XR_SkeletonPose>();
 
                 // _propertyShowPoseEditor.boolValue = EditorGUILayout.BeginFoldoutHeaderGroup(_propertyShowPoseEditor.boolValue, "Show Pose Editor");
-
                 // _propertyShowPoseEditor.boolValue = EditorGUILayout.Foldout(_propertyShowPoseEditor.boolValue, "Show Pose Editor");
+                
                 _propertyShowPoseEditor.boolValue =
                     IndentedFoldoutHeader(_propertyShowPoseEditor.boolValue, "Pose Editor");
 

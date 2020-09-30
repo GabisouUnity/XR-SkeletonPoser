@@ -57,7 +57,19 @@ namespace yellowyears.SkeletonPoser
         
         public XR_SkeletonPose referencePose;
 
+        [Space]
+        
         public Font guiFont;
+
+        public Color showLeftHandColour;
+        public Color showRightHandColour;
+        public Color hideLeftHandColour;
+        public Color hideRightHandColour;
+        
+        public Color loadPoseColour;
+        public Color savePoseColour;
+        public Color resetPoseColour;
+        public Color resetToReferencePoseColour;
 
     }    
 }
