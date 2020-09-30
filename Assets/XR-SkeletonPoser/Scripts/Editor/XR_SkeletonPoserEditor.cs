@@ -23,6 +23,22 @@ namespace yellowyears.SkeletonPoser
         private SerializedProperty _propertyTempRight = null;
         // private GameObject _rightGameObject = null;
 
+        #region DefaultGUIColours
+
+        // These are just blank unless the user chooses otherwise
+        
+        public Color32 defaultShowLeftHandColour;
+        public Color32 defaultShowRightHandColour;
+        public Color32 defaultHideLeftHandColour;
+        public Color32 defaultHideRightHandColour;
+        
+        public Color32 defaultLoadPoseColour = new Color32(160, 255, 66, 100);
+        public Color32 defaultSavePoseColour = new Color32(160, 255, 66, 100);
+        public Color32 defaultResetPoseColour = new Color32(255, 101, 101, 100);
+        public Color32 defaultResetToReferencePoseColour = new Color32(255, 101, 101, 100);
+        
+        #endregion
+        
         private void OnEnable()
         {
             _poser = (XR_SkeletonPoser) target;
