@@ -187,8 +187,8 @@ namespace yellowyears.SkeletonPoser
                    // Grey it out if hands aren't active and there is no loaded pose
                    EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false && _propertyShowRight.boolValue == false || _poser.GetLoadedPose() == null);
 
-                   // rgba(178, 255, 101, 0.96)
-                   GUI.backgroundColor = new Color32(178, 255, 101, 100);
+                   // rgba(160, 255, 66, 0.4)
+                   GUI.backgroundColor = new Color32(160, 255, 66, 100);
                    // GUI.backgroundColor = Color.green;
                    
                    if (GUILayout.Button("Load Pose", "button"))
