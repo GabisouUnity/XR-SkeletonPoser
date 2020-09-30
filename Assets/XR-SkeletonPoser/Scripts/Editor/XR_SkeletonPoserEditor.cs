@@ -73,6 +73,11 @@ namespace yellowyears.SkeletonPoser
                 
                 EditorGUILayout.BeginVertical("box");
 
+                if (XR_SkeletonPoserSettings.Instance.guiFont != null)
+                {
+                    GUI.skin.font = XR_SkeletonPoserSettings.Instance.guiFont;
+                }
+
                 // Create new instance of XR_SkeletonPose, this is the one that is edited
                 var newPose = CreateInstance<XR_SkeletonPose>();
 

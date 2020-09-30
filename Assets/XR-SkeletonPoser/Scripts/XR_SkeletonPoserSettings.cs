@@ -54,5 +54,7 @@ namespace yellowyears.SkeletonPoser
         
         public XR_SkeletonPose referencePose;
 
+        public Font guiFont;
+
     }    
 }
