@@ -41,7 +41,24 @@ namespace yellowyears.SkeletonPoser
             AssetDatabase.CreateAsset(_instance, "Assets/XRPoses/Resources/SkeletonPoserSettings.asset");
             // AssetDatabase.SaveAssets();
             // EditorUtility.SetDirty(_instance);
-        }  
+            
+            SetDefaultValues();
+        }
+
+        private static void SetDefaultValues()
+        {
+            _instance.showLeftHandColour = Color.white;
+            _instance.hideLeftHandColour = Color.white;
+
+            _instance.showRightHandColour = Color.white;
+            _instance.hideRightHandColour = Color.white;
+            
+            _instance.loadPoseColour = new Color32(160, 255, 66, 40);
+            _instance.savePoseColour = new Color32(160, 255, 66, 40);
+            
+            _instance.resetPoseColour = new Color32(255, 101, 101, 96);
+            _instance.resetToReferencePoseColour = new Color32(255, 101, 101, 96);
+        }
         
         // Variables
 
