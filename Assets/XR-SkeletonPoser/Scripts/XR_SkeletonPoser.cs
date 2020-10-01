@@ -17,7 +17,7 @@ namespace yellowyears.SkeletonPoser
         // Serialized Properties
         
         [HideInInspector] public XR_SkeletonPose activePose;
-        [HideInInspector] public bool showPoseEditor = false; // Used in editor foldout
+        [HideInInspector] public bool showPoseEditor = true; // Used in editor foldout
         
         [HideInInspector] public bool showLeft;
         [HideInInspector] public GameObject tempLeft;
