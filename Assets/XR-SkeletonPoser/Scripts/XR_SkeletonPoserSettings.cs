@@ -64,6 +64,8 @@ namespace yellowyears.SkeletonPoser
             
             _instance.resetPoseColour = new Color32(255, 101, 101, 96);
             _instance.resetToReferencePoseColour = new Color32(255, 101, 101, 96);
+            
+            AssetDatabase.SaveAssets();
         }
 
         // private void Reset()
