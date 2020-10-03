@@ -24,7 +24,7 @@ namespace yellowyears.SkeletonPoser
             {
                 // Load settings, from a folder in Assets/XRPoses called "Resources"
                 // _instance = (XR_SkeletonPoserSettings)AssetDatabase.LoadAssetAtPath("Assets/XRPoses/Resources", typeof(XR_SkeletonPoserSettings));
-                _instance = Resources.Load<XR_SkeletonPoserSettings>("XRPoses");
+                _instance = Resources.Load<XR_SkeletonPoserSettings>("SkeletonPoserSettings");
 
                 // Debug.Log("Load instance");
                 
