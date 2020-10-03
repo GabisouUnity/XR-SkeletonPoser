@@ -20,35 +20,23 @@ namespace yellowyears.SkeletonPoser
 
         private static void LoadInstance()
         {
-            if (_instance == null)
+            if (_instance != null) return;
+            
+            _instance = Resources.Load<XR_SkeletonPoserSettings>("SkeletonPoserSettings");
+            
+            if (_instance != null) return;
+            
+            _instance = CreateInstance<XR_SkeletonPoserSettings>();
+                    
+            if(!AssetDatabase.IsValidFolder("Assets/XRPoses/Resources"))
             {
-                // Load settings, from a folder in Assets/XRPoses called "Resources"
-                // _instance = (XR_SkeletonPoserSettings)AssetDatabase.LoadAssetAtPath("Assets/XRPoses/Resources", typeof(XR_SkeletonPoserSettings));
-                _instance = Resources.Load<XR_SkeletonPoserSettings>("SkeletonPoserSettings");
-
-                // Debug.Log("Load instance");
-                
-                if (_instance == null)
-                {
-                    // If it still is null, then it does not exist
-                    
-                    _instance = CreateInstance<XR_SkeletonPoserSettings>();
-                    
-                    // Debug.Log("Create instance");
-                    
-                    if(!AssetDatabase.IsValidFolder("Assets/XRPoses/Resources"))
-                    {
-                        AssetDatabase.CreateFolder("Assets/XRPoses", "Resources");
-                    }
-                    
-                    AssetDatabase.CreateAsset(_instance, "Assets/XRPoses/Resources/SkeletonPoserSettings.asset");
-                    AssetDatabase.SaveAssets();
-                    // EditorUtility.SetDirty(_instance);
-                    
-                    SetDefaultValues();
-                    // Debug.Log("Set default values");
-                }
+                AssetDatabase.CreateFolder("Assets/XRPoses", "Resources");
             }
+                    
+            AssetDatabase.CreateAsset(_instance, "Assets/XRPoses/Resources/SkeletonPoserSettings.asset");
+            AssetDatabase.SaveAssets();
+            
+            SetDefaultValues();
         }
 
         private static void SetDefaultValues()
@@ -67,12 +55,6 @@ namespace yellowyears.SkeletonPoser
             
             AssetDatabase.SaveAssets();
         }
-
-        // private void Reset()
-        // {
-        //     LoadInstance();
-        //     SetDefaultValues();
-        // }
         
         // Variables
 

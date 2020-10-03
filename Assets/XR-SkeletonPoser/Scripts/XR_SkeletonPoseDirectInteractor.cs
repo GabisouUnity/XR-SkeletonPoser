@@ -91,11 +91,10 @@ namespace yellowyears.SkeletonPoser
             // var selectTargetAttach = ((XRGrabInteractable) selectTarget).attachTransform;
 
             // Move first index (hand model parent) to the grabbable's attach transform
-            if (selectTargetVar.attachTransform != null)
-            {
-                _handBones[0].localPosition = selectTargetVar.attachTransform.localPosition;
-                _handBones[0].localRotation = selectTargetVar.attachTransform.localRotation;
-            }
+            if (selectTargetVar.attachTransform == null) return;
+            
+            _handBones[0].localPosition = selectTargetVar.attachTransform.localPosition;
+            _handBones[0].localRotation = selectTargetVar.attachTransform.localRotation;
         }
         
         private void SetPose(XR_SkeletonPose pose)
