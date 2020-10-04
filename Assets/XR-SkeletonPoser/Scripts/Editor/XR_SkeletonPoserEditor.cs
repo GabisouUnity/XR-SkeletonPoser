@@ -14,6 +14,7 @@ namespace yellowyears.SkeletonPoser
 
         private SerializedProperty _propertyActivePose = null;
         private SerializedProperty _propertyShowPoseEditor = null;
+        private SerializedProperty _propertyScale = null;
         
         private SerializedProperty _propertyShowLeft = null;
         private SerializedProperty _propertyTempLeft = null;
@@ -48,6 +49,7 @@ namespace yellowyears.SkeletonPoser
 
             _propertyActivePose = serializedObject.FindProperty("activePose");
             _propertyShowPoseEditor = serializedObject.FindProperty("showPoseEditor");
+            _propertyScale = serializedObject.FindProperty("scale");
             
             _propertyShowLeft = serializedObject.FindProperty("showLeft");
             _propertyTempLeft = serializedObject.FindProperty("tempLeft");
@@ -288,6 +290,21 @@ namespace yellowyears.SkeletonPoser
 
                    EditorGUI.EndDisabledGroup();
                    EditorGUILayout.EndHorizontal();
+                }
+
+                EditorGUILayout.BeginHorizontal();
+                EditorGUI.BeginChangeCheck();
+                GUI.backgroundColor = Color.white;
+                EditorGUIUtility.labelWidth = 60;
+                _propertyScale.floatValue = EditorGUILayout.FloatField("Scale", _propertyScale.floatValue);
+                if (_propertyScale.floatValue <= 0) _propertyScale.floatValue = 1;
+                EditorGUIUtility.labelWidth = 0;
+                GUILayout.FlexibleSpace();
+                EditorGUILayout.EndHorizontal();
+                if (EditorGUI.EndChangeCheck())
+                {
+                    // Value has changed, update hands
+                    UpdateHandScale(true);
                 }
                 
                 // EditorGUILayout.EndFoldoutHeaderGroup();

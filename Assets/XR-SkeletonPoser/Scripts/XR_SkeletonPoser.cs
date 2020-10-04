@@ -19,6 +19,8 @@ namespace yellowyears.SkeletonPoser
         
         [HideInInspector] public XR_SkeletonPose activePose;
         [HideInInspector] public bool showPoseEditor = true; // Used in editor foldout
+
+        [HideInInspector] public float scale;
         
         [HideInInspector] public bool showLeft;
         [HideInInspector] public GameObject tempLeft;
