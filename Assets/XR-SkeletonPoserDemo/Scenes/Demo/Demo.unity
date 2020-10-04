@@ -280,7 +280,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 203042303}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.861, y: 0.95, z: -0.351}
+  m_LocalPosition: {x: 0.861, y: 0.95, z: -0.219}
   m_LocalScale: {x: 0.06828018, y: 0.06828018, z: 0.06828018}
   m_Children:
   - {fileID: 1580813318}
@@ -299,15 +299,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f1eceacd75691a4d9fb4fb19618e242, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainPose: {fileID: 0}
+  mainPose: {fileID: 11400000, guid: da3330b4f1902034e88c780d5876bdd4, type: 2}
   secondaryPose: {fileID: 0}
   selectedPose: {fileID: 0}
-  blend:
-    blendName: 
-    from: {fileID: 0}
-    to: {fileID: 0}
   activePoseEnum: 0
-  showPoses: 0
+  showPoses: 1
   showPoseEditor: 0
   showBlendEditor: 0
   scale: 1
@@ -580,7 +576,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &568402515
 Transform:
   m_ObjectHideFlags: 0
@@ -589,7 +585,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 568402514}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.868, y: 1.0089, z: 0.849}
+  m_LocalPosition: {x: 0.803, y: 1.0089, z: -0.584}
   m_LocalScale: {x: 0.07806369, y: 0.07806369, z: 0.07806369}
   m_Children:
   - {fileID: 1374978543}
@@ -608,15 +604,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f1eceacd75691a4d9fb4fb19618e242, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainPose: {fileID: 0}
+  mainPose: {fileID: 11400000, guid: 9fbfdfa493d8f46408ff5376e13a91f5, type: 2}
   secondaryPose: {fileID: 0}
   selectedPose: {fileID: 0}
-  blend:
-    blendName: 
-    from: {fileID: 0}
-    to: {fileID: 0}
   activePoseEnum: 0
-  showPoses: 0
+  showPoses: 1
   showPoseEditor: 1
   showBlendEditor: 1
   scale: 1
@@ -1117,17 +1109,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f1eceacd75691a4d9fb4fb19618e242, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainPose: {fileID: 0}
+  mainPose: {fileID: 11400000, guid: a9dd64d05c651524283af80795d28bb6, type: 2}
   secondaryPose: {fileID: 0}
   selectedPose: {fileID: 0}
-  blend:
-    blendName: 
-    from: {fileID: 0}
-    to: {fileID: 0}
   activePoseEnum: 0
-  showPoses: 0
-  showPoseEditor: 0
-  showBlendEditor: 0
+  showPoses: 1
+  showPoseEditor: 1
+  showBlendEditor: 1
   scale: 1
   showLeft: 0
   tempLeft: {fileID: 0}
@@ -2442,10 +2430,6 @@ MonoBehaviour:
   mainPose: {fileID: 11400000, guid: da3330b4f1902034e88c780d5876bdd4, type: 2}
   secondaryPose: {fileID: 0}
   selectedPose: {fileID: 0}
-  blend:
-    blendName: 
-    from: {fileID: 0}
-    to: {fileID: 0}
   activePoseEnum: 0
   showPoses: 1
   showPoseEditor: 1
@@ -4665,15 +4649,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f1eceacd75691a4d9fb4fb19618e242, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainPose: {fileID: 0}
+  mainPose: {fileID: 11400000, guid: b1f5ab1b4355ba9419a6913edb90a910, type: 2}
   secondaryPose: {fileID: 0}
   selectedPose: {fileID: 0}
-  blend:
-    blendName: 
-    from: {fileID: 0}
-    to: {fileID: 0}
   activePoseEnum: 0
-  showPoses: 0
+  showPoses: 1
   showPoseEditor: 1
   showBlendEditor: 1
   scale: 1
@@ -4782,7 +4762,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 2534964839176971238, guid: b54361b9981ce2f459f8435cfc0426a2, type: 3}
 --- !u!1 &4302547924294806657

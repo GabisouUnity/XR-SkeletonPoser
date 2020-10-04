@@ -29,12 +29,15 @@ namespace yellowyears.SkeletonPoser
         [HideInInspector] public XR_SkeletonPose mainPose;
         [HideInInspector] public XR_SkeletonPose secondaryPose;
         [HideInInspector] public XR_SkeletonPose selectedPose;
-        [HideInInspector] public BlendBehaviours blend;
+
         [HideInInspector] public ActivePose activePoseEnum;
+
+        // [HideInInspector] public BlendBehaviours blend = null;
 
         [HideInInspector] public bool showPoses = false;
         [HideInInspector] public bool showPoseEditor = true; // Used in editor foldout
         [HideInInspector] public bool showBlendEditor = false;
+        [HideInInspector] public bool showBlendPose = true;
 
         [HideInInspector] public float scale;
         
@@ -117,6 +120,16 @@ namespace yellowyears.SkeletonPoser
             return target != null ? target.GetComponentsInChildren<Transform>().Select(x => x.localRotation).ToArray() : null;
         }
 
+        public XR_SkeletonPose GetBlendToPose(XR_SkeletonPose inputPose)
+        {
+            return inputPose.blendTo;
+        }
+
+        public string GetBlendName(XR_SkeletonPose inputPose)
+        {
+            return inputPose.blendName;
+        }
+        
         // public Quaternion InverseBoneRotations(Quaternion boneRot)
         // {
         //     Quaternion normalQuat = boneRot;
@@ -152,13 +165,14 @@ namespace yellowyears.SkeletonPoser
         //     return bonePos;
         // }
 
-        [Serializable]
-        public class BlendBehaviours
-        {
-            public string blendName;
-            public XR_SkeletonPose from;
-            public XR_SkeletonPose to;
-        }
+        // [Serializable]
+        // public class BlendBehaviours
+        // {
+        //     public string blendName;
+        //     public bool enabled;
+        //     public XR_SkeletonPose from;
+        //     public XR_SkeletonPose to;
+        // }
         
     }
 }
