@@ -311,11 +311,13 @@ namespace yellowyears.SkeletonPoser
                 var leftHand = _propertyTempLeft.objectReferenceValue as GameObject;
                 var rightHand = _propertyTempRight.objectReferenceValue as GameObject;
                 
-                if (EditorGUI.EndChangeCheck() && leftHand && rightHand)
+                if (EditorGUI.EndChangeCheck())
                 {
                     // Value has changed, update hands
                     updateHands = true;
-                    UpdateHandScale(_propertyScale.floatValue);
+
+                    if (leftHand != null) UpdateHandScale(leftHand, _propertyScale.floatValue);
+                    if (rightHand != null) UpdateHandScale(rightHand, _propertyScale.floatValue);
                 }
                 
                 // EditorGUILayout.EndFoldoutHeaderGroup();
@@ -336,15 +338,11 @@ namespace yellowyears.SkeletonPoser
             return fold;
         }
 
-        private void UpdateHandScale(float scale)
+        private void UpdateHandScale(GameObject obj, float scale)
         {
             if (updateHands == false) return;
             
-            var left = _propertyTempLeft.objectReferenceValue as GameObject;
-            var right = _propertyTempRight.objectReferenceValue as GameObject;
-            
-            left.transform.localScale = Vector3.one * scale;
-            right.transform.localScale = Vector3.one * scale;
+            obj.transform.localScale = Vector3.one * scale;
 
             updateHands = false;
         }
