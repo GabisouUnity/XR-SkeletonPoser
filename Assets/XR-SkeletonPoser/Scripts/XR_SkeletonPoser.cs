@@ -80,8 +80,8 @@ namespace yellowyears.SkeletonPoser
  
             EditorApplication.ExecuteMenuItem("Window/General/Hierarchy");            
             var window = EditorWindow.focusedWindow;
- 
-            methodInfo.Invoke(window, new object[] { gameObject.GetInstanceID(), expand });
+
+            methodInfo?.Invoke(window, new object[] {gameObject.GetInstanceID(), expand});
         }
         
         public XR_SkeletonPose GetLoadedPose()
