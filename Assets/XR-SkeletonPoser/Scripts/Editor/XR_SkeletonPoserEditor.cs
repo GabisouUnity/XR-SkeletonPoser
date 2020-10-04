@@ -14,33 +14,16 @@ namespace yellowyears.SkeletonPoser
 
         private SerializedProperty _propertyActivePose = null;
         private SerializedProperty _propertyShowPoseEditor = null;
+        private SerializedProperty _propertyShowBlendEditor = null;
         private SerializedProperty _propertyScale = null;
 
-        private bool updateHands = false;
+        private bool _updateHands = false;
         
         private SerializedProperty _propertyShowLeft = null;
         private SerializedProperty _propertyTempLeft = null;
-        // private GameObject _leftGameObject = null;
 
         private SerializedProperty _propertyShowRight = null;
         private SerializedProperty _propertyTempRight = null;
-        // private GameObject _rightGameObject = null;
-
-        // #region DefaultGUIColours
-        //
-        // // These are just blank unless the user chooses otherwise
-        //
-        // // public Color defaultShowLeftHandColour;
-        // // public Color defaultShowRightHandColour;
-        // // public Color defaultHideLeftHandColour;
-        // // public Color defaultHideRightHandColour;
-        // //
-        // // public Color defaultLoadPoseColour = new Color(160, 255, 66, 100);
-        // // public Color defaultSavePoseColour = new Color(160, 255, 66, 100);
-        // // public Color defaultResetPoseColour = new Color(255, 101, 101, 100);
-        // // public Color defaultResetToReferencePoseColour = new Color(255, 101, 101, 100);
-        //
-        // #endregion
         
         private void OnEnable()
         {
@@ -51,6 +34,7 @@ namespace yellowyears.SkeletonPoser
 
             _propertyActivePose = serializedObject.FindProperty("activePose");
             _propertyShowPoseEditor = serializedObject.FindProperty("showPoseEditor");
+            _propertyShowBlendEditor = serializedObject.FindProperty("showBlendEditor");
             _propertyScale = serializedObject.FindProperty("scale");
             
             _propertyShowLeft = serializedObject.FindProperty("showLeft");
@@ -77,11 +61,23 @@ namespace yellowyears.SkeletonPoser
             
             serializedObject.Update();
             
+            DrawAdditionalPoses();
+            
             DrawPoseEditor();
+            
+            DrawBlendEditor();
             
             serializedObject.ApplyModifiedProperties();
         }
 
+        private void DrawAdditionalPoses()
+        {
+            if (!Application.isPlaying)
+            {
+                
+            }
+        }
+        
         private void DrawPoseEditor()
         {
             if (Application.isPlaying) // Check if in playmode and skip if not.
@@ -314,7 +310,7 @@ namespace yellowyears.SkeletonPoser
                 if (EditorGUI.EndChangeCheck())
                 {
                     // Value has changed, update hands
-                    updateHands = true;
+                    _updateHands = true;
 
                     if (leftHand != null) UpdateHandScale(leftHand, _propertyScale.floatValue);
                     if (rightHand != null) UpdateHandScale(rightHand, _propertyScale.floatValue);
@@ -326,6 +322,21 @@ namespace yellowyears.SkeletonPoser
             }
         }
 
+        private void DrawBlendEditor()
+        {
+            _propertyShowBlendEditor.boolValue =
+                IndentedFoldoutHeader(_propertyShowPoseEditor.boolValue, "Blend Editor");
+
+            if (Application.isPlaying)
+            {
+                EditorGUILayout.LabelField("Cannot modify blends in playmode.");
+            }
+            else
+            {
+                
+            }
+        }
+        
         private bool IndentedFoldoutHeader(bool fold, string text, int indent = 1)
         {
             // Taken from the steamvr unity plugin code, just looks too good :p
@@ -340,11 +351,11 @@ namespace yellowyears.SkeletonPoser
 
         private void UpdateHandScale(GameObject obj, float scale)
         {
-            if (updateHands == false) return;
+            if (_updateHands == false) return;
             
             obj.transform.localScale = Vector3.one * scale;
 
-            updateHands = false;
+            _updateHands = false;
         }
 
         // private void CopyToRight(XR_SkeletonPose source, XR_SkeletonPose destination)
