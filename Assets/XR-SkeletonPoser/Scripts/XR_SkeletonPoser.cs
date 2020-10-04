@@ -27,9 +27,10 @@ namespace yellowyears.SkeletonPoser
 
         [HideInInspector] public XR_SkeletonPose mainPose;
         [HideInInspector] public XR_SkeletonPose secondaryPose;
-        [HideInInspector] public ActivePose activePose;
+        [HideInInspector] public XR_SkeletonPose selectedPose;
+        [HideInInspector] public ActivePose activePoseEnum;
 
-        
+        [HideInInspector] public bool showPoses = false;
         [HideInInspector] public bool showPoseEditor = true; // Used in editor foldout
         [HideInInspector] public bool showBlendEditor = false;
 

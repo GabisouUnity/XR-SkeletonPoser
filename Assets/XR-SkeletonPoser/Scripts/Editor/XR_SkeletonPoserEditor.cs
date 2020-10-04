@@ -14,8 +14,10 @@ namespace yellowyears.SkeletonPoser
 
         private SerializedProperty _propertyMainPose = null;
         private SerializedProperty _propertySecondaryPose = null;
-        private SerializedProperty _propertyActivePose = null;
-        
+        private SerializedProperty _propertySelectedPose = null;
+        private SerializedProperty _propertyActivePoseEnum = null;
+
+        private SerializedProperty _propertyShowPoses = null;
         private SerializedProperty _propertyShowPoseEditor = null;
         private SerializedProperty _propertyShowBlendEditor = null;
         private SerializedProperty _propertyScale = null;
@@ -37,8 +39,10 @@ namespace yellowyears.SkeletonPoser
 
             _propertyMainPose = serializedObject.FindProperty("mainPose");
             _propertySecondaryPose = serializedObject.FindProperty("secondaryPose");
-            _propertyActivePose = serializedObject.FindProperty("activePose");
-            
+            _propertySelectedPose = serializedObject.FindProperty("selectedPose");
+            _propertyActivePoseEnum = serializedObject.FindProperty("activePoseEnum");
+
+            _propertyShowPoses = serializedObject.FindProperty("showPoses");
             _propertyShowPoseEditor = serializedObject.FindProperty("showPoseEditor");
             _propertyShowBlendEditor = serializedObject.FindProperty("showBlendEditor");
             _propertyScale = serializedObject.FindProperty("scale");
@@ -80,19 +84,50 @@ namespace yellowyears.SkeletonPoser
         {
             if (Application.isPlaying) return;
             
-            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.BeginVertical("box");
             
-            EditorGUIUtility.labelWidth = 60;
-            EditorGUILayout.PropertyField(_propertyMainPose, new GUIContent("Main Pose"));
-            
-            EditorGUIUtility.labelWidth = 76;
-            EditorGUILayout.PropertyField(_propertySecondaryPose, new GUIContent("Secondary Pose"));
+            _propertyShowPoses.boolValue =
+                IndentedFoldoutHeader(_propertyShowPoses.boolValue, "Pose Fields");
 
-            EditorGUILayout.EndHorizontal();
+            if (_propertyShowPoses.boolValue)
+            {
+                EditorGUILayout.BeginVertical();
 
-            EditorGUI.BeginDisabledGroup(_propertyMainPose.objectReferenceValue == null && _propertySecondaryPose.objectReferenceValue == null);
+                EditorGUIUtility.labelWidth = 100;
+                EditorGUILayout.PropertyField(_propertyMainPose, new GUIContent("Main Pose"));
+
+                EditorGUIUtility.labelWidth = 100;
+                EditorGUILayout.PropertyField(_propertySecondaryPose, new GUIContent("Secondary Pose"));
+
+                EditorGUILayout.EndVertical();
+
+                EditorGUI.BeginDisabledGroup(_propertyMainPose.objectReferenceValue == null || _propertySecondaryPose.objectReferenceValue == null);
+                
+                EditorGUI.BeginChangeCheck();
+                
+                EditorGUILayout.PropertyField(_propertyActivePoseEnum); // (enum)
+
+                if (EditorGUI.EndChangeCheck())
+                {
+                    switch (_propertyActivePoseEnum.enumValueIndex)
+                    {
+                        case 0: // Main Pose (index 0)
+                            _propertySelectedPose = _propertyMainPose;
+                            break;
+                        case 1:
+                            _propertySelectedPose = _propertySecondaryPose;
+                            break;
+                        default:
+                            // Unknown
+                            _propertySelectedPose = _propertyMainPose;
+                            break;
+                    }
+                }
+
+                EditorGUI.EndDisabledGroup();
+            }
             
-            EditorGUILayout.PropertyField(_propertyActivePose);
+            EditorGUILayout.EndVertical();
         }
         
         private void DrawPoseEditor()
@@ -127,7 +162,6 @@ namespace yellowyears.SkeletonPoser
                    
                    if (!_propertyShowLeft.boolValue)
                    {
-
                        GUI.backgroundColor = poserSettings.showLeftHandColour;
                        
                        if (GUILayout.Button("Show Left Hand"))
