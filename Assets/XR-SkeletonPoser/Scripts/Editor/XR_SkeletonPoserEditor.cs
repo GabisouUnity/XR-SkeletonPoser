@@ -14,6 +14,7 @@ namespace yellowyears.SkeletonPoser
 
         private SerializedProperty _propertyMainPose = null;
         private SerializedProperty _propertySecondaryPose = null;
+        private SerializedProperty _propertyBlendBehaviour = null;
         private SerializedProperty _propertySelectedPose = null;
         private SerializedProperty _propertyActivePoseEnum = null;
 
@@ -39,6 +40,7 @@ namespace yellowyears.SkeletonPoser
 
             _propertyMainPose = serializedObject.FindProperty("mainPose");
             _propertySecondaryPose = serializedObject.FindProperty("secondaryPose");
+            _propertyBlendBehaviour = serializedObject.FindProperty("blend");
             _propertySelectedPose = serializedObject.FindProperty("selectedPose");
             _propertyActivePoseEnum = serializedObject.FindProperty("activePoseEnum");
 
@@ -382,13 +384,20 @@ namespace yellowyears.SkeletonPoser
             }
             else
             {
+                EditorGUILayout.BeginVertical("box");
+                
                 _propertyShowBlendEditor.boolValue =
                     IndentedFoldoutHeader(_propertyShowPoseEditor.boolValue, "Blend Editor");
 
                 if (_propertyShowBlendEditor.boolValue)
                 {
-                    
+                    var blender = _propertyBlendBehaviour;
+                    var blendName = blender.FindPropertyRelative("blendName");
+                    var from = blender.FindPropertyRelative("from");
+                    var to = blender.FindPropertyRelative("to");
                 }
+
+                EditorGUILayout.EndVertical();
             }
         }
         
@@ -413,7 +422,9 @@ namespace yellowyears.SkeletonPoser
             _updateHands = false;
         }
 
-        // private void CopyToRight(XR_SkeletonPose source, XR_SkeletonPose destination)
+        #region Copy To Right & Left
+
+                // private void CopyToRight(XR_SkeletonPose source, XR_SkeletonPose destination)
         // {
         //     destination.leftBonePositions = source.leftBonePositions;
         //     destination.leftBoneRotations = source.leftBoneRotations;
@@ -482,6 +493,8 @@ namespace yellowyears.SkeletonPoser
         // {
         //     // Copy right pose data to left
         // }
+
+        #endregion
 
         private void SavePose(XR_SkeletonPose inputPose)
         {
