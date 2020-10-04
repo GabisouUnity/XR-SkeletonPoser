@@ -121,7 +121,7 @@ namespace yellowyears.SkeletonPoser
                             _propertySelectedPose = _propertySecondaryPose;
                             break;
                         default:
-                            // Unknown
+                            // Unknown, default to main
                             _propertySelectedPose = _propertyMainPose;
                             break;
                     }
@@ -243,12 +243,12 @@ namespace yellowyears.SkeletonPoser
                    //     {
                    //         newPose = GetPose(newPose); // Get pose without saving
                    //         
-                   //         CopyToRight(newPose, _poser.mainPose);
+                   //         CopyToRight(newPose, _poser.selectedPose);
                    //         
                    //         // SavePose(newPose);
                    //         // Debug.Log("Save pose");
                    //         
-                   //         // _poser.mainPose = newPose;
+                   //         // _poser.selectedPose = newPose;
                    //         // Debug.Log("Set active pose to pose");
                    //         //
                    //         // LoadPose(); // Load pose for convenience 
@@ -259,7 +259,7 @@ namespace yellowyears.SkeletonPoser
                    // if (GUILayout.Button("Copy Right Pose to left hand"))
                    // {
                    //     // newPose = CopyToOpposite();
-                   //     // poser.mainPose = newPose;
+                   //     // poser.selectedPose = newPose;
                    //     
                    //     LoadPose(); // Load pose for convenience 
                    // }
@@ -466,7 +466,7 @@ namespace yellowyears.SkeletonPoser
         //         AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
         //     }
         //
-        //     _poser.mainPose = copy;
+        //     _poser.selectedPose = copy;
         //     
         //     // Load the pose onto the right hand only
         //     
@@ -510,7 +510,7 @@ namespace yellowyears.SkeletonPoser
             copy.rightBoneRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
 
             // Set pose to new pose data to avoid the need for reassignment after saving
-            _poser.mainPose = copy;
+            _poser.selectedPose = copy;
 
             if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))
             {
@@ -538,7 +538,7 @@ namespace yellowyears.SkeletonPoser
             copy.rightBonePositions = _defaultPose.rightBonePositions;
             copy.rightBoneRotations = _defaultPose.rightBoneRotations;
             
-            _poser.mainPose = copy;
+            _poser.selectedPose = copy;
 
             LoadPose(); // Load pose automatically for convenience
             
@@ -577,7 +577,7 @@ namespace yellowyears.SkeletonPoser
             copy.rightBonePositions = referencePose.rightBonePositions;
             copy.rightBoneRotations = referencePose.rightBoneRotations;
             
-            _poser.mainPose = copy;
+            _poser.selectedPose = copy;
 
             LoadPose(); // Load pose automatically for convenience
             

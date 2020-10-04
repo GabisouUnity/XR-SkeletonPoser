@@ -104,7 +104,7 @@ namespace yellowyears.SkeletonPoser
         
         public XR_SkeletonPose GetLoadedPose()
         {
-            return mainPose;
+            return selectedPose;
         }
         
         public Vector3[] GetBonePositions(GameObject target)
