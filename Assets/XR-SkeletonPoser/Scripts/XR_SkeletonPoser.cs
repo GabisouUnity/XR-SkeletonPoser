@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Linq;
+using UnityEditor;
 using UnityEngine.XR.Interaction.Toolkit;
 
 namespace yellowyears.SkeletonPoser
@@ -36,7 +37,16 @@ namespace yellowyears.SkeletonPoser
 
         public GameObject ShowLeftPreview()
         {
-            return Instantiate(XR_SkeletonPoserSettings.Instance.leftHand);
+            var poserSettings = XR_SkeletonPoserSettings.Instance;
+            
+            var preview = Instantiate(poserSettings.leftHand);
+
+            if (poserSettings.defaultExpandPreview)
+            {
+                SetExpandedRecursive(preview, true);
+            }
+
+            return preview;
         }
 
         public void DestroyLeftPreview(GameObject obj)
@@ -46,7 +56,16 @@ namespace yellowyears.SkeletonPoser
 
         public GameObject ShowRightPreview()
         {
-            return Instantiate(XR_SkeletonPoserSettings.Instance.rightHand);
+            var poserSettings = XR_SkeletonPoserSettings.Instance;
+            
+            var preview = Instantiate(poserSettings.rightHand);
+            
+            if (poserSettings.defaultExpandPreview)
+            {
+                SetExpandedRecursive(preview, true);
+            }
+            
+            return preview;
         }
 
         public void DestroyRightPreview(GameObject obj)
@@ -54,6 +73,17 @@ namespace yellowyears.SkeletonPoser
             DestroyImmediate(obj);
         }
 
+        private static void SetExpandedRecursive(GameObject gameObject, bool expand)
+        {
+            var type = typeof(EditorWindow).Assembly.GetType("UnityEditor.SceneHierarchyWindow");
+            var methodInfo = type.GetMethod("SetExpandedRecursive");
+ 
+            EditorApplication.ExecuteMenuItem("Window/General/Hierarchy");            
+            var window = EditorWindow.focusedWindow;
+
+            methodInfo?.Invoke(window, new object[] {gameObject.GetInstanceID(), expand});
+        }
+        
         public XR_SkeletonPose GetLoadedPose()
         {
             return activePose;
