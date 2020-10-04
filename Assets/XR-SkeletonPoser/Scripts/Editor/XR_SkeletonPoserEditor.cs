@@ -104,7 +104,8 @@ namespace yellowyears.SkeletonPoser
                 EditorGUI.BeginDisabledGroup(_propertyMainPose.objectReferenceValue == null || _propertySecondaryPose.objectReferenceValue == null);
                 
                 EditorGUI.BeginChangeCheck();
-                
+
+                EditorGUIUtility.labelWidth = 120;
                 EditorGUILayout.PropertyField(_propertyActivePoseEnum); // (enum)
 
                 if (EditorGUI.EndChangeCheck())
@@ -287,9 +288,7 @@ namespace yellowyears.SkeletonPoser
                        LoadPose();
                    }
                    
-                   EditorGUI.EndDisabledGroup(); EditorGUILayout.EndHorizontal();
-                   
-                   EditorGUILayout.Space();
+                   EditorGUI.EndDisabledGroup();
                    
                    // Grey it out if hands aren't active
                    EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false || _propertyShowRight.boolValue == false);
@@ -300,6 +299,8 @@ namespace yellowyears.SkeletonPoser
                    {
                        SavePose(newPose);
                    }
+                   
+                   EditorGUILayout.EndHorizontal();
                    
                    EditorGUI.EndDisabledGroup();
 
