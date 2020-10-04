@@ -12,7 +12,10 @@ namespace yellowyears.SkeletonPoser
         
         private XR_SkeletonPose _defaultPose = null;
 
+        private SerializedProperty _propertyMainPose = null;
+        private SerializedProperty _propertySecondaryPose = null;
         private SerializedProperty _propertyActivePose = null;
+        
         private SerializedProperty _propertyShowPoseEditor = null;
         private SerializedProperty _propertyShowBlendEditor = null;
         private SerializedProperty _propertyScale = null;
@@ -32,7 +35,10 @@ namespace yellowyears.SkeletonPoser
             _defaultPose = CreateInstance<XR_SkeletonPose>();
             GetDefaultPose();
 
+            _propertyMainPose = serializedObject.FindProperty("mainPose");
+            _propertySecondaryPose = serializedObject.FindProperty("secondaryPose");
             _propertyActivePose = serializedObject.FindProperty("activePose");
+            
             _propertyShowPoseEditor = serializedObject.FindProperty("showPoseEditor");
             _propertyShowBlendEditor = serializedObject.FindProperty("showBlendEditor");
             _propertyScale = serializedObject.FindProperty("scale");
@@ -72,10 +78,21 @@ namespace yellowyears.SkeletonPoser
 
         private void DrawAdditionalPoses()
         {
-            if (!Application.isPlaying)
-            {
-                
-            }
+            if (Application.isPlaying) return;
+            
+            EditorGUILayout.BeginHorizontal();
+            
+            EditorGUIUtility.labelWidth = 60;
+            EditorGUILayout.PropertyField(_propertyMainPose, new GUIContent("Main Pose"));
+            
+            EditorGUIUtility.labelWidth = 76;
+            EditorGUILayout.PropertyField(_propertySecondaryPose, new GUIContent("Secondary Pose"));
+
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUI.BeginDisabledGroup(_propertyMainPose.objectReferenceValue == null && _propertySecondaryPose.objectReferenceValue == null);
+            
+            EditorGUILayout.PropertyField(_propertyActivePose);
         }
         
         private void DrawPoseEditor()
@@ -189,12 +206,12 @@ namespace yellowyears.SkeletonPoser
                    //     {
                    //         newPose = GetPose(newPose); // Get pose without saving
                    //         
-                   //         CopyToRight(newPose, _poser.activePose);
+                   //         CopyToRight(newPose, _poser.mainPose);
                    //         
                    //         // SavePose(newPose);
                    //         // Debug.Log("Save pose");
                    //         
-                   //         // _poser.activePose = newPose;
+                   //         // _poser.mainPose = newPose;
                    //         // Debug.Log("Set active pose to pose");
                    //         //
                    //         // LoadPose(); // Load pose for convenience 
@@ -205,7 +222,7 @@ namespace yellowyears.SkeletonPoser
                    // if (GUILayout.Button("Copy Right Pose to left hand"))
                    // {
                    //     // newPose = CopyToOpposite();
-                   //     // poser.activePose = newPose;
+                   //     // poser.mainPose = newPose;
                    //     
                    //     LoadPose(); // Load pose for convenience 
                    // }
@@ -216,12 +233,12 @@ namespace yellowyears.SkeletonPoser
                    
                    EditorGUILayout.BeginHorizontal();
                    
-                   // Create field in editor for active pose (also referred to as loaded pose)
-                   GUI.backgroundColor = Color.white;
+                   // // Create field in editor for active pose (also referred to as loaded pose)
+                   // GUI.backgroundColor = Color.white;
+                   //
+                   // EditorGUIUtility.labelWidth = 76;
+                   // EditorGUILayout.PropertyField(_propertyMainPose, new GUIContent("Active Pose"));
                    
-                   EditorGUIUtility.labelWidth = 76;
-                   EditorGUILayout.PropertyField(_propertyActivePose, new GUIContent("Active Pose"));
-
                    // Grey it out if hands aren't active and there is no loaded pose
                    EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false && _propertyShowRight.boolValue == false || _poser.GetLoadedPose() == null);
 
@@ -324,16 +341,19 @@ namespace yellowyears.SkeletonPoser
 
         private void DrawBlendEditor()
         {
-            _propertyShowBlendEditor.boolValue =
-                IndentedFoldoutHeader(_propertyShowPoseEditor.boolValue, "Blend Editor");
-
             if (Application.isPlaying)
             {
                 EditorGUILayout.LabelField("Cannot modify blends in playmode.");
             }
             else
             {
-                
+                _propertyShowBlendEditor.boolValue =
+                    IndentedFoldoutHeader(_propertyShowPoseEditor.boolValue, "Blend Editor");
+
+                if (_propertyShowBlendEditor.boolValue)
+                {
+                    
+                }
             }
         }
         
@@ -342,7 +362,7 @@ namespace yellowyears.SkeletonPoser
             // Taken from the steamvr unity plugin code, just looks too good :p
             
             GUILayout.BeginHorizontal();
-            var boldFoldoutStyle = new GUIStyle(EditorStyles.foldout) {fontStyle = FontStyle.Bold};
+            var boldFoldoutStyle = new GUIStyle(EditorStyles.foldout) { fontStyle = FontStyle.Bold };
             GUILayout.Space(14f * indent);
             fold = EditorGUILayout.Foldout(fold, text, boldFoldoutStyle);
             GUILayout.EndHorizontal();
@@ -400,7 +420,7 @@ namespace yellowyears.SkeletonPoser
         //         AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
         //     }
         //
-        //     _poser.activePose = copy;
+        //     _poser.mainPose = copy;
         //     
         //     // Load the pose onto the right hand only
         //     
@@ -442,7 +462,7 @@ namespace yellowyears.SkeletonPoser
             copy.rightBoneRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
 
             // Set pose to new pose data to avoid the need for reassignment after saving
-            _poser.activePose = copy;
+            _poser.mainPose = copy;
 
             if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))
             {
@@ -470,7 +490,7 @@ namespace yellowyears.SkeletonPoser
             copy.rightBonePositions = _defaultPose.rightBonePositions;
             copy.rightBoneRotations = _defaultPose.rightBoneRotations;
             
-            _poser.activePose = copy;
+            _poser.mainPose = copy;
 
             LoadPose(); // Load pose automatically for convenience
             
@@ -509,7 +529,7 @@ namespace yellowyears.SkeletonPoser
             copy.rightBonePositions = referencePose.rightBonePositions;
             copy.rightBoneRotations = referencePose.rightBoneRotations;
             
-            _poser.activePose = copy;
+            _poser.mainPose = copy;
 
             LoadPose(); // Load pose automatically for convenience
             

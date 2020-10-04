@@ -15,9 +15,21 @@ namespace yellowyears.SkeletonPoser
         // [Tooltip("Left hand model to be spawned in as a left preview. Should be the same as your in game left hand")] 
         // public GameObject rightHand = null;
 
+        // #region Editor Stuff
+        //
+        // public string[] poseNames;
+        //
+        // #endregion
+        
         // Serialized Properties
         
-        [HideInInspector] public XR_SkeletonPose activePose;
+        public enum ActivePose { Main, Secondary }
+
+        [HideInInspector] public XR_SkeletonPose mainPose;
+        [HideInInspector] public XR_SkeletonPose secondaryPose;
+        [HideInInspector] public ActivePose activePose;
+
+        
         [HideInInspector] public bool showPoseEditor = true; // Used in editor foldout
         [HideInInspector] public bool showBlendEditor = false;
 
@@ -89,7 +101,7 @@ namespace yellowyears.SkeletonPoser
         
         public XR_SkeletonPose GetLoadedPose()
         {
-            return activePose;
+            return mainPose;
         }
         
         public Vector3[] GetBonePositions(GameObject target)
