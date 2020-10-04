@@ -37,10 +37,15 @@ namespace yellowyears.SkeletonPoser
 
         public GameObject ShowLeftPreview()
         {
-            var preview = Instantiate(XR_SkeletonPoserSettings.Instance.leftHand);
-
-            SetExpandedRecursive(preview, true);
+            var poserSettings = XR_SkeletonPoserSettings.Instance;
             
+            var preview = Instantiate(poserSettings.leftHand);
+
+            if (poserSettings.defaultExpandPreview)
+            {
+                SetExpandedRecursive(preview, true);
+            }
+
             return preview;
         }
 
@@ -51,10 +56,15 @@ namespace yellowyears.SkeletonPoser
 
         public GameObject ShowRightPreview()
         {
-            var preview = Instantiate(XR_SkeletonPoserSettings.Instance.rightHand);
+            var poserSettings = XR_SkeletonPoserSettings.Instance;
             
-            SetExpandedRecursive(preview, true);
-
+            var preview = Instantiate(poserSettings.rightHand);
+            
+            if (poserSettings.defaultExpandPreview)
+            {
+                SetExpandedRecursive(preview, true);
+            }
+            
             return preview;
         }
 

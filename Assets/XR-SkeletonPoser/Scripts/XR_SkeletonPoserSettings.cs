@@ -41,6 +41,8 @@ namespace yellowyears.SkeletonPoser
 
         private static void SetDefaultValues()
         {
+            _instance.defaultExpandPreview = true;
+
             _instance.showLeftHandColour = Color.white;
             _instance.hideLeftHandColour = Color.white;
 
@@ -69,6 +71,9 @@ namespace yellowyears.SkeletonPoser
         [Space] 
         
         public XR_SkeletonPose referencePose;
+
+        [Tooltip("Expand all children gameobjects recursively when the show hand button is pressed")]
+        public bool defaultExpandPreview;
 
         [Space]
         
