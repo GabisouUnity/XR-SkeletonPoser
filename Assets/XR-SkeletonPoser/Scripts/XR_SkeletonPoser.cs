@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Linq;
 using UnityEditor;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -28,6 +29,7 @@ namespace yellowyears.SkeletonPoser
         [HideInInspector] public XR_SkeletonPose mainPose;
         [HideInInspector] public XR_SkeletonPose secondaryPose;
         [HideInInspector] public XR_SkeletonPose selectedPose;
+        [HideInInspector] public BlendBehaviours blend;
         [HideInInspector] public ActivePose activePoseEnum;
 
         [HideInInspector] public bool showPoses = false;
@@ -149,6 +151,14 @@ namespace yellowyears.SkeletonPoser
         //
         //     return bonePos;
         // }
+
+        [Serializable]
+        public class BlendBehaviours
+        {
+            public string blendName;
+            public XR_SkeletonPose from;
+            public XR_SkeletonPose to;
+        }
         
     }
 }
