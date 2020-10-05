@@ -26,12 +26,15 @@ namespace yellowyears.SkeletonPoser
         
         public enum ActivePose { Main, Secondary }
 
+        public enum BlendInput { Trigger, Grip }
+        
         [HideInInspector] public XR_SkeletonPose mainPose;
         [HideInInspector] public XR_SkeletonPose secondaryPose;
         [HideInInspector] public XR_SkeletonPose selectedPose;
         [HideInInspector] public BlendBehaviour blendBehaviour = new BlendBehaviour();
         [HideInInspector] public bool blendWasCreated = false;
-        [HideInInspector] public InputHelpers.Button blendButton;
+        [HideInInspector] public BlendInput blendInput;
+        // [HideInInspector] public InputHelpers.Button blendButton;
             
         [HideInInspector] public ActivePose activePoseEnum;
 
@@ -127,7 +130,7 @@ namespace yellowyears.SkeletonPoser
             return target != null ? target.GetComponentsInChildren<Transform>().Select(x => x.localRotation).ToArray() : null;
         }
 
-        public void BlendPose()
+        public void BlendPose(float blendValue)
         {
             
         }

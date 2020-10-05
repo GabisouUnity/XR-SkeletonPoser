@@ -19,7 +19,7 @@ namespace yellowyears.SkeletonPoser
         private SerializedProperty _propertyActivePoseEnum = null;
         private SerializedProperty _propertyBlendBehaviour = null;
         private SerializedProperty _propertyBlendWasCreated = null;
-        private SerializedProperty _propertyBlendButton = null;
+        private SerializedProperty _propertyBlendInput = null;
 
         private SerializedProperty _propertyShowPoses = null;
         private SerializedProperty _propertyShowPoseEditor = null;
@@ -47,8 +47,8 @@ namespace yellowyears.SkeletonPoser
             _propertyActivePoseEnum = serializedObject.FindProperty("activePoseEnum");
             _propertyBlendBehaviour = serializedObject.FindProperty("blendBehaviour");
             _propertyBlendWasCreated = serializedObject.FindProperty("blendWasCreated");
-            _propertyBlendButton = serializedObject.FindProperty("blendButton");
-
+            _propertyBlendInput = serializedObject.FindProperty("blendInput");
+            
             _propertyShowPoses = serializedObject.FindProperty("showPoses");
             _propertyShowPoseEditor = serializedObject.FindProperty("showPoseEditor");
             _propertyShowBlendEditor = serializedObject.FindProperty("showBlendEditor");
@@ -451,8 +451,19 @@ namespace yellowyears.SkeletonPoser
 
                         if (!(mainPose is null)) EditorGUILayout.LabelField("Primary Pose: " + mainPose.name);
                         if (!(secondaryPose is null)) EditorGUILayout.LabelField("Secondary Pose: " + secondaryPose.name);
+                        
+                        EditorGUI.BeginChangeCheck();
 
-                        EditorGUILayout.PropertyField(_propertyBlendButton);
+                        EditorGUIUtility.labelWidth = 70;
+                        EditorGUILayout.PropertyField(_propertyBlendInput);
+
+                        if (EditorGUI.EndChangeCheck())
+                        {
+                            // switch ()
+                            // {
+                            //     
+                            // }
+                        }
                     }
                 }
 

@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine;
+using UnityEngine.XR;
 
 namespace yellowyears.SkeletonPoser
 {
@@ -17,10 +19,12 @@ namespace yellowyears.SkeletonPoser
         #endregion
         
         private XR_SkeletonPose _defaultPose;
+        private XR_SkeletonPoser _selectedPoser;
         private XRController _inputController;
         private Transform[] _handBones = null;
 
         private bool _isSkeletonPoseInteractable = false;
+        private bool _shouldCheckForBlendInput = false;
         
         protected override void Awake()
         {
@@ -30,6 +34,11 @@ namespace yellowyears.SkeletonPoser
             
             // Cache default pose at runtime
             _defaultPose = GetDefaultPose();
+        }
+
+        private void Update()
+        {
+            CheckForInput();
         }
 
         private XR_SkeletonPose GetDefaultPose()
@@ -149,9 +158,11 @@ namespace yellowyears.SkeletonPoser
             base.OnSelectEnter(interactable);
 
             // Do not run the below code if the object isn't a skeleton poser, ie do not pose hand if not a poser interactable
-            if (!interactable.TryGetComponent(out XR_SkeletonPoser poser)) return;
+            if (!interactable.TryGetComponent(out _selectedPoser)) return;
             
-            var pose = poser.GetMainPose();
+            var pose = _selectedPoser.GetMainPose();
+
+            if (_selectedPoser.blendWasCreated) _shouldCheckForBlendInput = true;
             
             SetPose(pose);
             SetOffset();
@@ -163,12 +174,44 @@ namespace yellowyears.SkeletonPoser
             base.OnSelectExit(interactable);
 
             if(_isSkeletonPoseInteractable) SetDefaultPose(); // Reset back to default bone pose on select exit if it was a skeleton poser
-            
+            if (_selectedPoser.blendWasCreated) _shouldCheckForBlendInput = false;
+
             _isSkeletonPoseInteractable = false;
         }
 
-        private void CheckForInput(bool shouldCheck)
+        private void CheckForInput()
         {
+            if (!_shouldCheckForBlendInput) return;
+            
+            var device = _inputController.inputDevice;
+            // if(device.TryGetFeatureValue(_selectedPoser.blendButton, out ))
+            
+            // TODO: Might use a custom enum on the poser to determine the input, since it should be an analogue button as of right now.
+
+            // Get input and convert to common usages
+            var triggerUsage = CommonUsages.trigger;
+            var gripUsage = CommonUsages.trigger;
+
+            // Check for input
+            switch (_selectedPoser.blendInput)
+            {
+                case XR_SkeletonPoser.BlendInput.Trigger:
+                    // Get value
+                    device.TryGetFeatureValue(triggerUsage, out var triggerValue);
+                    
+                    // Blend Pose
+                    _selectedPoser.BlendPose(triggerValue);
+                    break;
+                case XR_SkeletonPoser.BlendInput.Grip:
+                    // Get value
+                    device.TryGetFeatureValue(gripUsage, out var gripValue);
+                    
+                    // Blend Pose
+                    _selectedPoser.BlendPose(gripValue);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
             
         }
         
