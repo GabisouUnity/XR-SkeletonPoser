@@ -285,7 +285,7 @@ namespace yellowyears.SkeletonPoser
                    // EditorGUILayout.PropertyField(_propertyMainPose, new GUIContent("Active Pose"));
                    
                    // Grey it out if hands aren't active and there is no loaded pose
-                   EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false && _propertyShowRight.boolValue == false || _poser.GetLoadedPose() == null);
+                   EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false && _propertyShowRight.boolValue == false || _poser.GetMainPose() == null);
         
                    // rgba(160, 255, 66, 0.4)
                    // GUI.backgroundColor = new Color32(160, 255, 66, 100);
@@ -314,7 +314,7 @@ namespace yellowyears.SkeletonPoser
                    
                    EditorGUI.EndDisabledGroup();
         
-                   EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false && _propertyShowRight.boolValue == false || _poser.GetLoadedPose() == null);
+                   EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false && _propertyShowRight.boolValue == false || _poser.GetMainPose() == null);
         
                    EditorGUILayout.BeginHorizontal();
                    
@@ -405,11 +405,17 @@ namespace yellowyears.SkeletonPoser
                     var from = blender.FindPropertyRelative("from");
                     var to = blender.FindPropertyRelative("to");
                     
+                    EditorGUI.BeginDisabledGroup(!_poser.GetSecondaryPose());
+                    
                     if (GUILayout.Button("Create Blend", "button"))
                     {
                         if (!_propertyBlendWasCreated.boolValue)
                         {
                             // Create New
+                            blendName.stringValue = "New Blend";
+                            from.objectReferenceValue = _propertyMainPose.objectReferenceValue as XR_SkeletonPose;
+                            to.objectReferenceValue = _propertySecondaryPose.objectReferenceValue as XR_SkeletonPose;
+                            
                             _propertyBlendWasCreated.boolValue = true;
                         }
                         else
@@ -417,6 +423,13 @@ namespace yellowyears.SkeletonPoser
                             EditorUtility.DisplayDialog("You already have a blend active!",
                                 "You cannot create a new one.", "ok");
                         }
+                    }
+
+                    enabled.boolValue = IndentedFoldoutHeader(enabled.boolValue, blendName.stringValue);
+
+                    if (enabled.boolValue)
+                    {
+                        EditorGUILayout.PropertyField(blendName);
                     }
                 }
 
@@ -640,7 +653,7 @@ namespace yellowyears.SkeletonPoser
         
         private void LoadPose()
         {
-            var loadedPose = _poser.GetLoadedPose();
+            var loadedPose = _poser.GetMainPose();
 
             var leftHandObject = _propertyTempLeft.objectReferenceValue as GameObject;
             var rightHandObject = _propertyTempRight.objectReferenceValue as GameObject;

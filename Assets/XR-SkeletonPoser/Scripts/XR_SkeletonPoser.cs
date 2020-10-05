@@ -37,8 +37,8 @@ namespace yellowyears.SkeletonPoser
         // [HideInInspector] public BlendBehaviour blend = null;
 
         [HideInInspector] public bool showPoses = false;
-        public bool showPoseEditor = true; // Used in editor foldout
-        public bool showBlendEditor = false;
+        [HideInInspector] public bool showPoseEditor = true; // Used in editor foldout
+        [HideInInspector] public bool showBlendEditor = false;
 
         [HideInInspector] public float scale;
         
@@ -106,9 +106,14 @@ namespace yellowyears.SkeletonPoser
             methodInfo?.Invoke(window, new object[] {gameObject.GetInstanceID(), expand});
         }
         
-        public XR_SkeletonPose GetLoadedPose()
+        public XR_SkeletonPose GetMainPose()
         {
             return mainPose;
+        }
+
+        public XR_SkeletonPose GetSecondaryPose()
+        {
+            return secondaryPose;
         }
         
         public Vector3[] GetBonePositions(GameObject target)
