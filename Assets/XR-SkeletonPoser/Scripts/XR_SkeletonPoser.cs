@@ -29,15 +29,16 @@ namespace yellowyears.SkeletonPoser
         [HideInInspector] public XR_SkeletonPose mainPose;
         [HideInInspector] public XR_SkeletonPose secondaryPose;
         [HideInInspector] public XR_SkeletonPose selectedPose;
+        [HideInInspector] public BlendBehaviour blendBehaviour = new BlendBehaviour();
+        [HideInInspector] public bool blendWasCreated = false;
 
         [HideInInspector] public ActivePose activePoseEnum;
 
-        // [HideInInspector] public BlendBehaviours blend = null;
+        // [HideInInspector] public BlendBehaviour blend = null;
 
         [HideInInspector] public bool showPoses = false;
-        [HideInInspector] public bool showPoseEditor = true; // Used in editor foldout
-        [HideInInspector] public bool showBlendEditor = false;
-        [HideInInspector] public bool showBlendPose = true;
+        public bool showPoseEditor = true; // Used in editor foldout
+        public bool showBlendEditor = false;
 
         [HideInInspector] public float scale;
         
@@ -107,7 +108,7 @@ namespace yellowyears.SkeletonPoser
         
         public XR_SkeletonPose GetLoadedPose()
         {
-            return selectedPose;
+            return mainPose;
         }
         
         public Vector3[] GetBonePositions(GameObject target)
@@ -120,15 +121,15 @@ namespace yellowyears.SkeletonPoser
             return target != null ? target.GetComponentsInChildren<Transform>().Select(x => x.localRotation).ToArray() : null;
         }
 
-        public XR_SkeletonPose GetBlendToPose(XR_SkeletonPose inputPose)
-        {
-            return inputPose.blendTo;
-        }
-
-        public string GetBlendName(XR_SkeletonPose inputPose)
-        {
-            return inputPose.blendName;
-        }
+        // public XR_SkeletonPose GetBlendToPose(XR_SkeletonPose inputPose)
+        // {
+        //     return inputPose.blendTo;
+        // }
+        //
+        // public string GetBlendName(XR_SkeletonPose inputPose)
+        // {
+        //     return inputPose.blendName;
+        // }
         
         // public Quaternion InverseBoneRotations(Quaternion boneRot)
         // {
@@ -165,14 +166,14 @@ namespace yellowyears.SkeletonPoser
         //     return bonePos;
         // }
 
-        // [Serializable]
-        // public class BlendBehaviours
-        // {
-        //     public string blendName;
-        //     public bool enabled;
-        //     public XR_SkeletonPose from;
-        //     public XR_SkeletonPose to;
-        // }
+        [Serializable]
+        public class BlendBehaviour
+        {
+            public string blendName;
+            public bool enabled;
+            public XR_SkeletonPose from;
+            public XR_SkeletonPose to;
+        }
         
     }
 }
