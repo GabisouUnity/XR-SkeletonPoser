@@ -299,13 +299,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f1eceacd75691a4d9fb4fb19618e242, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainPose: {fileID: 11400000, guid: da3330b4f1902034e88c780d5876bdd4, type: 2}
-  secondaryPose: {fileID: 0}
+  mainPose: {fileID: 11400000, guid: 37eb9d650575c6d44b9f6e6ee2117ce2, type: 2}
+  secondaryPose: {fileID: 11400000, guid: 37eb9d650575c6d44b9f6e6ee2117ce2, type: 2}
   selectedPose: {fileID: 0}
+  blendBehaviour:
+    blendName: New Blend
+    enabled: 1
+    from: {fileID: 11400000, guid: 37eb9d650575c6d44b9f6e6ee2117ce2, type: 2}
+    to: {fileID: 11400000, guid: 37eb9d650575c6d44b9f6e6ee2117ce2, type: 2}
+  blendWasCreated: 1
   activePoseEnum: 0
   showPoses: 1
   showPoseEditor: 0
-  showBlendEditor: 0
+  showBlendEditor: 1
   scale: 1
   showLeft: 0
   tempLeft: {fileID: 0}
@@ -604,9 +610,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f1eceacd75691a4d9fb4fb19618e242, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainPose: {fileID: 11400000, guid: 9fbfdfa493d8f46408ff5376e13a91f5, type: 2}
+  mainPose: {fileID: 0}
   secondaryPose: {fileID: 0}
-  selectedPose: {fileID: 0}
+  selectedPose: {fileID: 11400000, guid: 9fbfdfa493d8f46408ff5376e13a91f5, type: 2}
+  blendBehaviour:
+    blendName: 
+    enabled: 0
+    from: {fileID: 0}
+    to: {fileID: 0}
+  blendWasCreated: 1
   activePoseEnum: 0
   showPoses: 1
   showPoseEditor: 1
@@ -1112,6 +1124,12 @@ MonoBehaviour:
   mainPose: {fileID: 11400000, guid: a9dd64d05c651524283af80795d28bb6, type: 2}
   secondaryPose: {fileID: 0}
   selectedPose: {fileID: 0}
+  blendBehaviour:
+    blendName: 
+    enabled: 0
+    from: {fileID: 0}
+    to: {fileID: 0}
+  blendWasCreated: 0
   activePoseEnum: 0
   showPoses: 1
   showPoseEditor: 1
@@ -2430,6 +2448,12 @@ MonoBehaviour:
   mainPose: {fileID: 11400000, guid: da3330b4f1902034e88c780d5876bdd4, type: 2}
   secondaryPose: {fileID: 0}
   selectedPose: {fileID: 0}
+  blendBehaviour:
+    blendName: 
+    enabled: 0
+    from: {fileID: 0}
+    to: {fileID: 0}
+  blendWasCreated: 0
   activePoseEnum: 0
   showPoses: 1
   showPoseEditor: 1
@@ -4652,6 +4676,12 @@ MonoBehaviour:
   mainPose: {fileID: 11400000, guid: b1f5ab1b4355ba9419a6913edb90a910, type: 2}
   secondaryPose: {fileID: 0}
   selectedPose: {fileID: 0}
+  blendBehaviour:
+    blendName: 
+    enabled: 0
+    from: {fileID: 0}
+    to: {fileID: 0}
+  blendWasCreated: 0
   activePoseEnum: 0
   showPoses: 1
   showPoseEditor: 1
@@ -4762,7 +4792,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 2534964839176971238, guid: b54361b9981ce2f459f8435cfc0426a2, type: 3}
 --- !u!1 &4302547924294806657

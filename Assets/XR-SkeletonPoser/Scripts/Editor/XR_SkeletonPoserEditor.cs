@@ -2,6 +2,7 @@
 
 using UnityEditor;
 using UnityEngine;
+using yellowyears.SkeletonPoser;
 
 namespace yellowyears.SkeletonPoser
 {
@@ -18,6 +19,7 @@ namespace yellowyears.SkeletonPoser
         private SerializedProperty _propertyActivePoseEnum = null;
         private SerializedProperty _propertyBlendBehaviour = null;
         private SerializedProperty _propertyBlendWasCreated = null;
+        private SerializedProperty _propertyBlendButton = null;
 
         private SerializedProperty _propertyShowPoses = null;
         private SerializedProperty _propertyShowPoseEditor = null;
@@ -45,6 +47,7 @@ namespace yellowyears.SkeletonPoser
             _propertyActivePoseEnum = serializedObject.FindProperty("activePoseEnum");
             _propertyBlendBehaviour = serializedObject.FindProperty("blendBehaviour");
             _propertyBlendWasCreated = serializedObject.FindProperty("blendWasCreated");
+            _propertyBlendButton = serializedObject.FindProperty("blendButton");
 
             _propertyShowPoses = serializedObject.FindProperty("showPoses");
             _propertyShowPoseEditor = serializedObject.FindProperty("showPoseEditor");
@@ -405,7 +408,10 @@ namespace yellowyears.SkeletonPoser
                     var from = blender.FindPropertyRelative("from");
                     var to = blender.FindPropertyRelative("to");
                     
-                    EditorGUI.BeginDisabledGroup(!_poser.GetSecondaryPose());
+                    from.objectReferenceValue = _propertyMainPose.objectReferenceValue as XR_SkeletonPose;
+                    to.objectReferenceValue = _propertySecondaryPose.objectReferenceValue as XR_SkeletonPose;
+
+                    EditorGUI.BeginDisabledGroup(!_poser.GetSecondaryPose() || !_poser.GetMainPose());
                     
                     if (GUILayout.Button("Create Blend", "button"))
                     {
@@ -413,6 +419,7 @@ namespace yellowyears.SkeletonPoser
                         {
                             // Create New
                             blendName.stringValue = "New Blend";
+                            
                             from.objectReferenceValue = _propertyMainPose.objectReferenceValue as XR_SkeletonPose;
                             to.objectReferenceValue = _propertySecondaryPose.objectReferenceValue as XR_SkeletonPose;
                             
@@ -429,7 +436,23 @@ namespace yellowyears.SkeletonPoser
 
                     if (enabled.boolValue)
                     {
+                        
+                        EditorGUI.BeginChangeCheck();                        
                         EditorGUILayout.PropertyField(blendName);
+                        if (EditorGUI.EndChangeCheck())
+                        {
+                            if (string.IsNullOrEmpty(blendName.stringValue)) blendName.stringValue = "New Blend";
+                        }
+
+                        EditorGUILayout.Space();
+
+                        var mainPose = _propertyMainPose.objectReferenceValue as XR_SkeletonPose;
+                        var secondaryPose = _propertySecondaryPose.objectReferenceValue as XR_SkeletonPose;
+
+                        if (!(mainPose is null)) EditorGUILayout.LabelField("Primary Pose: " + mainPose.name);
+                        if (!(secondaryPose is null)) EditorGUILayout.LabelField("Secondary Pose: " + secondaryPose.name);
+
+                        EditorGUILayout.PropertyField(_propertyBlendButton);
                     }
                 }
 

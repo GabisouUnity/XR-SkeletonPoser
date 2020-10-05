@@ -17,6 +17,7 @@ MonoBehaviour:
   rightHand: {fileID: 126567881452638359, guid: fa7a20ddd8e285b4abd7a6a6b7f8881c,
     type: 3}
   referencePose: {fileID: 11400000, guid: 34f84c2d51b4e0b45948d451004a98e6, type: 2}
+  defaultExpandPreview: 0
   guiFont: {fileID: 0}
   showLeftHandColour: {r: 1, g: 1, b: 1, a: 1}
   showRightHandColour: {r: 1, g: 1, b: 1, a: 1}
