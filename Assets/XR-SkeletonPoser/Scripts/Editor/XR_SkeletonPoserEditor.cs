@@ -16,11 +16,12 @@ namespace yellowyears.SkeletonPoser
         private SerializedProperty _propertySecondaryPose = null;
         private SerializedProperty _propertySelectedPose = null;
         private SerializedProperty _propertyActivePoseEnum = null;
+        private SerializedProperty _propertyBlendBehaviour = null;
+        private SerializedProperty _propertyBlendWasCreated = null;
 
         private SerializedProperty _propertyShowPoses = null;
         private SerializedProperty _propertyShowPoseEditor = null;
         private SerializedProperty _propertyShowBlendEditor = null;
-        private SerializedProperty _propertyShowBlendPose = null;
         private SerializedProperty _propertyScale = null;
 
         private bool _updateHands = false;
@@ -42,11 +43,12 @@ namespace yellowyears.SkeletonPoser
             _propertySecondaryPose = serializedObject.FindProperty("secondaryPose");
             _propertySelectedPose = serializedObject.FindProperty("selectedPose");
             _propertyActivePoseEnum = serializedObject.FindProperty("activePoseEnum");
+            _propertyBlendBehaviour = serializedObject.FindProperty("blendBehaviour");
+            _propertyBlendWasCreated = serializedObject.FindProperty("blendWasCreated");
 
             _propertyShowPoses = serializedObject.FindProperty("showPoses");
             _propertyShowPoseEditor = serializedObject.FindProperty("showPoseEditor");
             _propertyShowBlendEditor = serializedObject.FindProperty("showBlendEditor");
-            _propertyShowBlendPose = serializedObject.FindProperty("showBlendPose");
             _propertyScale = serializedObject.FindProperty("scale");
             
             _propertyShowLeft = serializedObject.FindProperty("showLeft");
@@ -148,23 +150,23 @@ namespace yellowyears.SkeletonPoser
             else
             {
                 EditorGUILayout.BeginVertical("box");
-
+        
                 var poserSettings = XR_SkeletonPoserSettings.Instance;
                 
                 if (poserSettings.guiFont != null)
                 {
                     GUI.skin.font = poserSettings.guiFont;
                 }
-
+        
                 // Create new instance of XR_SkeletonPose, this is the one that is edited
                 var newPose = CreateInstance<XR_SkeletonPose>();
-
+        
                 // _propertyShowPoseEditor.boolValue = EditorGUILayout.BeginFoldoutHeaderGroup(_propertyShowPoseEditor.boolValue, "Show Pose Editor");
                 // _propertyShowPoseEditor.boolValue = EditorGUILayout.Foldout(_propertyShowPoseEditor.boolValue, "Show Pose Editor");
                 
                 _propertyShowPoseEditor.boolValue =
                     IndentedFoldoutHeader(_propertyShowPoseEditor.boolValue, "Pose Editor");
-
+        
                 if (_propertyShowPoseEditor.boolValue)
                 {
                    EditorGUILayout.BeginHorizontal(); EditorGUI.BeginDisabledGroup(XR_SkeletonPoserSettings.Instance.leftHand == null);
@@ -176,7 +178,7 @@ namespace yellowyears.SkeletonPoser
                        if (GUILayout.Button("Show Left Hand"))
                        {
                            var leftGameObject = _poser.ShowLeftPreview();
-
+        
                            leftGameObject.transform.parent = null;
                            leftGameObject.transform.localScale = Vector3.one * _propertyScale.floatValue;
                            leftGameObject.transform.parent = _poser.transform;
@@ -184,10 +186,10 @@ namespace yellowyears.SkeletonPoser
                            leftGameObject.transform.localRotation = Quaternion.identity;
                            
                            _propertyShowLeft.boolValue = true;
-
+        
                            _propertyTempLeft.objectReferenceValue = leftGameObject;
                        }
-
+        
                    }
                    else
                    {
@@ -213,7 +215,7 @@ namespace yellowyears.SkeletonPoser
                        if (GUILayout.Button("Show Right Hand"))
                        {
                            var rightGameObject = _poser.ShowRightPreview();
-
+        
                            rightGameObject.transform.parent = null;
                            rightGameObject.transform.localScale = Vector3.one * _propertyScale.floatValue;
                            rightGameObject.transform.parent = _poser.transform;
@@ -221,7 +223,7 @@ namespace yellowyears.SkeletonPoser
                            rightGameObject.transform.localRotation = Quaternion.identity;
                            
                            _propertyShowRight.boolValue = true;
-
+        
                            _propertyTempRight.objectReferenceValue = rightGameObject;
                        }
                    }
@@ -235,7 +237,7 @@ namespace yellowyears.SkeletonPoser
                            _propertyShowRight.boolValue = false;
                        }
                    }
-
+        
                    EditorGUI.EndDisabledGroup(); EditorGUILayout.EndHorizontal();
                    
                    // EditorGUILayout.BeginHorizontal();
@@ -284,11 +286,11 @@ namespace yellowyears.SkeletonPoser
                    
                    // Grey it out if hands aren't active and there is no loaded pose
                    EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false && _propertyShowRight.boolValue == false || _poser.GetLoadedPose() == null);
-
+        
                    // rgba(160, 255, 66, 0.4)
                    // GUI.backgroundColor = new Color32(160, 255, 66, 100);
                    // GUI.backgroundColor = Color.green;
-
+        
                    GUI.backgroundColor = poserSettings.loadPoseColour;
                    
                    if (GUILayout.Button("Load Pose", "button"))
@@ -300,7 +302,7 @@ namespace yellowyears.SkeletonPoser
                    
                    // Grey it out if hands aren't active
                    EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false || _propertyShowRight.boolValue == false);
-
+        
                    GUI.backgroundColor = poserSettings.savePoseColour;
                    
                    if (GUILayout.Button("Save Pose", "button"))
@@ -311,15 +313,15 @@ namespace yellowyears.SkeletonPoser
                    EditorGUILayout.EndHorizontal();
                    
                    EditorGUI.EndDisabledGroup();
-
+        
                    EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false && _propertyShowRight.boolValue == false || _poser.GetLoadedPose() == null);
-
+        
                    EditorGUILayout.BeginHorizontal();
                    
                    // rgba(255, 101, 101, 0.96)
                    // GUI.backgroundColor = new Color32(255, 101, 101, 100);
                    // GUI.backgroundColor = Color.red;
-
+        
                    GUI.backgroundColor = poserSettings.resetPoseColour;
                    
                    if (GUILayout.Button("Reset Pose", "button"))
@@ -336,7 +338,7 @@ namespace yellowyears.SkeletonPoser
                    EditorGUI.EndDisabledGroup();
                    
                    EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false && _propertyShowRight.boolValue == false || XR_SkeletonPoserSettings.Instance.referencePose == null);
-
+        
                    GUI.backgroundColor = poserSettings.resetToReferencePoseColour;
                    
                    if (GUILayout.Button("Reset To Reference Pose", "button"))
@@ -349,11 +351,11 @@ namespace yellowyears.SkeletonPoser
                            ResetToReferencePose(); // Reset new pose instance to reference pose
                        }
                    }
-
+        
                    EditorGUI.EndDisabledGroup();
                    EditorGUILayout.EndHorizontal();
                 }
-
+        
                 EditorGUILayout.BeginHorizontal();
                 EditorGUI.BeginChangeCheck();
                 GUI.backgroundColor = Color.white;
@@ -363,7 +365,7 @@ namespace yellowyears.SkeletonPoser
                 EditorGUIUtility.labelWidth = 0;
                 GUILayout.FlexibleSpace();
                 EditorGUILayout.EndHorizontal();
-
+        
                 var leftHand = _propertyTempLeft.objectReferenceValue as GameObject;
                 var rightHand = _propertyTempRight.objectReferenceValue as GameObject;
                 
@@ -371,13 +373,13 @@ namespace yellowyears.SkeletonPoser
                 {
                     // Value has changed, update hands
                     _updateHands = true;
-
+        
                     if (leftHand != null) UpdateHandScale(leftHand, _propertyScale.floatValue);
                     if (rightHand != null) UpdateHandScale(rightHand, _propertyScale.floatValue);
                 }
                 
-                // EditorGUILayout.EndFoldoutHeaderGroup();
-
+                EditorGUILayout.EndFoldoutHeaderGroup();
+        
                 EditorGUILayout.EndVertical();
             }
         }
@@ -393,51 +395,29 @@ namespace yellowyears.SkeletonPoser
                 EditorGUILayout.BeginVertical("box");
                 
                 _propertyShowBlendEditor.boolValue =
-                    IndentedFoldoutHeader(_propertyShowPoseEditor.boolValue, "Blend Editor");
+                    IndentedFoldoutHeader(_propertyShowBlendEditor.boolValue, "Blend Editor");
 
                 if (_propertyShowBlendEditor.boolValue)
                 {
-                    var instance = CreateInstance<XR_SkeletonPose>();
-
-                    instance = GetPose(instance);
-
-                    var blendName = instance.blendName;
-
-                    _propertyShowBlendPose.boolValue =
-                        IndentedFoldoutHeader(_propertyShowBlendPose.boolValue, blendName);
-
-                    if (_propertyShowBlendPose.boolValue)
+                    var blender = _propertyBlendBehaviour;
+                    var enabled = blender.FindPropertyRelative("enabled");
+                    var blendName = blender.FindPropertyRelative("blendName");
+                    var from = blender.FindPropertyRelative("from");
+                    var to = blender.FindPropertyRelative("to");
+                    
+                    if (GUILayout.Button("Create Blend", "button"))
                     {
-                        EditorGUILayout.TextField(blendName);
+                        if (!_propertyBlendWasCreated.boolValue)
+                        {
+                            // Create New
+                            _propertyBlendWasCreated.boolValue = true;
+                        }
+                        else
+                        {
+                            EditorUtility.DisplayDialog("You already have a blend active!",
+                                "You cannot create a new one.", "ok");
+                        }
                     }
-
-                    // var blender = _propertyBlendBehaviour;
-                    // var enabled = blender.FindPropertyRelative("enabled");
-                    // var blendName = blender.FindPropertyRelative("blendName");
-                    // var from = blender.FindPropertyRelative("from");
-                    // var to = blender.FindPropertyRelative("to");
-                    //
-                    // if (GUILayout.Button("Create Blend", "button"))
-                    // {
-                    //     if (_poser.blend != null)
-                    //     {
-                    //         EditorUtility.DisplayDialog("You already have a blend active!",
-                    //             "You cannot create a new one.", "ok");
-                    //     }
-                    //     else
-                    //     {
-                    //         Debug.Log("Blend does not exist, creating new");
-                    //     }
-                    // }
-
-                    // if (!enabled.boolValue) return;
-                    //
-                    // enabled.boolValue = IndentedFoldoutHeader(enabled.boolValue, blendName.stringValue);
-                    //
-                    // if (enabled.boolValue)
-                    // {
-                    //     
-                    // }
                 }
 
                 EditorGUILayout.EndVertical();
@@ -653,9 +633,6 @@ namespace yellowyears.SkeletonPoser
         
             inputPose.rightBonePositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
             inputPose.rightBoneRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
-
-            inputPose.blendName = _poser.GetBlendName(inputPose);
-            inputPose.blendTo = _poser.GetBlendToPose(inputPose);
             
             // Get input XRPose instance and return it but full from scene
             return inputPose;
