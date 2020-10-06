@@ -308,6 +308,7 @@ MonoBehaviour:
     from: {fileID: 11400000, guid: 37eb9d650575c6d44b9f6e6ee2117ce2, type: 2}
     to: {fileID: 11400000, guid: 37eb9d650575c6d44b9f6e6ee2117ce2, type: 2}
   blendWasCreated: 1
+  blendInput: 1
   activePoseEnum: 0
   showPoses: 1
   showPoseEditor: 0
@@ -619,6 +620,7 @@ MonoBehaviour:
     from: {fileID: 0}
     to: {fileID: 0}
   blendWasCreated: 1
+  blendInput: 0
   activePoseEnum: 0
   showPoses: 1
   showPoseEditor: 1
@@ -1127,9 +1129,10 @@ MonoBehaviour:
   blendBehaviour:
     blendName: 
     enabled: 0
-    from: {fileID: 0}
+    from: {fileID: 11400000, guid: a9dd64d05c651524283af80795d28bb6, type: 2}
     to: {fileID: 0}
   blendWasCreated: 0
+  blendInput: 0
   activePoseEnum: 0
   showPoses: 1
   showPoseEditor: 1
@@ -2451,9 +2454,10 @@ MonoBehaviour:
   blendBehaviour:
     blendName: 
     enabled: 0
-    from: {fileID: 0}
+    from: {fileID: 11400000, guid: da3330b4f1902034e88c780d5876bdd4, type: 2}
     to: {fileID: 0}
   blendWasCreated: 0
+  blendInput: 0
   activePoseEnum: 0
   showPoses: 1
   showPoseEditor: 1
@@ -4682,6 +4686,7 @@ MonoBehaviour:
     from: {fileID: 0}
     to: {fileID: 0}
   blendWasCreated: 0
+  blendInput: 0
   activePoseEnum: 0
   showPoses: 1
   showPoseEditor: 1

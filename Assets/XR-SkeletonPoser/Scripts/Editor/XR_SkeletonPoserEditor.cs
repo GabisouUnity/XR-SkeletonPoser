@@ -94,7 +94,7 @@ namespace yellowyears.SkeletonPoser
             EditorGUILayout.BeginVertical("box");
             
             _propertyShowPoses.boolValue =
-                IndentedFoldoutHeader(_propertyShowPoses.boolValue, "Pose Fields");
+                IndentedFoldoutHeader(_propertyShowPoses.boolValue, "Pose Manager");
 
             if (_propertyShowPoses.boolValue)
             {
@@ -110,8 +110,13 @@ namespace yellowyears.SkeletonPoser
                     }
                     else
                     {
-                        EditorUtility.DisplayDialog("You already have a blend active!",
-                            "You cannot create a new one.", "ok");
+                        if (EditorUtility.DisplayDialog("Error!",
+                            "You already have a blend active! Would you like to overwrite?", "Yes", "No"))
+                        {
+                            secondaryPose = GetSecondaryPose(secondaryPose);
+                            _propertySecondaryPose.objectReferenceValue = secondaryPose;
+                            _propertyBlendWasCreated.boolValue = true;
+                        }
                     }
                 }
 
@@ -124,8 +129,8 @@ namespace yellowyears.SkeletonPoser
                     }
                     else
                     {
-                        EditorUtility.DisplayDialog("You cannot remove the secondary pose!",
-                            "There is no secondary pose to delete", "ok");
+                        EditorUtility.DisplayDialog("Error!",
+                            "You cannot remove the secondary pose! There is no secondary pose to delete", "ok");
                     }
                 }
                 
@@ -458,8 +463,8 @@ namespace yellowyears.SkeletonPoser
                         }
                         else
                         {
-                            EditorUtility.DisplayDialog("You already have a blend active!",
-                                "You cannot create a new one.", "ok");
+                            EditorUtility.DisplayDialog("Error!",
+                                "You already have a blend active! You cannot create a new one.", "ok");
                         }
                     }
 
