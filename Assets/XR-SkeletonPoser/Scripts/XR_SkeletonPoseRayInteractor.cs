@@ -145,7 +145,7 @@ namespace yellowyears.SkeletonPoser
             // Do not run the below code if the object isn't a skeleton poser, ie do not pose hand if not a poser interactable
             if (!interactable.TryGetComponent(out XR_SkeletonPoser poser)) return;
             
-            var pose = poser.GetMainPose();
+            var pose = poser.FetchMainPose();
                 
             SetPose(pose);
             SetOffset();

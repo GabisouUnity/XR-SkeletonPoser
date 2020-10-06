@@ -98,47 +98,78 @@ namespace yellowyears.SkeletonPoser
 
             if (_propertyShowPoses.boolValue)
             {
-                EditorGUILayout.BeginVertical();
+                var secondaryPose = _propertySecondaryPose.objectReferenceValue as XR_SkeletonPose;
 
-                EditorGUIUtility.labelWidth = 100;
-                EditorGUILayout.PropertyField(_propertyMainPose, new GUIContent("Main Pose"));
-
-                EditorGUILayout.BeginHorizontal();
-                
-                EditorGUIUtility.labelWidth = 100;
-                EditorGUILayout.PropertyField(_propertySecondaryPose, new GUIContent("Secondary Pose"));
-
-                // Create separate pose button
-                
-                EditorGUILayout.EndHorizontal();
-                
-                EditorGUILayout.EndVertical();
-
-                EditorGUI.BeginDisabledGroup(_propertyMainPose.objectReferenceValue == null || _propertySecondaryPose.objectReferenceValue == null);
-                
-                EditorGUI.BeginChangeCheck();
-
-                EditorGUIUtility.labelWidth = 120;
-                EditorGUILayout.PropertyField(_propertyActivePoseEnum); // (enum)
-
-                if (EditorGUI.EndChangeCheck())
+                if (GUILayout.Button("Create Secondary Pose"))
                 {
-                    switch (_propertyActivePoseEnum.enumValueIndex)
+                    if (!_propertyBlendWasCreated.boolValue)
                     {
-                        case 0: // Main Pose (index 0)
-                            _propertySelectedPose = _propertyMainPose;
-                            break;
-                        case 1:
-                            _propertySelectedPose = _propertySecondaryPose;
-                            break;
-                        default:
-                            // Unknown, default to main
-                            _propertySelectedPose = _propertyMainPose;
-                            break;
+                        secondaryPose = GetSecondaryPose(secondaryPose);
+                        _propertySecondaryPose.objectReferenceValue = secondaryPose;
+                        _propertyBlendWasCreated.boolValue = true;
+                    }
+                    else
+                    {
+                        EditorUtility.DisplayDialog("You already have a blend active!",
+                            "You cannot create a new one.", "ok");
                     }
                 }
 
-                EditorGUI.EndDisabledGroup();
+                if (GUILayout.Button("Delete Secondary Pose"))
+                {
+                    if (_propertyBlendWasCreated.boolValue)
+                    {
+                        secondaryPose = RemoveSecondaryPose(secondaryPose);
+                        _propertyBlendWasCreated.boolValue = false;
+                    }
+                    else
+                    {
+                        EditorUtility.DisplayDialog("You cannot remove the secondary pose!",
+                            "There is no secondary pose to delete", "ok");
+                    }
+                }
+                
+                // EditorGUILayout.BeginVertical();
+                //
+                // EditorGUIUtility.labelWidth = 100;
+                // EditorGUILayout.PropertyField(_propertyMainPose, new GUIContent("Main Pose"));
+                //
+                // EditorGUILayout.BeginHorizontal();
+                //
+                // EditorGUIUtility.labelWidth = 100;
+                // EditorGUILayout.PropertyField(_propertySecondaryPose, new GUIContent("Secondary Pose"));
+                //
+                // // Create separate pose button
+                //
+                // EditorGUILayout.EndHorizontal();
+                //
+                // EditorGUILayout.EndVertical();
+                //
+                // EditorGUI.BeginDisabledGroup(_propertyMainPose.objectReferenceValue == null || _propertySecondaryPose.objectReferenceValue == null);
+                //
+                // EditorGUI.BeginChangeCheck();
+                //
+                // EditorGUIUtility.labelWidth = 120;
+                // EditorGUILayout.PropertyField(_propertyActivePoseEnum); // (enum)
+                //
+                // if (EditorGUI.EndChangeCheck())
+                // {
+                //     switch (_propertyActivePoseEnum.enumValueIndex)
+                //     {
+                //         case 0: // Main Pose (index 0)
+                //             _propertySelectedPose = _propertyMainPose;
+                //             break;
+                //         case 1:
+                //             _propertySelectedPose = _propertySecondaryPose;
+                //             break;
+                //         default:
+                //             // Unknown, default to main
+                //             _propertySelectedPose = _propertyMainPose;
+                //             break;
+                //     }
+                // }
+                //
+                // EditorGUI.EndDisabledGroup();
             }
             
             EditorGUILayout.EndVertical();
@@ -252,7 +283,7 @@ namespace yellowyears.SkeletonPoser
                    //     if (EditorUtility.DisplayDialog("Copy left pose to right hand?",
                    //         "Are you sure? This will overwrite your right hand's pose data", "Yes", "No"))
                    //     {
-                   //         newPose = GetPose(newPose); // Get pose without saving
+                   //         newPose = GetMainPose(newPose); // Get pose without saving
                    //         
                    //         CopyToRight(newPose, _poser.selectedPose);
                    //         
@@ -288,7 +319,7 @@ namespace yellowyears.SkeletonPoser
                    // EditorGUILayout.PropertyField(_propertyMainPose, new GUIContent("Active Pose"));
                    
                    // Grey it out if hands aren't active and there is no loaded pose
-                   EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false && _propertyShowRight.boolValue == false || _poser.GetMainPose() == null);
+                   EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false && _propertyShowRight.boolValue == false || _poser.FetchMainPose() == null);
         
                    // rgba(160, 255, 66, 0.4)
                    // GUI.backgroundColor = new Color32(160, 255, 66, 100);
@@ -317,7 +348,7 @@ namespace yellowyears.SkeletonPoser
                    
                    EditorGUI.EndDisabledGroup();
         
-                   EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false && _propertyShowRight.boolValue == false || _poser.GetMainPose() == null);
+                   EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false && _propertyShowRight.boolValue == false || _poser.FetchMainPose() == null);
         
                    EditorGUILayout.BeginHorizontal();
                    
@@ -411,7 +442,7 @@ namespace yellowyears.SkeletonPoser
                     from.objectReferenceValue = _propertyMainPose.objectReferenceValue as XR_SkeletonPose;
                     to.objectReferenceValue = _propertySecondaryPose.objectReferenceValue as XR_SkeletonPose;
 
-                    EditorGUI.BeginDisabledGroup(!_poser.GetSecondaryPose() || !_poser.GetMainPose());
+                    EditorGUI.BeginDisabledGroup(!_poser.FetchSecondaryPose() || !_poser.FetchMainPose());
                     
                     if (GUILayout.Button("Create Blend", "button"))
                     {
@@ -452,18 +483,12 @@ namespace yellowyears.SkeletonPoser
                         if (!(mainPose is null)) EditorGUILayout.LabelField("Primary Pose: " + mainPose.name);
                         if (!(secondaryPose is null)) EditorGUILayout.LabelField("Secondary Pose: " + secondaryPose.name);
                         
-                        EditorGUI.BeginChangeCheck();
+                        // EditorGUI.BeginChangeCheck();
 
                         EditorGUIUtility.labelWidth = 70;
                         EditorGUILayout.PropertyField(_propertyBlendInput);
 
-                        if (EditorGUI.EndChangeCheck())
-                        {
-                            // switch ()
-                            // {
-                            //     
-                            // }
-                        }
+                        // if (EditorGUI.EndChangeCheck())
                     }
                 }
 
@@ -671,7 +696,7 @@ namespace yellowyears.SkeletonPoser
             }
         }
 
-        private XR_SkeletonPose GetPose(XR_SkeletonPose inputPose)
+        private XR_SkeletonPose GetMainPose(XR_SkeletonPose inputPose)
         {
             // Get pose without saving
             
@@ -680,14 +705,38 @@ namespace yellowyears.SkeletonPoser
         
             inputPose.rightBonePositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
             inputPose.rightBoneRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
-            
+
             // Get input XRPose instance and return it but full from scene
             return inputPose;
         }
-        
+
+        private XR_SkeletonPose GetSecondaryPose(XR_SkeletonPose inputPose)
+        {
+            inputPose.leftBlendPositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
+            inputPose.leftBlendRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
+
+            inputPose.rightBlendPositions =
+                _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
+            inputPose.rightBlendRotations =
+                _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
+
+            return inputPose;
+        }
+
+        private XR_SkeletonPose RemoveSecondaryPose(XR_SkeletonPose inputPose)
+        {
+            inputPose.leftBlendPositions = null;
+            inputPose.leftBlendRotations = null;
+
+            inputPose.rightBlendPositions = null;
+            inputPose.rightBlendRotations = null;
+
+            return inputPose;
+        }
+
         private void LoadPose()
         {
-            var loadedPose = _poser.GetMainPose();
+            var loadedPose = _poser.FetchMainPose();
 
             var leftHandObject = _propertyTempLeft.objectReferenceValue as GameObject;
             var rightHandObject = _propertyTempRight.objectReferenceValue as GameObject;

@@ -110,12 +110,12 @@ namespace yellowyears.SkeletonPoser
             methodInfo?.Invoke(window, new object[] {gameObject.GetInstanceID(), expand});
         }
         
-        public XR_SkeletonPose GetMainPose()
+        public XR_SkeletonPose FetchMainPose()
         {
             return mainPose;
         }
 
-        public XR_SkeletonPose GetSecondaryPose()
+        public XR_SkeletonPose FetchSecondaryPose()
         {
             return secondaryPose;
         }
@@ -184,7 +184,7 @@ namespace yellowyears.SkeletonPoser
         public class BlendBehaviour
         {
             public string blendName;
-            public bool enabled;
+            public bool enabled = false;
             public XR_SkeletonPose from;
             public XR_SkeletonPose to;
         }

@@ -160,7 +160,7 @@ namespace yellowyears.SkeletonPoser
             // Do not run the below code if the object isn't a skeleton poser, ie do not pose hand if not a poser interactable
             if (!interactable.TryGetComponent(out _selectedPoser)) return;
             
-            var pose = _selectedPoser.GetMainPose();
+            var pose = _selectedPoser.FetchMainPose();
 
             if (_selectedPoser.blendWasCreated) _shouldCheckForBlendInput = true;
             
