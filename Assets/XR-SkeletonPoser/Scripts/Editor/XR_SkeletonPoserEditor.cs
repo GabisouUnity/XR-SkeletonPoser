@@ -98,8 +98,10 @@ namespace yellowyears.SkeletonPoser
 
             if (_propertyShowPoses.boolValue)
             {
-                var secondaryPose = _propertySecondaryPose.objectReferenceValue as XR_SkeletonPose;
+                var secondaryPose = _propertyMainPose.objectReferenceValue as XR_SkeletonPose;
 
+                EditorGUI.BeginDisabledGroup(_propertyTempLeft.objectReferenceValue == null || _propertyTempRight.objectReferenceValue == null);
+                
                 if (GUILayout.Button("Create Secondary Pose"))
                 {
                     if (!_propertyBlendWasCreated.boolValue)
@@ -119,12 +121,14 @@ namespace yellowyears.SkeletonPoser
                         }
                     }
                 }
+                
+                EditorGUI.EndDisabledGroup();
 
                 if (GUILayout.Button("Delete Secondary Pose"))
                 {
                     if (_propertyBlendWasCreated.boolValue)
                     {
-                        secondaryPose = RemoveSecondaryPose(secondaryPose);
+                        RemoveSecondaryPose(secondaryPose);
                         _propertyBlendWasCreated.boolValue = false;
                     }
                     else
@@ -133,6 +137,8 @@ namespace yellowyears.SkeletonPoser
                             "You cannot remove the secondary pose! There is no secondary pose to delete", "ok");
                     }
                 }
+                
+                EditorGUILayout.LabelField("Secondary Pose Created: " + _propertyBlendWasCreated.boolValue);
                 
                 // EditorGUILayout.BeginVertical();
                 //
