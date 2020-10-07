@@ -75,12 +75,12 @@ namespace yellowyears.SkeletonPoser
 
         [Tooltip("Expand all children gameobjects recursively when the show hand button is pressed")]
         public bool defaultExpandPreview;
-
-        // [Tooltip("Lerp fingers on select for a smooth transition between the free pose to the object")]
-        // public bool lerpFingersOnSelect;
-        //
-        // public float fingerLerpSpeed = 3f;
-
+        
+        [Tooltip("Lerp fingers on select for a smooth transition between the free pose to the object")]
+        public bool lerpFingersOnSelect;
+        
+        public float fingerLerpTime = 3f;
+        
         [Space]
         
         public Font guiFont;
