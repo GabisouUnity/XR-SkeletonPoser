@@ -65,6 +65,8 @@ namespace yellowyears.SkeletonPoser
                     pose.rightBoneRotations = handObject.GetComponentsInChildren<Transform>()
                         .Select(x => x.localRotation).ToArray();
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
 
             return pose;
@@ -274,6 +276,8 @@ namespace yellowyears.SkeletonPoser
             while (start.sqrMagnitude < 3 * 3)
             {
                 start = Vector3.Lerp(start, target, time);
+                yield return null;
+                // yield return start;
             }
             
             yield return null;
