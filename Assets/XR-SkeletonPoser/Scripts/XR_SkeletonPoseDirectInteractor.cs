@@ -183,9 +183,9 @@ namespace yellowyears.SkeletonPoser
                 {
                     for (int i = 0; i < _handBones.Length; i++)
                     {
-                        // StartCoroutine(LerpPosition(_handBones[i].localPosition, leftPosePos[i], _poserSettings.fingerLerpTime));
-                        _handBones[i].localPosition = Vector3.Lerp(_handBones[i].localPosition, leftPosePos[i],
-                            _poserSettings.fingerLerpTime);
+                        StartCoroutine(LerpPosition(_handBones[i], leftPosePos[i], _poserSettings.fingerLerpTime));
+                        // _handBones[i].localPosition = Vector3.Lerp(_handBones[i].localPosition, leftPosePos[i],
+                        //     _poserSettings.fingerLerpTime);
                     }
 
                     break;
@@ -194,9 +194,9 @@ namespace yellowyears.SkeletonPoser
                 {
                     for (int i = 0; i < _handBones.Length; i++)
                     {
-                        // StartCoroutine(LerpPosition(_handBones[i].localPosition, rightPosePos[i], _poserSettings.fingerLerpTime));
-                        _handBones[i].localPosition = Vector3.Lerp(_handBones[i].localPosition, rightPosePos[i],
-                            _poserSettings.fingerLerpTime);
+                        StartCoroutine(LerpPosition(_handBones[i], rightPosePos[i], _poserSettings.fingerLerpTime));
+                        // _handBones[i].localPosition = Vector3.Lerp(_handBones[i].localPosition, rightPosePos[i],
+                        //     _poserSettings.fingerLerpTime);
                     }
 
                     break;
@@ -213,9 +213,9 @@ namespace yellowyears.SkeletonPoser
             // Do not run the below code if the object isn't a skeleton poser, ie do not pose hand if not a poser interactable
             if (!interactable.TryGetComponent(out _selectedPoser)) return;
 
-            var pose = _selectedPoser.FetchMainPose();
+            var pose = _selectedPoser.FetchSelectedPose();
 
-            if (_poserSettings.lerpFingersOnSelect == false)
+            if (_poserSettings.lerpFingersOnSelect)
             {
                 LerpPose(pose);
             }
@@ -277,24 +277,18 @@ namespace yellowyears.SkeletonPoser
 
         }
 
-        // private IEnumerator LerpPosition(Vector3 start, Vector3 target, float time)
-        // {
-        //     float currentTime = 0;
-        //
-        //     while (start.sqrMagnitude < 3 * 3)
-        //     {
-        //         if (currentTime <= time)
-        //         {
-        //             currentTime += Time.deltaTime;
-        //             start = Vector3.Lerp(start, target, time);
-        //             yield return null;
-        //         }
-        //         yield return null;
-        //         // yield return start;
-        //     }
-        //     
-        //     yield return null;
-        // }
+        private IEnumerator LerpPosition(Transform start, Vector3 target, float time)
+        {
+            float currentTime = 0;
+            var currentPos = start.localPosition;
+        
+            while (currentTime < time)
+            {
+                currentTime += Time.deltaTime / time;
+                start.position = Vector3.Lerp(currentPos, target, time);
+                yield return null;
+            }
+        }
 
         // private IEnumerator LerpRotation(Quaternion start, Vector3 target, float time)
         // {

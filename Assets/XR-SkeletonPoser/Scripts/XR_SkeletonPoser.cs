@@ -110,11 +110,16 @@ namespace yellowyears.SkeletonPoser
             methodInfo?.Invoke(window, new object[] {gameObject.GetInstanceID(), expand});
         }
         
+        public XR_SkeletonPose FetchSelectedPose()
+        {
+            return selectedPose;
+        }
+
         public XR_SkeletonPose FetchMainPose()
         {
             return mainPose;
         }
-
+        
         public XR_SkeletonPose FetchSecondaryPose()
         {
             return secondaryPose;
