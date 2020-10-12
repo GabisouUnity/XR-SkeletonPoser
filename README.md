@@ -51,18 +51,11 @@ Send an [issue report](https://github.com/yellowyears/XR-SkeletonPoser/issues), 
 **A:** These are intentionally greyed out, generally when the option is not available under the current circumstances. For example, you cannot preview the left / right hand if it is not assigned inside of the SkeletonPoserSettings.
 Therefore, to fix this you must assign the left and right preview gameobjects, and it will be available to press.
 
-# Future updates
+## Additional notes:
 
-For the forseeable future I will be updating this package with quality of life and useful features. My current plan is to implement the following:
+Want to take your hands to the next level? During my endeavours into VR physics I found [a method for physics based hands in VR](https://youtu.be/uG5aTsS5sNk)
 
-Copy pose to opposite hand
-
-Animation blending
-
-Multiple poses on one object
-
-And bug fixes (hopefully there aren't any)
-
+The demo project uses the SteamVR gloves for demonstration, to clarify this is still intended for UnityXR Toolkit, but I just simply use the SteamVR gloves for demonstration.
 
 # Thanks to..
 
