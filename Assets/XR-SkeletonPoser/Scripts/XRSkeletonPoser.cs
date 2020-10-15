@@ -28,29 +28,29 @@ namespace yellowyears.SkeletonPoser
 
         public enum BlendInput { Trigger, Grip }
         
-        [HideInInspector] public XRSkeletonPose mainPose;
-        [HideInInspector] public XRSkeletonPose secondaryPose;
-        [HideInInspector] public XRSkeletonPose selectedPose;
-        [HideInInspector] public BlendBehaviour blendBehaviour = new BlendBehaviour();
-        [HideInInspector] public bool blendWasCreated = false;
-        [HideInInspector] public BlendInput blendInput;
-        // [HideInInspector] public InputHelpers.Button blendButton;
+        [SerializeField] private XRSkeletonPose mainPose;
+        [SerializeField] private XRSkeletonPose secondaryPose;
+        public XRSkeletonPose selectedPose;
+        [SerializeField] private BlendBehaviour blendBehaviour = new BlendBehaviour();
+        public bool blendWasCreated = false;
+        [SerializeField] private BlendInput blendInput;
+        // [SerializeField] private InputHelpers.Button blendButton;
             
-        [HideInInspector] public ActivePose activePoseEnum;
+        [SerializeField] private ActivePose activePoseEnum;
 
-        // [HideInInspector] public BlendBehaviour blend = null;
+        // [SerializeField] private BlendBehaviour blend = null;
 
-        [HideInInspector] public bool showPoses = false;
-        [HideInInspector] public bool showPoseEditor = true; // Used in editor foldout
-        [HideInInspector] public bool showBlendEditor = false;
+        [SerializeField] private bool showPoses = false;
+        [SerializeField] private bool showPoseEditor = true; // Used in editor foldout
+        [SerializeField] private bool showBlendEditor = false;
 
-        [HideInInspector] public float scale;
+        [SerializeField] private float scale;
         
-        [HideInInspector] public bool showLeft;
-        [HideInInspector] public GameObject tempLeft;
+        [SerializeField] private bool showLeft;
+        [SerializeField] private GameObject tempLeft;
 
-        [HideInInspector] public bool showRight;
-        [HideInInspector] public GameObject tempRight;
+        [SerializeField] private bool showRight;
+        [SerializeField] private GameObject tempRight;
 
         private void Awake()
         {
