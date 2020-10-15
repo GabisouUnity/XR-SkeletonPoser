@@ -3,12 +3,12 @@ using UnityEditor;
 
 namespace yellowyears.SkeletonPoser
 {
-    [CustomEditor(typeof(XR_SkeletonPoseRayInteractor))]
+    [CustomEditor(typeof(XRSkeletonPoseRayInteractor))]
     [CanEditMultipleObjects]
-    internal class XR_SkeletonPoseRayInteractorEditor : Editor
+    internal class XRSkeletonPoseRayInteractorEditor : Editor
     {
 
-        #region XR_SkeletonPoseRayInteractor variables
+        #region XRSkeletonPoseRayInteractor variables
 
         private SerializedProperty _propertyHandObject = null;
         private SerializedProperty _propertyHandType = null;
@@ -186,7 +186,7 @@ namespace yellowyears.SkeletonPoser
         {
 
             GUI.enabled = false;
-            EditorGUILayout.ObjectField("Script", MonoScript.FromMonoBehaviour((XR_SkeletonPoseRayInteractor)target), typeof(XR_SkeletonPoseRayInteractor), false);
+            EditorGUILayout.ObjectField("Script", MonoScript.FromMonoBehaviour((XRSkeletonPoseRayInteractor)target), typeof(XRSkeletonPoseRayInteractor), false);
             GUI.enabled = true;
 
             serializedObject.Update();
@@ -234,7 +234,7 @@ namespace yellowyears.SkeletonPoser
             EditorGUILayout.Space();
 
             EditorGUILayout.PropertyField(m_HitDetectionType, Tooltips.hitDetectionType);
-            using (new EditorGUI.DisabledScope(m_HitDetectionType.enumValueIndex != (int)XR_SkeletonPoseRayInteractor.HitDetectionType.SphereCast))
+            using (new EditorGUI.DisabledScope(m_HitDetectionType.enumValueIndex != (int)XRSkeletonPoseRayInteractor.HitDetectionType.SphereCast))
             {
                 EditorGUI.indentLevel++;
                 EditorGUILayout.PropertyField(m_SphereCastRadius, Tooltips.sphereCastRadius);

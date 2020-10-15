@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace yellowyears.SkeletonPoser
 {
-    public class XR_SkeletonPoserSettings : ScriptableObject
+    public class XRSkeletonPoserSettings : ScriptableObject
     {
 
-        private static XR_SkeletonPoserSettings _instance;
+        private static XRSkeletonPoserSettings _instance;
 
-        public static XR_SkeletonPoserSettings Instance
+        public static XRSkeletonPoserSettings Instance
         {
             get
             {
@@ -22,11 +22,11 @@ namespace yellowyears.SkeletonPoser
         {
             if (_instance != null) return;
             
-            _instance = Resources.Load<XR_SkeletonPoserSettings>("SkeletonPoserSettings");
+            _instance = Resources.Load<XRSkeletonPoserSettings>("SkeletonPoserSettings");
             
             if (_instance != null) return;
             
-            _instance = CreateInstance<XR_SkeletonPoserSettings>();
+            _instance = CreateInstance<XRSkeletonPoserSettings>();
                     
             if(!AssetDatabase.IsValidFolder("Assets/XRPoses/Resources"))
             {
@@ -71,7 +71,7 @@ namespace yellowyears.SkeletonPoser
 
         [Space] 
         
-        public XR_SkeletonPose referencePose;
+        public XRSkeletonPose referencePose;
 
         [Tooltip("Expand all children gameobjects recursively when the show hand button is pressed")]
         public bool defaultExpandPreview;

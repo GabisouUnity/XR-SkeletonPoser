@@ -7,7 +7,7 @@ using UnityEngine.XR;
 
 namespace yellowyears.SkeletonPoser
 {
-    public class XR_SkeletonPoseDirectInteractor : XRDirectInteractor
+    public class XRSkeletonPoseDirectInteractor : XRDirectInteractor
     {
 
         #region Editor storage
@@ -22,12 +22,12 @@ namespace yellowyears.SkeletonPoser
 
         #endregion
 
-        private XR_SkeletonPose _defaultPose;
-        private XR_SkeletonPoser _selectedPoser;
+        private XRSkeletonPose _defaultPose;
+        private XRSkeletonPoser _selectedPoser;
         private XRController _inputController;
         private Transform[] _handBones = null;
 
-        private XR_SkeletonPoserSettings _poserSettings;
+        private XRSkeletonPoserSettings _poserSettings;
         private bool _isSkeletonPoseInteractable = false;
         private bool _shouldCheckForBlendInput = false;
 
@@ -36,7 +36,7 @@ namespace yellowyears.SkeletonPoser
             base.Awake();
 
             _inputController = GetComponent<XRController>();
-            _poserSettings = XR_SkeletonPoserSettings.Instance;
+            _poserSettings = XRSkeletonPoserSettings.Instance;
 
             // Cache default pose at runtime
             _defaultPose = GetDefaultPose();
@@ -47,9 +47,9 @@ namespace yellowyears.SkeletonPoser
             CheckForInput();
         }
 
-        private XR_SkeletonPose GetDefaultPose()
+        private XRSkeletonPose GetDefaultPose()
         {
-            var pose = ScriptableObject.CreateInstance<XR_SkeletonPose>();
+            var pose = ScriptableObject.CreateInstance<XRSkeletonPose>();
 
             switch (handType)
             {
@@ -121,7 +121,7 @@ namespace yellowyears.SkeletonPoser
             _handBones[0].localRotation = selectTargetVar.attachTransform.localRotation;
         }
 
-        private void SetPose(XR_SkeletonPose pose)
+        private void SetPose(XRSkeletonPose pose)
         {
             // Get hand bones
 
@@ -167,7 +167,7 @@ namespace yellowyears.SkeletonPoser
             _handBones[0].localRotation = Quaternion.identity;
         }
 
-        private void LerpPose(XR_SkeletonPose pose)
+        private void LerpPose(XRSkeletonPose pose)
         {
             _handBones = handObject.GetComponentsInChildren<Transform>().ToArray();
 
@@ -257,14 +257,14 @@ namespace yellowyears.SkeletonPoser
             // Check for input
             switch (_selectedPoser.blendInput)
             {
-                case XR_SkeletonPoser.BlendInput.Trigger:
+                case XRSkeletonPoser.BlendInput.Trigger:
                     // Get value
                     device.TryGetFeatureValue(triggerUsage, out var triggerValue);
 
                     // Blend Pose
                     _selectedPoser.BlendPose(triggerValue);
                     break;
-                case XR_SkeletonPoser.BlendInput.Grip:
+                case XRSkeletonPoser.BlendInput.Grip:
                     // Get value
                     device.TryGetFeatureValue(gripUsage, out var gripValue);
 

@@ -7,7 +7,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 namespace yellowyears.SkeletonPoser
 {
     [RequireComponent(typeof(XRGrabInteractable))]
-    public class XR_SkeletonPoser : MonoBehaviour
+    public class XRSkeletonPoser : MonoBehaviour
     {
 
         // [Tooltip("Left hand model to be spawned in as a left preview. Should be the same as your in game left hand")]
@@ -28,9 +28,9 @@ namespace yellowyears.SkeletonPoser
 
         public enum BlendInput { Trigger, Grip }
         
-        [HideInInspector] public XR_SkeletonPose mainPose;
-        [HideInInspector] public XR_SkeletonPose secondaryPose;
-        [HideInInspector] public XR_SkeletonPose selectedPose;
+        [HideInInspector] public XRSkeletonPose mainPose;
+        [HideInInspector] public XRSkeletonPose secondaryPose;
+        [HideInInspector] public XRSkeletonPose selectedPose;
         [HideInInspector] public BlendBehaviour blendBehaviour = new BlendBehaviour();
         [HideInInspector] public bool blendWasCreated = false;
         [HideInInspector] public BlendInput blendInput;
@@ -63,7 +63,7 @@ namespace yellowyears.SkeletonPoser
 
         public GameObject ShowLeftPreview()
         {
-            var poserSettings = XR_SkeletonPoserSettings.Instance;
+            var poserSettings = XRSkeletonPoserSettings.Instance;
             
             var preview = Instantiate(poserSettings.leftHand);
 
@@ -82,7 +82,7 @@ namespace yellowyears.SkeletonPoser
 
         public GameObject ShowRightPreview()
         {
-            var poserSettings = XR_SkeletonPoserSettings.Instance;
+            var poserSettings = XRSkeletonPoserSettings.Instance;
             
             var preview = Instantiate(poserSettings.rightHand);
             
@@ -110,17 +110,17 @@ namespace yellowyears.SkeletonPoser
             methodInfo?.Invoke(window, new object[] {gameObject.GetInstanceID(), expand});
         }
         
-        public XR_SkeletonPose FetchSelectedPose()
+        public XRSkeletonPose FetchSelectedPose()
         {
             return selectedPose;
         }
 
-        public XR_SkeletonPose FetchMainPose()
+        public XRSkeletonPose FetchMainPose()
         {
             return mainPose;
         }
         
-        public XR_SkeletonPose FetchSecondaryPose()
+        public XRSkeletonPose FetchSecondaryPose()
         {
             return secondaryPose;
         }
@@ -140,12 +140,12 @@ namespace yellowyears.SkeletonPoser
             
         }
         
-        // public XR_SkeletonPose GetBlendToPose(XR_SkeletonPose inputPose)
+        // public XRSkeletonPose GetBlendToPose(XRSkeletonPose inputPose)
         // {
         //     return inputPose.blendTo;
         // }
         //
-        // public string GetBlendName(XR_SkeletonPose inputPose)
+        // public string GetBlendName(XRSkeletonPose inputPose)
         // {
         //     return inputPose.blendName;
         // }
@@ -190,8 +190,8 @@ namespace yellowyears.SkeletonPoser
         {
             public string blendName;
             public bool enabled = false;
-            public XR_SkeletonPose from;
-            public XR_SkeletonPose to;
+            public XRSkeletonPose from;
+            public XRSkeletonPose to;
         }
         
     }

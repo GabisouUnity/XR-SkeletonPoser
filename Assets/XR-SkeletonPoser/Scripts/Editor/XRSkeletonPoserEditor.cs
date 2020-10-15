@@ -6,12 +6,12 @@ using yellowyears.SkeletonPoser;
 
 namespace yellowyears.SkeletonPoser
 {
-    [CustomEditor(typeof(XR_SkeletonPoser))]
-    public class XR_SkeletonPoserEditor : Editor
+    [CustomEditor(typeof(XRSkeletonPoser))]
+    public class XRSkeletonPoserEditor : Editor
     {
-        private XR_SkeletonPoser _poser = null;
+        private XRSkeletonPoser _poser = null;
         
-        private XR_SkeletonPose _defaultPose = null;
+        private XRSkeletonPose _defaultPose = null;
 
         private SerializedProperty _propertyMainPose = null;
         private SerializedProperty _propertySecondaryPose = null;
@@ -36,9 +36,9 @@ namespace yellowyears.SkeletonPoser
         
         private void OnEnable()
         {
-            _poser = (XR_SkeletonPoser) target;
+            _poser = (XRSkeletonPoser) target;
 
-            _defaultPose = CreateInstance<XR_SkeletonPose>();
+            _defaultPose = CreateInstance<XRSkeletonPose>();
             GetDefaultPose();
 
             _propertyMainPose = serializedObject.FindProperty("mainPose");
@@ -65,11 +65,11 @@ namespace yellowyears.SkeletonPoser
         {
             // Get default values from the hand prefab.
             
-            _defaultPose.leftBonePositions = _poser.GetBonePositions(XR_SkeletonPoserSettings.Instance.leftHand);
-            _defaultPose.leftBoneRotations = _poser.GetBoneRotations(XR_SkeletonPoserSettings.Instance.leftHand);
+            _defaultPose.leftBonePositions = _poser.GetBonePositions(XRSkeletonPoserSettings.Instance.leftHand);
+            _defaultPose.leftBoneRotations = _poser.GetBoneRotations(XRSkeletonPoserSettings.Instance.leftHand);
 
-            _defaultPose.rightBonePositions = _poser.GetBonePositions(XR_SkeletonPoserSettings.Instance.rightHand);
-            _defaultPose.rightBoneRotations = _poser.GetBoneRotations(XR_SkeletonPoserSettings.Instance.rightHand);
+            _defaultPose.rightBonePositions = _poser.GetBonePositions(XRSkeletonPoserSettings.Instance.rightHand);
+            _defaultPose.rightBoneRotations = _poser.GetBoneRotations(XRSkeletonPoserSettings.Instance.rightHand);
         }
         
         public override void OnInspectorGUI()
@@ -100,6 +100,7 @@ namespace yellowyears.SkeletonPoser
             {
 
                 EditorGUILayout.BeginHorizontal();
+                // EditorGUI.BeginDisabledGroup(_propertySelectedPose.name != _propertyMainPose.name);
 
                 if (GUILayout.Button(_propertyMainPose.name + " (MAIN)"))
                 {
@@ -107,15 +108,19 @@ namespace yellowyears.SkeletonPoser
                     LoadPose();
                 }
                 
+                // EditorGUI.EndDisabledGroup();
+                // EditorGUI.BeginDisabledGroup(_propertySelectedPose.name != _propertySecondaryPose.name);
+
                 if(GUILayout.Button(_propertySecondaryPose.name + " (Secondary)"))
                 {
                     _propertySelectedPose = _propertySecondaryPose;
                     LoadPose();
                 }
                 
+                // EditorGUI.EndDisabledGroup();
                 EditorGUILayout.EndHorizontal();
                 
-                // var secondaryPose = _propertyMainPose.objectReferenceValue as XR_SkeletonPose;
+                // var secondaryPose = _propertyMainPose.objectReferenceValue as XRSkeletonPose;
                 //
                 // EditorGUI.BeginDisabledGroup(_propertyTempLeft.objectReferenceValue == null || _propertyTempRight.objectReferenceValue == null);
                 //
@@ -213,15 +218,15 @@ namespace yellowyears.SkeletonPoser
             {
                 EditorGUILayout.BeginVertical("box");
         
-                var poserSettings = XR_SkeletonPoserSettings.Instance;
+                var poserSettings = XRSkeletonPoserSettings.Instance;
                 
                 if (poserSettings.guiFont != null)
                 {
                     GUI.skin.font = poserSettings.guiFont;
                 }
         
-                // Create new instance of XR_SkeletonPose, this is the one that is edited
-                var newPose = CreateInstance<XR_SkeletonPose>();
+                // Create new instance of XRSkeletonPose, this is the one that is edited
+                var newPose = CreateInstance<XRSkeletonPose>();
         
                 // _propertyShowPoseEditor.boolValue = EditorGUILayout.BeginFoldoutHeaderGroup(_propertyShowPoseEditor.boolValue, "Show Pose Editor");
                 // _propertyShowPoseEditor.boolValue = EditorGUILayout.Foldout(_propertyShowPoseEditor.boolValue, "Show Pose Editor");
@@ -231,7 +236,7 @@ namespace yellowyears.SkeletonPoser
         
                 if (_propertyShowPoseEditor.boolValue)
                 {
-                   EditorGUILayout.BeginHorizontal(); EditorGUI.BeginDisabledGroup(XR_SkeletonPoserSettings.Instance.leftHand == null);
+                   EditorGUILayout.BeginHorizontal(); EditorGUI.BeginDisabledGroup(XRSkeletonPoserSettings.Instance.leftHand == null);
                    
                    if (!_propertyShowLeft.boolValue)
                    {
@@ -268,7 +273,7 @@ namespace yellowyears.SkeletonPoser
                    
                    // Preview Right Button
                    
-                   EditorGUI.BeginDisabledGroup(XR_SkeletonPoserSettings.Instance.rightHand == null);
+                   EditorGUI.BeginDisabledGroup(XRSkeletonPoserSettings.Instance.rightHand == null);
                    
                    if (!_propertyShowRight.boolValue)
                    {
@@ -399,7 +404,7 @@ namespace yellowyears.SkeletonPoser
                    
                    EditorGUI.EndDisabledGroup();
                    
-                   EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false && _propertyShowRight.boolValue == false || XR_SkeletonPoserSettings.Instance.referencePose == null);
+                   EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false && _propertyShowRight.boolValue == false || XRSkeletonPoserSettings.Instance.referencePose == null);
         
                    GUI.backgroundColor = poserSettings.resetToReferencePoseColour;
                    
@@ -467,8 +472,8 @@ namespace yellowyears.SkeletonPoser
                     var from = blender.FindPropertyRelative("from");
                     var to = blender.FindPropertyRelative("to");
                     
-                    from.objectReferenceValue = _propertyMainPose.objectReferenceValue as XR_SkeletonPose;
-                    to.objectReferenceValue = _propertySecondaryPose.objectReferenceValue as XR_SkeletonPose;
+                    from.objectReferenceValue = _propertyMainPose.objectReferenceValue as XRSkeletonPose;
+                    to.objectReferenceValue = _propertySecondaryPose.objectReferenceValue as XRSkeletonPose;
 
                     EditorGUI.BeginDisabledGroup(!_poser.FetchSecondaryPose() || !_poser.FetchMainPose());
                     
@@ -479,8 +484,8 @@ namespace yellowyears.SkeletonPoser
                             // Create New
                             blendName.stringValue = "New Blend";
                             
-                            from.objectReferenceValue = _propertyMainPose.objectReferenceValue as XR_SkeletonPose;
-                            to.objectReferenceValue = _propertySecondaryPose.objectReferenceValue as XR_SkeletonPose;
+                            from.objectReferenceValue = _propertyMainPose.objectReferenceValue as XRSkeletonPose;
+                            to.objectReferenceValue = _propertySecondaryPose.objectReferenceValue as XRSkeletonPose;
                             
                             _propertyBlendWasCreated.boolValue = true;
                         }
@@ -505,8 +510,8 @@ namespace yellowyears.SkeletonPoser
 
                         EditorGUILayout.Space();
 
-                        var mainPose = _propertyMainPose.objectReferenceValue as XR_SkeletonPose;
-                        var secondaryPose = _propertySecondaryPose.objectReferenceValue as XR_SkeletonPose;
+                        var mainPose = _propertyMainPose.objectReferenceValue as XRSkeletonPose;
+                        var secondaryPose = _propertySecondaryPose.objectReferenceValue as XRSkeletonPose;
 
                         if (!(mainPose is null)) EditorGUILayout.LabelField("Primary Pose: " + mainPose.name);
                         if (!(secondaryPose is null)) EditorGUILayout.LabelField("Secondary Pose: " + secondaryPose.name);
@@ -547,7 +552,7 @@ namespace yellowyears.SkeletonPoser
 
         #region Copy To Right & Left
 
-                // private void CopyToRight(XR_SkeletonPose source, XR_SkeletonPose destination)
+                // private void CopyToRight(XRSkeletonPose source, XRSkeletonPose destination)
         // {
         //     destination.leftBonePositions = source.leftBonePositions;
         //     destination.leftBoneRotations = source.leftBoneRotations;
@@ -569,7 +574,7 @@ namespace yellowyears.SkeletonPoser
         //     
         //     // Save it (if saved using SavePose() it overwrites the data for the assigned bone pos and rot)
         //
-        //     var copy = CreateInstance<XR_SkeletonPose>();
+        //     var copy = CreateInstance<XRSkeletonPose>();
         //
         //     copy.leftBonePositions = destination.leftBonePositions;
         //     copy.leftBoneRotations = destination.leftBoneRotations;
@@ -619,7 +624,7 @@ namespace yellowyears.SkeletonPoser
 
         #endregion
 
-        private void SavePose(XR_SkeletonPose inputPose)
+        private void SavePose(XRSkeletonPose inputPose)
         {
             // Todo: Only overwrite the data from the active hand(s). Although it might not be possible?
 
@@ -656,7 +661,7 @@ namespace yellowyears.SkeletonPoser
             // Set pose to new pose data to avoid the need for reassignment after saving the file
             
             // Create copy of pose to stop error whilst saving ("Object already exists")
-            var copy = CreateInstance<XR_SkeletonPose>();
+            var copy = CreateInstance<XRSkeletonPose>();
 
             copy.leftBonePositions = _defaultPose.leftBonePositions;
             copy.leftBoneRotations = _defaultPose.leftBoneRotations;
@@ -693,9 +698,9 @@ namespace yellowyears.SkeletonPoser
             // Set pose to new pose data to avoid the need for reassignment after saving the file
             
             // Create copy of pose to stop error whilst saving ("Object already exists")
-            var copy = CreateInstance<XR_SkeletonPose>();
+            var copy = CreateInstance<XRSkeletonPose>();
 
-            var referencePose = XR_SkeletonPoserSettings.Instance.referencePose;
+            var referencePose = XRSkeletonPoserSettings.Instance.referencePose;
             
             copy.leftBonePositions = referencePose.leftBonePositions;
             copy.leftBoneRotations = referencePose.leftBoneRotations;
@@ -727,7 +732,7 @@ namespace yellowyears.SkeletonPoser
             }
         }
 
-        private XR_SkeletonPose GetMainPose(XR_SkeletonPose inputPose)
+        private XRSkeletonPose GetMainPose(XRSkeletonPose inputPose)
         {
             // Get pose without saving
             
@@ -741,7 +746,7 @@ namespace yellowyears.SkeletonPoser
             return inputPose;
         }
 
-        private XR_SkeletonPose GetSecondaryPose(XR_SkeletonPose inputPose)
+        private XRSkeletonPose GetSecondaryPose(XRSkeletonPose inputPose)
         {
             inputPose.leftBlendPositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
             inputPose.leftBlendRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
@@ -754,7 +759,7 @@ namespace yellowyears.SkeletonPoser
             return inputPose;
         }
 
-        private XR_SkeletonPose RemoveSecondaryPose(XR_SkeletonPose inputPose)
+        private XRSkeletonPose RemoveSecondaryPose(XRSkeletonPose inputPose)
         {
             inputPose.leftBlendPositions = null;
             inputPose.leftBlendRotations = null;

@@ -5,7 +5,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 namespace yellowyears.SkeletonPoser
 {
-    public class XR_SkeletonPoseRayInteractor : XRRayInteractor
+    public class XRSkeletonPoseRayInteractor : XRRayInteractor
     {
         
         #region Editor storage
@@ -17,7 +17,7 @@ namespace yellowyears.SkeletonPoser
         
         #endregion
 
-        private XR_SkeletonPose _defaultPose;
+        private XRSkeletonPose _defaultPose;
         private Transform[] _handBones = null;
 
         private bool _isSkeletonPoseInteractable = false;
@@ -30,9 +30,9 @@ namespace yellowyears.SkeletonPoser
             _defaultPose = GetDefaultPose();
         }
 
-        private XR_SkeletonPose GetDefaultPose()
+        private XRSkeletonPose GetDefaultPose()
         {
-            var pose = ScriptableObject.CreateInstance<XR_SkeletonPose>();
+            var pose = ScriptableObject.CreateInstance<XRSkeletonPose>();
 
             switch (handType)
             {
@@ -94,7 +94,7 @@ namespace yellowyears.SkeletonPoser
             _handBones[0].localRotation = selectTargetAttach.localRotation;
         }
         
-        private void SetPose(XR_SkeletonPose pose)
+        private void SetPose(XRSkeletonPose pose)
         {
             // Get hand bones
             
@@ -143,7 +143,7 @@ namespace yellowyears.SkeletonPoser
             base.OnSelectEnter(interactable);
             
             // Do not run the below code if the object isn't a skeleton poser, ie do not pose hand if not a poser interactable
-            if (!interactable.TryGetComponent(out XR_SkeletonPoser poser)) return;
+            if (!interactable.TryGetComponent(out XRSkeletonPoser poser)) return;
             
             var pose = poser.FetchMainPose();
                 
