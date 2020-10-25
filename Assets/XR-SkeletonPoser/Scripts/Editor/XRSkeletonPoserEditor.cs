@@ -656,6 +656,106 @@ namespace yellowyears.SkeletonPoser
             }
         }
 
+        private void SaveMainPose()
+        {
+            var main = _poser.FetchMainPose();
+            
+            var copy = Instantiate(main);
+            
+            copy.leftBonePositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
+            copy.leftBoneRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
+
+            copy.rightBonePositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
+            copy.rightBoneRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
+
+            // Don't overwrite secondary stuff
+
+            if (main.leftBlendPositions != null)
+            {
+                copy.leftBlendPositions = main.leftBlendPositions;
+            }
+
+            if (main.leftBlendRotations != null)
+            {
+                copy.leftBlendRotations = main.leftBlendRotations;
+            }
+
+            if (copy.rightBlendPositions != null)
+            {
+                copy.rightBlendPositions = main.rightBlendPositions;
+            }
+
+            if (copy.rightBlendRotations != null)
+            {
+                copy.rightBlendRotations = main.rightBlendRotations;
+            }
+            
+            // Set pose to new pose data to avoid the need for reassignment after saving
+            _poser.selectedPose = copy;
+
+            if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))
+            {
+                // Folder doesn't exist, create new
+                AssetDatabase.CreateFolder("Assets", "XRPoses");
+                AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
+            }
+            else
+            {
+                // Folder exists
+                AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
+            }
+        }
+        
+        private void SaveSecondaryPose()
+        {
+            var secondary = _poser.FetchSecondaryPose();
+            
+            var copy = Instantiate(secondary);
+            
+            copy.leftBlendPositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
+            copy.leftBlendRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
+
+            copy.rightBlendPositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
+            copy.rightBlendRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
+
+            // Don't overwrite main stuff
+
+            if (secondary.leftBonePositions != null)
+            {
+                copy.leftBonePositions = secondary.leftBonePositions;
+            }
+
+            if (secondary.leftBoneRotations != null)
+            {
+                copy.leftBoneRotations = secondary.leftBoneRotations;
+            }
+
+            if (copy.rightBonePositions != null)
+            {
+                copy.rightBonePositions = secondary.rightBonePositions;
+            }
+
+            if (copy.rightBoneRotations != null)
+            {
+                copy.rightBoneRotations = secondary.rightBoneRotations;
+            }
+            
+            // Set pose to new pose data to avoid the need for reassignment after saving
+            _poser.selectedPose = copy;
+
+            if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))
+            {
+                // Folder doesn't exist, create new
+                AssetDatabase.CreateFolder("Assets", "XRPoses");
+                AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
+            }
+            else
+            {
+                // Folder exists
+                AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
+            }
+        }
+
         private void ResetPose()
         {
             // Set pose to new pose data to avoid the need for reassignment after saving the file
