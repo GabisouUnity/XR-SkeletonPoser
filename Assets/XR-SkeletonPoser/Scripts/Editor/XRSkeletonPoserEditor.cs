@@ -82,7 +82,7 @@ namespace yellowyears.SkeletonPoser
             
             DrawPoseEditor();
             
-            DrawBlendEditor();
+            // DrawBlendEditor();
             
             serializedObject.ApplyModifiedProperties();
         }
@@ -744,7 +744,7 @@ namespace yellowyears.SkeletonPoser
 
         private void LoadPose()
         {
-            // var loadedPose = _poser.FetchSelectedPose();
+            var loadedPose = _poser.FetchMainPose();
 
             var leftHandObject = _propertyTempLeft.objectReferenceValue as GameObject;
             var rightHandObject = _propertyTempRight.objectReferenceValue as GameObject;

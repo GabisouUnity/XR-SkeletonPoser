@@ -213,7 +213,7 @@ namespace yellowyears.SkeletonPoser
             // Do not run the below code if the object isn't a skeleton poser, ie do not pose hand if not a poser interactable
             if (!interactable.TryGetComponent(out _selectedPoser)) return;
 
-            var pose = _selectedPoser.FetchSelectedPose();
+            var pose = _selectedPoser.FetchMainPose();
 
             if (_poserSettings.lerpFingersOnSelect)
             {
@@ -223,7 +223,7 @@ namespace yellowyears.SkeletonPoser
 
             SetOffset();
 
-            if (_selectedPoser.blendWasCreated) _shouldCheckForBlendInput = true;
+            // if (_selectedPoser.blendWasCreated) _shouldCheckForBlendInput = true;
 
             _isSkeletonPoseInteractable = true;
         }
@@ -235,7 +235,7 @@ namespace yellowyears.SkeletonPoser
             if (_isSkeletonPoseInteractable)
                 
                 SetDefaultPose(); // Reset back to default bone pose on select exit if it was a skeleton poser
-            if (_selectedPoser.blendWasCreated) _shouldCheckForBlendInput = false;
+            // if (_selectedPoser.blendWasCreated) _shouldCheckForBlendInput = false;
             
 
             _isSkeletonPoseInteractable = false;
@@ -255,25 +255,25 @@ namespace yellowyears.SkeletonPoser
             var gripUsage = CommonUsages.trigger;
 
             // Check for input
-            switch (_selectedPoser.blendInput)
-            {
-                case XRSkeletonPoser.BlendInput.Trigger:
-                    // Get value
-                    device.TryGetFeatureValue(triggerUsage, out var triggerValue);
-
-                    // Blend Pose
-                    _selectedPoser.BlendPose(triggerValue);
-                    break;
-                case XRSkeletonPoser.BlendInput.Grip:
-                    // Get value
-                    device.TryGetFeatureValue(gripUsage, out var gripValue);
-
-                    // Blend Pose
-                    _selectedPoser.BlendPose(gripValue);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            // switch (_selectedPoser.blendInput)
+            // {
+            //     case XRSkeletonPoser.BlendInput.Trigger:
+            //         // Get value
+            //         device.TryGetFeatureValue(triggerUsage, out var triggerValue);
+            //
+            //         // Blend Pose
+            //         _selectedPoser.BlendPose(triggerValue);
+            //         break;
+            //     case XRSkeletonPoser.BlendInput.Grip:
+            //         // Get value
+            //         device.TryGetFeatureValue(gripUsage, out var gripValue);
+            //
+            //         // Blend Pose
+            //         _selectedPoser.BlendPose(gripValue);
+            //         break;
+            //     default:
+            //         throw new ArgumentOutOfRangeException();
+            // }
 
         }
 

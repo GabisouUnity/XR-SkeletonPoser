@@ -29,20 +29,20 @@ namespace yellowyears.SkeletonPoser
         public enum BlendInput { Trigger, Grip }
         
         [HideInInspector] public XRSkeletonPose mainPose;
-        [HideInInspector] public XRSkeletonPose secondaryPose;
-        [HideInInspector] public XRSkeletonPose selectedPose;
-        [HideInInspector] public BlendBehaviour blendBehaviour = new BlendBehaviour();
-        [HideInInspector] public bool blendWasCreated = false;
-        [HideInInspector] public BlendInput blendInput;
+        // [HideInInspector] public XRSkeletonPose secondaryPose;
+        // [HideInInspector] [SerializeField] public XRSkeletonPose selectedPose;
+        // [HideInInspector] public BlendBehaviour blendBehaviour = new BlendBehaviour();
+        // [HideInInspector] public bool blendWasCreated = false;
+        // [HideInInspector] public BlendInput blendInput;
         // [HideInInspector] public InputHelpers.Button blendButton;
             
-        [HideInInspector] public ActivePose activePoseEnum;
+        // [HideInInspector] public ActivePose activePoseEnum;
 
         // [HideInInspector] public BlendBehaviour blend = null;
 
         [HideInInspector] public bool showPoses = false;
         [HideInInspector] public bool showPoseEditor = true; // Used in editor foldout
-        [HideInInspector] public bool showBlendEditor = false;
+        // [HideInInspector] public bool showBlendEditor = false;
 
         [HideInInspector] public float scale;
         
@@ -110,20 +110,20 @@ namespace yellowyears.SkeletonPoser
             methodInfo?.Invoke(window, new object[] {gameObject.GetInstanceID(), expand});
         }
         
-        public XRSkeletonPose FetchSelectedPose()
-        {
-            return selectedPose;
-        }
-
+        // public XRSkeletonPose FetchSelectedPose()
+        // {
+        //     return selectedPose;
+        // }
+        
         public XRSkeletonPose FetchMainPose()
         {
             return mainPose;
         }
         
-        public XRSkeletonPose FetchSecondaryPose()
-        {
-            return secondaryPose;
-        }
+        // public XRSkeletonPose FetchSecondaryPose()
+        // {
+        //     return secondaryPose;
+        // }
         
         public Vector3[] GetBonePositions(GameObject target)
         {
