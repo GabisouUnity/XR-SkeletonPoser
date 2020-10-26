@@ -100,15 +100,15 @@ namespace yellowyears.SkeletonPoser
             {
 
                 EditorGUILayout.BeginHorizontal();
-                // EditorGUI.BeginDisabledGroup(_propertySelectedPose.name != _propertyMainPose.name);
+                EditorGUI.BeginDisabledGroup(!_propertyShowLeft.boolValue || !_propertyShowRight.boolValue);
 
                 if (GUILayout.Button(_propertyMainPose.name + " (MAIN)"))
                 {
                     _propertySelectedPose = _propertyMainPose;
-                    LoadPose();
+                    LoadPose(_propertyMainPose.objectReferenceValue as XRSkeletonPose);
                 }
                 
-                // EditorGUI.EndDisabledGroup();
+                EditorGUI.EndDisabledGroup();
                 // EditorGUI.BeginDisabledGroup(_propertySelectedPose.name != _propertySecondaryPose.name);
 
                 // if(GUILayout.Button(_propertySecondaryPose.name + " (Secondary)"))
@@ -240,8 +240,8 @@ namespace yellowyears.SkeletonPoser
                    // {
                    //     LoadPose();
                    // }
-                   
-                   EditorGUI.EndDisabledGroup();
+                   //
+                   // EditorGUI.EndDisabledGroup();
                    
                    // Grey it out if hands aren't active
                    EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false || _propertyShowRight.boolValue == false);
@@ -295,27 +295,33 @@ namespace yellowyears.SkeletonPoser
                    EditorGUILayout.EndHorizontal();
                 }
         
-                EditorGUILayout.BeginHorizontal();
-                EditorGUI.BeginChangeCheck();
-                GUI.backgroundColor = Color.white;
-                EditorGUIUtility.labelWidth = 60;
-                _propertyScale.floatValue = EditorGUILayout.FloatField("Scale", _propertyScale.floatValue);
-                if (_propertyScale.floatValue <= 0) _propertyScale.floatValue = 1;
-                EditorGUIUtility.labelWidth = 0;
-                GUILayout.FlexibleSpace();
-                EditorGUILayout.EndHorizontal();
-        
-                var leftHand = _propertyTempLeft.objectReferenceValue as GameObject;
-                var rightHand = _propertyTempRight.objectReferenceValue as GameObject;
-                
-                if (EditorGUI.EndChangeCheck())
-                {
-                    // Value has changed, update hands
-                    _updateHands = true;
-        
-                    if (leftHand != null) UpdateHandScale(leftHand, _propertyScale.floatValue);
-                    if (rightHand != null) UpdateHandScale(rightHand, _propertyScale.floatValue);
-                }
+                // EditorGUILayout.BeginHorizontal();
+                // EditorGUI.BeginChangeCheck();
+                // GUI.backgroundColor = Color.white;
+                // EditorGUIUtility.labelWidth = 60;
+                // _propertyScale.floatValue = EditorGUILayout.FloatField("Scale", _propertyScale.floatValue);
+                //
+                // if (GUILayout.Button("Reset"))
+                // {
+                //     _propertyScale.floatValue = 0;
+                // }
+                //
+                // if (_propertyScale.floatValue <= 0) _propertyScale.floatValue = 1;
+                // EditorGUIUtility.labelWidth = 0;
+                // GUILayout.FlexibleSpace();
+                // EditorGUILayout.EndHorizontal();
+                //
+                // var leftHand = _propertyTempLeft.objectReferenceValue as GameObject;
+                // var rightHand = _propertyTempRight.objectReferenceValue as GameObject;
+                //
+                // if (EditorGUI.EndChangeCheck())
+                // {
+                //     // Value has changed, update hands
+                //     _updateHands = true;
+                //
+                //     if (leftHand != null) UpdateHandScale(leftHand, _propertyScale.floatValue);
+                //     if (rightHand != null) UpdateHandScale(rightHand, _propertyScale.floatValue);
+                // }
                 
                 EditorGUILayout.EndFoldoutHeaderGroup();
         
@@ -413,14 +419,14 @@ namespace yellowyears.SkeletonPoser
             return fold;
         }
 
-        private void UpdateHandScale(GameObject obj, float scale)
-        {
-            if (_updateHands == false) return;
-            
-            obj.transform.localScale = Vector3.one * scale;
-
-            _updateHands = false;
-        }
+        // private void UpdateHandScale(GameObject obj, float scale)
+        // {
+        //     if (_updateHands == false) return;
+        //     
+        //     obj.transform.localScale = Vector3.one * scale;
+        //
+        //     _updateHands = false;
+        // }
 
         #region Copy To Right & Left
 
@@ -643,7 +649,7 @@ namespace yellowyears.SkeletonPoser
             
             // _poser.selectedPose = copy;
 
-            LoadPose(); // Load pose automatically for convenience
+            LoadPose(copy); // Load pose automatically for convenience
             
             // Save and overwrite
             if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))
@@ -682,7 +688,7 @@ namespace yellowyears.SkeletonPoser
             
             // _poser.selectedPose = copy;
 
-            LoadPose(); // Load pose automatically for convenience
+            LoadPose(copy); // Load pose automatically for convenience
             
             // Save and overwrite
             if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))
@@ -742,9 +748,9 @@ namespace yellowyears.SkeletonPoser
             return inputPose;
         }
 
-        private void LoadPose()
+        private void LoadPose(XRSkeletonPose loadedPose)
         {
-            var loadedPose = _poser.FetchMainPose();
+            // var loadedPose = _poser.FetchMainPose();
 
             var leftHandObject = _propertyTempLeft.objectReferenceValue as GameObject;
             var rightHandObject = _propertyTempRight.objectReferenceValue as GameObject;
