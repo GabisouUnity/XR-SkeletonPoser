@@ -99,6 +99,8 @@ namespace yellowyears.SkeletonPoser
             if (_propertyShowPoses.boolValue)
             {
 
+                EditorGUILayout.PropertyField(_propertyPose);
+                
                 EditorGUILayout.BeginHorizontal();
                 EditorGUI.BeginDisabledGroup(!_propertyShowLeft.boolValue || !_propertyShowRight.boolValue);
 
@@ -118,15 +120,7 @@ namespace yellowyears.SkeletonPoser
                 
                 EditorGUI.EndDisabledGroup();
                 EditorGUILayout.EndHorizontal();
-
-                if (_propertySelectedPose.name == "selectedPose")
-                {
-                    EditorGUILayout.LabelField(_propertySelectedPose.name + " (null)");
-                }
-                else
-                {
-                    EditorGUILayout.LabelField(_propertySelectedPose.name);
-                }
+                
             }
             
             EditorGUILayout.EndVertical();
@@ -254,9 +248,14 @@ namespace yellowyears.SkeletonPoser
         
                    GUI.backgroundColor = poserSettings.savePoseColour;
                    
-                   if (GUILayout.Button("Save Pose", "button"))
+                   if (GUILayout.Button("Save Main Pose", "button"))
                    {
-                       SavePose(newPose);
+                       SaveMainPose();
+                   }
+
+                   if (GUILayout.Button("Save Secondary Pose", "button"))
+                   {
+                       SaveSecondaryPose();
                    }
                    
                    EditorGUILayout.EndHorizontal();
@@ -508,25 +507,76 @@ namespace yellowyears.SkeletonPoser
 
         #endregion
 
-        private void SavePose(XRSkeletonPose inputPose)
+        // private void SavePose(XRSkeletonPose inputPose)
+        // {
+        //     // Todo: Only overwrite the data from the active hand(s). Although it might not be possible?
+        //
+        //     // Create copy of pose to stop error whilst saving ("Object already exists")
+        //     var copy = Instantiate(inputPose);
+        //
+        //     // var main = _poser.FetchMainPose();
+        //     // var secondary = _poser.FetchSecondaryPose();
+        //     
+        //     copy.leftBonePositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
+        //     copy.leftBoneRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
+        //
+        //     copy.rightBonePositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
+        //     copy.rightBoneRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
+        //
+        //     // Set pose to new pose data to avoid the need for reassignment after saving
+        //     // _poser.selectedPose = copy;
+        //
+        //     if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))
+        //     {
+        //         // Folder doesn't exist, create new
+        //         AssetDatabase.CreateFolder("Assets", "XRPoses");
+        //         AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
+        //     }
+        //     else
+        //     {
+        //         // Folder exists
+        //         AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
+        //     }
+        // }
+
+        private void SaveMainPose()
         {
-            // Todo: Only overwrite the data from the active hand(s). Although it might not be possible?
-
-            // Create copy of pose to stop error whilst saving ("Object already exists")
-            var copy = Instantiate(inputPose);
-
-            // var main = _poser.FetchMainPose();
-            // var secondary = _poser.FetchSecondaryPose();
+            var pose = _propertyPose.objectReferenceValue as XRSkeletonPose;
+            
+            var copy = Instantiate(pose);
             
             copy.leftBonePositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
             copy.leftBoneRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
-
+        
             copy.rightBonePositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
             copy.rightBoneRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
+        
+            // Don't overwrite secondary stuff
+        
+            if (copy.leftBlendPositions != null)
+            {
+                copy.leftBlendPositions = pose.leftBlendPositions;
+            }
+        
+            if (copy.leftBlendRotations != null)
+            {
+                copy.leftBlendRotations = pose.leftBlendRotations;
+            }
+        
+            if (copy.rightBlendPositions != null)
+            {
+                copy.rightBlendPositions = pose.rightBlendPositions;
+            }
+        
+            if (copy.rightBlendRotations != null)
+            {
+                copy.rightBlendRotations = pose.rightBlendRotations;
+            }
 
-            // Set pose to new pose data to avoid the need for reassignment after saving
-            // _poser.selectedPose = copy;
-
+            _poser.pose = copy;
+            
+            // LoadPose(copy);
+            
             if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))
             {
                 // Folder doesn't exist, create new
@@ -539,106 +589,55 @@ namespace yellowyears.SkeletonPoser
                 AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
             }
         }
-
-        // private void SaveMainPose()
-        // {
-        //     var main = _poser.FetchMainPose();
-        //     
-        //     var copy = Instantiate(main);
-        //     
-        //     copy.leftBonePositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
-        //     copy.leftBoneRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
-        //
-        //     copy.rightBonePositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
-        //     copy.rightBoneRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
-        //
-        //     // Don't overwrite secondary stuff
-        //
-        //     if (main.leftBlendPositions != null)
-        //     {
-        //         copy.leftBlendPositions = main.leftBlendPositions;
-        //     }
-        //
-        //     if (main.leftBlendRotations != null)
-        //     {
-        //         copy.leftBlendRotations = main.leftBlendRotations;
-        //     }
-        //
-        //     if (copy.rightBlendPositions != null)
-        //     {
-        //         copy.rightBlendPositions = main.rightBlendPositions;
-        //     }
-        //
-        //     if (copy.rightBlendRotations != null)
-        //     {
-        //         copy.rightBlendRotations = main.rightBlendRotations;
-        //     }
-        //     
-        //     // Set pose to new pose data to avoid the need for reassignment after saving
-        //     _poser.selectedPose = copy;
-        //
-        //     if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))
-        //     {
-        //         // Folder doesn't exist, create new
-        //         AssetDatabase.CreateFolder("Assets", "XRPoses");
-        //         AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
-        //     }
-        //     else
-        //     {
-        //         // Folder exists
-        //         AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
-        //     }
-        // }
         
-        // private void SaveSecondaryPose()
-        // {
-        //     var secondary = _poser.FetchSecondaryPose();
-        //     
-        //     var copy = Instantiate(secondary);
-        //     
-        //     copy.leftBlendPositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
-        //     copy.leftBlendRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
-        //
-        //     copy.rightBlendPositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
-        //     copy.rightBlendRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
-        //
-        //     // Don't overwrite main stuff
-        //
-        //     if (secondary.leftBonePositions != null)
-        //     {
-        //         copy.leftBonePositions = secondary.leftBonePositions;
-        //     }
-        //
-        //     if (secondary.leftBoneRotations != null)
-        //     {
-        //         copy.leftBoneRotations = secondary.leftBoneRotations;
-        //     }
-        //
-        //     if (copy.rightBonePositions != null)
-        //     {
-        //         copy.rightBonePositions = secondary.rightBonePositions;
-        //     }
-        //
-        //     if (copy.rightBoneRotations != null)
-        //     {
-        //         copy.rightBoneRotations = secondary.rightBoneRotations;
-        //     }
-        //     
-        //     // Set pose to new pose data to avoid the need for reassignment after saving
-        //     _poser.selectedPose = copy;
-        //
-        //     if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))
-        //     {
-        //         // Folder doesn't exist, create new
-        //         AssetDatabase.CreateFolder("Assets", "XRPoses");
-        //         AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
-        //     }
-        //     else
-        //     {
-        //         // Folder exists
-        //         AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
-        //     }
-        // }
+        private void SaveSecondaryPose()
+        {
+            var pose = _propertyPose.objectReferenceValue as XRSkeletonPose;
+            
+            var copy = Instantiate(pose);
+            
+            copy.leftBlendPositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
+            copy.leftBlendRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
+        
+            copy.rightBlendPositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
+            copy.rightBlendRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
+        
+            // Don't overwrite main stuff
+        
+            if (copy.leftBonePositions != null)
+            {
+                copy.leftBonePositions = pose.leftBonePositions;
+            }
+        
+            if (copy.leftBoneRotations != null)
+            {
+                copy.leftBoneRotations = pose.leftBoneRotations;
+            }
+        
+            if (copy.rightBonePositions != null)
+            {
+                copy.rightBonePositions = pose.rightBonePositions;
+            }
+        
+            if (copy.rightBoneRotations != null)
+            {
+                copy.rightBoneRotations = pose.rightBoneRotations;
+            }
+
+            _poser.pose = copy;
+            
+            if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))
+            {
+                // Folder doesn't exist, create new
+                AssetDatabase.CreateFolder("Assets", "XRPoses");
+                AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
+            }
+            else
+            {
+                // Folder exists
+                AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
+            }
+        }
 
         private void ResetPose()
         {
