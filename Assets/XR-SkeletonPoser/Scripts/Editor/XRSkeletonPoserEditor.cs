@@ -15,7 +15,7 @@ namespace yellowyears.SkeletonPoser
 
         private SerializedProperty _propertyMainPose = null;
         // private SerializedProperty _propertySecondaryPose = null;
-        // private SerializedProperty _propertySelectedPose = null;
+        private SerializedProperty _propertySelectedPose = null;
         // private SerializedProperty _propertyActivePoseEnum = null;
         // private SerializedProperty _propertyBlendBehaviour = null;
         // private SerializedProperty _propertyBlendWasCreated = null;
@@ -43,7 +43,7 @@ namespace yellowyears.SkeletonPoser
 
             _propertyMainPose = serializedObject.FindProperty("mainPose");
             // _propertySecondaryPose = serializedObject.FindProperty("secondaryPose");
-            // _propertySelectedPose = serializedObject.FindProperty("selectedPose");
+            _propertySelectedPose = serializedObject.FindProperty("selectedPose");
             // _propertyActivePoseEnum = serializedObject.FindProperty("activePoseEnum");
             // _propertyBlendBehaviour = serializedObject.FindProperty("blendBehaviour");
             // _propertyBlendWasCreated = serializedObject.FindProperty("blendWasCreated");
@@ -104,7 +104,7 @@ namespace yellowyears.SkeletonPoser
 
                 if (GUILayout.Button(_propertyMainPose.name + " (MAIN)"))
                 {
-                    // _propertySelectedPose = _propertyMainPose;
+                    _propertySelectedPose = _propertyMainPose;
                     LoadPose();
                 }
                 
@@ -227,19 +227,19 @@ namespace yellowyears.SkeletonPoser
                    
                    EditorGUILayout.BeginHorizontal();
                    
-                   // Grey it out if hands aren't active and there is no loaded pose
-                   EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false && _propertyShowRight.boolValue == false);
-        
-                   // rgba(160, 255, 66, 0.4)
-                   // GUI.backgroundColor = new Color32(160, 255, 66, 100);
-                   // GUI.backgroundColor = Color.green;
-        
-                   GUI.backgroundColor = poserSettings.loadPoseColour;
-                   
-                   if (GUILayout.Button("Load Pose", "button"))
-                   {
-                       LoadPose();
-                   }
+                   // // Grey it out if hands aren't active and there is no loaded pose
+                   // EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false && _propertyShowRight.boolValue == false);
+                   //
+                   // // rgba(160, 255, 66, 0.4)
+                   // // GUI.backgroundColor = new Color32(160, 255, 66, 100);
+                   // // GUI.backgroundColor = Color.green;
+                   //
+                   // GUI.backgroundColor = poserSettings.loadPoseColour;
+                   //
+                   // if (GUILayout.Button("Load Pose", "button"))
+                   // {
+                   //     LoadPose();
+                   // }
                    
                    EditorGUI.EndDisabledGroup();
                    
@@ -577,7 +577,7 @@ namespace yellowyears.SkeletonPoser
         //         AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
         //     }
         // }
-        //
+        
         // private void SaveSecondaryPose()
         // {
         //     var secondary = _poser.FetchSecondaryPose();
