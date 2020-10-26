@@ -44,7 +44,7 @@ namespace yellowyears.SkeletonPoser
 
         private void Update()
         {
-            CheckForInput();
+            CheckForBlendInput();
         }
 
         private XRSkeletonPose GetDefaultPose()
@@ -167,44 +167,44 @@ namespace yellowyears.SkeletonPoser
             _handBones[0].localRotation = Quaternion.identity;
         }
 
-        private void LerpPose(XRSkeletonPose pose)
-        {
-            _handBones = handObject.GetComponentsInChildren<Transform>().ToArray();
-
-            var leftPosePos = pose.leftBonePositions;
-            var leftPoseRot = pose.leftBoneRotations;
-
-            var rightPosePos = pose.rightBonePositions;
-            var rightPoseRot = pose.rightBoneRotations;
-
-            switch (handType)
-            {
-                case HandType.Left:
-                {
-                    for (int i = 0; i < _handBones.Length; i++)
-                    {
-                        StartCoroutine(LerpPosition(_handBones[i], leftPosePos[i], _poserSettings.fingerLerpTime));
-                        // _handBones[i].localPosition = Vector3.Lerp(_handBones[i].localPosition, leftPosePos[i],
-                        //     _poserSettings.fingerLerpTime);
-                    }
-
-                    break;
-                }
-                case HandType.Right:
-                {
-                    for (int i = 0; i < _handBones.Length; i++)
-                    {
-                        StartCoroutine(LerpPosition(_handBones[i], rightPosePos[i], _poserSettings.fingerLerpTime));
-                        // _handBones[i].localPosition = Vector3.Lerp(_handBones[i].localPosition, rightPosePos[i],
-                        //     _poserSettings.fingerLerpTime);
-                    }
-
-                    break;
-                }
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-        }
+        // private void LerpPose(XRSkeletonPose pose)
+        // {
+        //     _handBones = handObject.GetComponentsInChildren<Transform>().ToArray();
+        //
+        //     var leftPosePos = pose.leftBonePositions;
+        //     var leftPoseRot = pose.leftBoneRotations;
+        //
+        //     var rightPosePos = pose.rightBonePositions;
+        //     var rightPoseRot = pose.rightBoneRotations;
+        //
+        //     switch (handType)
+        //     {
+        //         case HandType.Left:
+        //         {
+        //             for (int i = 0; i < _handBones.Length; i++)
+        //             {
+        //                 StartCoroutine(LerpPosition(_handBones[i], leftPosePos[i], _poserSettings.fingerLerpTime));
+        //                 // _handBones[i].localPosition = Vector3.Lerp(_handBones[i].localPosition, leftPosePos[i],
+        //                 //     _poserSettings.fingerLerpTime);
+        //             }
+        //
+        //             break;
+        //         }
+        //         case HandType.Right:
+        //         {
+        //             for (int i = 0; i < _handBones.Length; i++)
+        //             {
+        //                 StartCoroutine(LerpPosition(_handBones[i], rightPosePos[i], _poserSettings.fingerLerpTime));
+        //                 // _handBones[i].localPosition = Vector3.Lerp(_handBones[i].localPosition, rightPosePos[i],
+        //                 //     _poserSettings.fingerLerpTime);
+        //             }
+        //
+        //             break;
+        //         }
+        //         default:
+        //             throw new ArgumentOutOfRangeException();
+        //     }
+        // }
 
         protected override void OnSelectEnter(XRBaseInteractable interactable)
         {
@@ -215,12 +215,14 @@ namespace yellowyears.SkeletonPoser
 
             var pose = _selectedPoser.FetchMainPose();
 
-            if (_poserSettings.lerpFingersOnSelect)
-            {
-                LerpPose(pose);
-            }
-            else SetPose(pose);
+            // if (_poserSettings.lerpFingersOnSelect)
+            // {
+            //     LerpPose(pose);
+            // }
+            // else SetPose(pose);
 
+            SetPose(pose);
+            
             SetOffset();
 
             // if (_selectedPoser.blendWasCreated) _shouldCheckForBlendInput = true;
@@ -241,54 +243,78 @@ namespace yellowyears.SkeletonPoser
             _isSkeletonPoseInteractable = false;
         }
 
-        private void CheckForInput()
+        private void CheckForBlendInput()
         {
             if (!_shouldCheckForBlendInput) return;
 
             var device = _inputController.inputDevice;
-            // if(device.TryGetFeatureValue(_selectedPoser.blendButton, out ))
-
-            // TODO: Might use a custom enum on the poser to determine the input, since it should be an analogue button as of right now.
-
+            
             // Get input and convert to common usages
             var triggerUsage = CommonUsages.trigger;
             var gripUsage = CommonUsages.trigger;
 
-            // Check for input
-            // switch (_selectedPoser.blendInput)
-            // {
-            //     case XRSkeletonPoser.BlendInput.Trigger:
-            //         // Get value
-            //         device.TryGetFeatureValue(triggerUsage, out var triggerValue);
-            //
-            //         // Blend Pose
-            //         _selectedPoser.BlendPose(triggerValue);
-            //         break;
-            //     case XRSkeletonPoser.BlendInput.Grip:
-            //         // Get value
-            //         device.TryGetFeatureValue(gripUsage, out var gripValue);
-            //
-            //         // Blend Pose
-            //         _selectedPoser.BlendPose(gripValue);
-            //         break;
-            //     default:
-            //         throw new ArgumentOutOfRangeException();
-            // }
+            _handBones = handObject.GetComponentsInChildren<Transform>().ToArray();
 
-        }
-
-        private IEnumerator LerpPosition(Transform start, Vector3 target, float time)
-        {
-            float currentTime = 0;
-            var currentPos = start.localPosition;
-        
-            while (currentTime < time)
+            if (handType == HandType.Left)
             {
-                currentTime += Time.deltaTime / time;
-                start.position = Vector3.Lerp(currentPos, target, time);
-                yield return null;
+                // Check for input
+                switch (_selectedPoser.blendInput)
+                {
+                    case XRSkeletonPoser.BlendInput.Trigger:
+                        // Get value
+                        device.TryGetFeatureValue(triggerUsage, out var triggerValue);
+            
+                        // Blend Pose
+                        _selectedPoser.BlendRightPose(_handBones, triggerValue);
+                        break;
+                    case XRSkeletonPoser.BlendInput.Grip:
+                        // Get value
+                        device.TryGetFeatureValue(gripUsage, out var gripValue);
+            
+                        // Blend Pose
+                        _selectedPoser.BlendRightPose(_handBones, gripValue);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
             }
+            else if (handType == HandType.Right)
+            {
+                switch (_selectedPoser.blendInput)
+                {
+                    case XRSkeletonPoser.BlendInput.Trigger:
+                        // Get value
+                        device.TryGetFeatureValue(triggerUsage, out var triggerValue);
+            
+                        // Blend Pose
+                        _selectedPoser.BlendRightPose(_handBones, triggerValue);
+                        break;
+                    case XRSkeletonPoser.BlendInput.Grip:
+                        // Get value
+                        device.TryGetFeatureValue(gripUsage, out var gripValue);
+            
+                        // Blend Pose
+                        _selectedPoser.BlendRightPose(_handBones, gripValue);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+            
         }
+
+        // private IEnumerator LerpPosition(Transform start, Vector3 target, float time)
+        // {
+        //     float currentTime = 0;
+        //     var currentPos = start.localPosition;
+        //
+        //     while (currentTime < time)
+        //     {
+        //         currentTime += Time.deltaTime / time;
+        //         start.position = Vector3.Lerp(currentPos, target, time);
+        //         yield return null;
+        //     }
+        // }
 
         // private IEnumerator LerpRotation(Quaternion start, Vector3 target, float time)
         // {

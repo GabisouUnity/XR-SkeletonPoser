@@ -4,7 +4,7 @@ namespace yellowyears.SkeletonPoser
 {
     public class XRSkeletonPose : ScriptableObject
     {
-
+        
         // Left hand values
 
         public Vector3[] leftBonePositions = null;
@@ -17,14 +17,14 @@ namespace yellowyears.SkeletonPoser
         
         // Blending stuff
         
-        public string blendName = "My Blend";
-        [Tooltip("The pose that we blend to, from this pose")] public XRSkeletonPose blendTo;
+        // public string blendName = "My Blend";
+        // [Tooltip("The pose that we blend to, from this pose")] public XRSkeletonPose blendTo;
 
-        public Vector3[] leftBlendPositions = null;
-        public Quaternion[] leftBlendRotations = null;
+        public Vector3[] leftSecondaryPositions = null;
+        public Quaternion[] leftSecondaryRotations = null;
 
-        public Vector3[] rightBlendPositions = null;
-        public Quaternion[] rightBlendRotations = null;
+        public Vector3[] rightSecondaryPositions = null;
+        public Quaternion[] rightSecondaryRotations = null;
 
     } 
 }

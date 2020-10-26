@@ -27,25 +27,18 @@ namespace yellowyears.SkeletonPoser
         
         public enum SelectedPose { Main, Secondary }
         
-        // public enum BlendInput { Trigger, Grip }
+        public enum BlendInput { Trigger, Grip }
         
         [HideInInspector] public XRSkeletonPose pose;
-        // [HideInInspector] public XRSkeletonPose secondaryPose;
         [HideInInspector] public SelectedPose selectedPose;
-        // [HideInInspector] public BlendBehaviour blendBehaviour = new BlendBehaviour();
-        // [HideInInspector] public bool blendWasCreated = false;
-        // [HideInInspector] public BlendInput blendInput;
-        // [HideInInspector] public InputHelpers.Button blendButton;
-            
-        // [HideInInspector] public ActivePose activePoseEnum;
-
-        // [HideInInspector] public BlendBehaviour blend = null;
-
+        
+        [HideInInspector] public BlendInput blendInput;
+        
         [HideInInspector] public bool showPoses = false;
         [HideInInspector] public bool showPoseEditor = true; // Used in editor foldout
-        // [HideInInspector] public bool showBlendEditor = false;
+        [HideInInspector] public bool showBlendEditor = false;
 
-        [HideInInspector] public float scale;
+        // [HideInInspector] public float scale;
         
         [HideInInspector] public bool showLeft;
         [HideInInspector] public GameObject tempLeft;
@@ -136,11 +129,36 @@ namespace yellowyears.SkeletonPoser
             return target != null ? target.GetComponentsInChildren<Transform>().Select(x => x.localRotation).ToArray() : null;
         }
 
-        public void BlendPose(float blendValue)
+        public void BlendLeftPose(Transform[] fingers, float blendValue)
         {
-            
+            var mainPosePos = pose.leftBonePositions;
+            var mainPoseRot = pose.leftSecondaryRotations;
+
+            var secondaryPosePos = pose.leftSecondaryPositions;
+            var secondaryPoseRot = pose.leftSecondaryRotations;
+
+            for (int i = 0; i < fingers.Length; i++)
+            {
+                fingers[i].localPosition = Vector3.Slerp(mainPosePos[i], secondaryPosePos[i], blendValue);
+                fingers[i].localRotation = Quaternion.Slerp(mainPoseRot[i], secondaryPoseRot[i], blendValue);
+            }
         }
         
+        public void BlendRightPose(Transform[] fingers, float blendValue)
+        {
+            var mainPosePos = pose.rightBonePositions;
+            var mainPoseRot = pose.rightSecondaryRotations;
+
+            var secondaryPosePos = pose.rightSecondaryPositions;
+            var secondaryPoseRot = pose.rightSecondaryRotations;
+
+            for (int i = 0; i < fingers.Length; i++)
+            {
+                fingers[i].localPosition = Vector3.Slerp(mainPosePos[i], secondaryPosePos[i], blendValue);
+                fingers[i].localRotation = Quaternion.Slerp(mainPoseRot[i], secondaryPoseRot[i], blendValue);
+            }
+        }
+
         // public XRSkeletonPose GetBlendToPose(XRSkeletonPose inputPose)
         // {
         //     return inputPose.blendTo;

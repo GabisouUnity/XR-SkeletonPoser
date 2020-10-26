@@ -19,11 +19,11 @@ namespace yellowyears.SkeletonPoser
         // private SerializedProperty _propertyActivePoseEnum = null;
         // private SerializedProperty _propertyBlendBehaviour = null;
         // private SerializedProperty _propertyBlendWasCreated = null;
-        // private SerializedProperty _propertyBlendInput = null;
+        private SerializedProperty _propertyBlendInput = null;
 
         private SerializedProperty _propertyShowPoses = null;
         private SerializedProperty _propertyShowPoseEditor = null;
-        // private SerializedProperty _propertyShowBlendEditor = null;
+        private SerializedProperty _propertyShowBlendEditor = null;
         // private SerializedProperty _propertyScale = null;
 
         // private bool _updateHands = false;
@@ -47,11 +47,11 @@ namespace yellowyears.SkeletonPoser
             // _propertyActivePoseEnum = serializedObject.FindProperty("activePoseEnum");
             // _propertyBlendBehaviour = serializedObject.FindProperty("blendBehaviour");
             // _propertyBlendWasCreated = serializedObject.FindProperty("blendWasCreated");
-            // _propertyBlendInput = serializedObject.FindProperty("blendInput");
+            _propertyBlendInput = serializedObject.FindProperty("blendInput");
             
             _propertyShowPoses = serializedObject.FindProperty("showPoses");
             _propertyShowPoseEditor = serializedObject.FindProperty("showPoseEditor");
-            // _propertyShowBlendEditor = serializedObject.FindProperty("showBlendEditor");
+            _propertyShowBlendEditor = serializedObject.FindProperty("showBlendEditor");
             // _propertyScale = serializedObject.FindProperty("scale");
             
             _propertyShowLeft = serializedObject.FindProperty("showLeft");
@@ -295,7 +295,9 @@ namespace yellowyears.SkeletonPoser
                            ResetToReferencePose(); // Reset new pose instance to reference pose
                        }
                    }
-        
+
+                   GUI.backgroundColor = Color.white;
+                   
                    EditorGUI.EndDisabledGroup();
                    EditorGUILayout.EndHorizontal();
                 }
@@ -360,25 +362,25 @@ namespace yellowyears.SkeletonPoser
                     //
                     // EditorGUI.BeginDisabledGroup(!_poser.FetchSecondaryPose() || !_poser.FetchMainPose());
                     
-                    if (GUILayout.Button("Create Blend", "button"))
-                    {
-                        if (!_propertyBlendWasCreated.boolValue)
-                        {
-                            // Create New
-                            
-                            // blendName.stringValue = "New Blend";
-                            
-                            // from.objectReferenceValue = _propertyPose.objectReferenceValue as XRSkeletonPose;
-                            // to.objectReferenceValue = _propertySecondaryPose.objectReferenceValue as XRSkeletonPose;
-                            
-                            _propertyBlendWasCreated.boolValue = true;
-                        }
-                        else
-                        {
-                            EditorUtility.DisplayDialog("Error!",
-                                "You already have a blend active! You cannot create a new one.", "ok");
-                        }
-                    }
+                    // if (GUILayout.Button("Create Blend", "button"))
+                    // {
+                    //     if (!_propertyBlendWasCreated.boolValue)
+                    //     {
+                    //         // Create New
+                    //         
+                    //         // blendName.stringValue = "New Blend";
+                    //         
+                    //         // from.objectReferenceValue = _propertyPose.objectReferenceValue as XRSkeletonPose;
+                    //         // to.objectReferenceValue = _propertySecondaryPose.objectReferenceValue as XRSkeletonPose;
+                    //         
+                    //         _propertyBlendWasCreated.boolValue = true;
+                    //     }
+                    //     else
+                    //     {
+                    //         EditorUtility.DisplayDialog("Error!",
+                    //             "You already have a blend active! You cannot create a new one.", "ok");
+                    //     }
+                    // }
                 
                     // enabled.boolValue = IndentedFoldoutHeader(enabled.boolValue, blendName.stringValue);
                     //
@@ -407,6 +409,8 @@ namespace yellowyears.SkeletonPoser
                     //
                     //     // if (EditorGUI.EndChangeCheck())
                     // }
+                    
+                    EditorGUILayout.PropertyField(_propertyBlendInput);
                 }
                 
                 EditorGUILayout.EndVertical();
@@ -554,24 +558,24 @@ namespace yellowyears.SkeletonPoser
         
             // Don't overwrite secondary stuff
         
-            if (copy.leftBlendPositions != null)
+            if (copy.leftSecondaryPositions != null)
             {
-                copy.leftBlendPositions = pose.leftBlendPositions;
+                copy.leftSecondaryPositions = pose.leftSecondaryPositions;
             }
         
-            if (copy.leftBlendRotations != null)
+            if (copy.leftSecondaryRotations != null)
             {
-                copy.leftBlendRotations = pose.leftBlendRotations;
+                copy.leftSecondaryRotations = pose.leftSecondaryRotations;
             }
         
-            if (copy.rightBlendPositions != null)
+            if (copy.rightSecondaryPositions != null)
             {
-                copy.rightBlendPositions = pose.rightBlendPositions;
+                copy.rightSecondaryPositions = pose.rightSecondaryPositions;
             }
         
-            if (copy.rightBlendRotations != null)
+            if (copy.rightSecondaryRotations != null)
             {
-                copy.rightBlendRotations = pose.rightBlendRotations;
+                copy.rightSecondaryRotations = pose.rightSecondaryRotations;
             }
 
             _poser.pose = copy;
@@ -597,11 +601,11 @@ namespace yellowyears.SkeletonPoser
             
             var copy = Instantiate(pose);
             
-            copy.leftBlendPositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
-            copy.leftBlendRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
+            copy.leftSecondaryPositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
+            copy.leftSecondaryRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
         
-            copy.rightBlendPositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
-            copy.rightBlendRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
+            copy.rightSecondaryPositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
+            copy.rightSecondaryRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
         
             // Don't overwrite main stuff
         
@@ -732,12 +736,12 @@ namespace yellowyears.SkeletonPoser
 
         private XRSkeletonPose GetSecondaryPose(XRSkeletonPose inputPose)
         {
-            inputPose.leftBlendPositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
-            inputPose.leftBlendRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
+            inputPose.leftSecondaryPositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
+            inputPose.leftSecondaryRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
 
-            inputPose.rightBlendPositions =
+            inputPose.rightSecondaryPositions =
                 _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
-            inputPose.rightBlendRotations =
+            inputPose.rightSecondaryRotations =
                 _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
 
             return inputPose;
@@ -745,11 +749,11 @@ namespace yellowyears.SkeletonPoser
 
         private XRSkeletonPose RemoveSecondaryPose(XRSkeletonPose inputPose)
         {
-            inputPose.leftBlendPositions = null;
-            inputPose.leftBlendRotations = null;
+            inputPose.leftSecondaryPositions = null;
+            inputPose.leftSecondaryRotations = null;
 
-            inputPose.rightBlendPositions = null;
-            inputPose.rightBlendRotations = null;
+            inputPose.rightSecondaryPositions = null;
+            inputPose.rightSecondaryRotations = null;
 
             return inputPose;
         }
@@ -803,11 +807,11 @@ namespace yellowyears.SkeletonPoser
             var leftHandObject = _propertyTempLeft.objectReferenceValue as GameObject;
             var rightHandObject = _propertyTempRight.objectReferenceValue as GameObject;
             
-            var leftBlendPositions = loadedPose.leftBlendPositions;
-            var leftBlendRotations = loadedPose.leftBlendRotations;
+            var leftBlendPositions = loadedPose.leftSecondaryPositions;
+            var leftBlendRotations = loadedPose.leftSecondaryRotations;
 
-            var rightBlendPositions = loadedPose.rightBlendPositions;
-            var rightBlendRotations = loadedPose.rightBlendRotations;
+            var rightBlendPositions = loadedPose.rightSecondaryPositions;
+            var rightBlendRotations = loadedPose.rightSecondaryRotations;
 
             if (leftHandObject == null) return;
 
