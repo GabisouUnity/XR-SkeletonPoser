@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Linq;
 using UnityEditor;
+using UnityEngine.SceneManagement;
 using UnityEngine.XR.Interaction.Toolkit;
 
 namespace yellowyears.SkeletonPoser
@@ -24,13 +25,13 @@ namespace yellowyears.SkeletonPoser
         
         // Serialized Properties
         
-        public enum ActivePose { Main, Secondary }
-
-        public enum BlendInput { Trigger, Grip }
+        public enum SelectedPose { Main, Secondary }
         
-        [HideInInspector] public XRSkeletonPose mainPose;
+        // public enum BlendInput { Trigger, Grip }
+        
+        [HideInInspector] public XRSkeletonPose pose;
         // [HideInInspector] public XRSkeletonPose secondaryPose;
-        // [HideInInspector] [SerializeField] public XRSkeletonPose selectedPose;
+        [HideInInspector] public SelectedPose selectedPose;
         // [HideInInspector] public BlendBehaviour blendBehaviour = new BlendBehaviour();
         // [HideInInspector] public bool blendWasCreated = false;
         // [HideInInspector] public BlendInput blendInput;
@@ -117,7 +118,7 @@ namespace yellowyears.SkeletonPoser
         
         public XRSkeletonPose FetchMainPose()
         {
-            return mainPose;
+            return pose;
         }
         
         // public XRSkeletonPose FetchSecondaryPose()
