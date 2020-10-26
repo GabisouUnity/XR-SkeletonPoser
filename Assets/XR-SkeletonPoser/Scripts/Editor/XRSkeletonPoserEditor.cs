@@ -82,7 +82,7 @@ namespace yellowyears.SkeletonPoser
             
             DrawPoseEditor();
             
-            // DrawBlendEditor();
+            DrawBlendEditor();
             
             serializedObject.ApplyModifiedProperties();
         }
@@ -334,83 +334,84 @@ namespace yellowyears.SkeletonPoser
             }
         }
 
-        // private void DrawBlendEditor()
-        // {
-        //     if (Application.isPlaying)
-        //     {
-        //         EditorGUILayout.LabelField("Cannot modify blends in playmode.");
-        //     }
-        //     else
-        //     {
-        //         EditorGUILayout.BeginVertical("box");
-        //         
-        //         _propertyShowBlendEditor.boolValue =
-        //             IndentedFoldoutHeader(_propertyShowBlendEditor.boolValue, "Blend Editor");
-        //
-        //         if (_propertyShowBlendEditor.boolValue)
-        //         {
-        //             var blender = _propertyBlendBehaviour;
-        //             var enabled = blender.FindPropertyRelative("enabled");
-        //             var blendName = blender.FindPropertyRelative("blendName");
-        //             var from = blender.FindPropertyRelative("from");
-        //             var to = blender.FindPropertyRelative("to");
-        //             
-        //             from.objectReferenceValue = _propertyPose.objectReferenceValue as XRSkeletonPose;
-        //             to.objectReferenceValue = _propertySecondaryPose.objectReferenceValue as XRSkeletonPose;
-        //
-        //             EditorGUI.BeginDisabledGroup(!_poser.FetchSecondaryPose() || !_poser.FetchMainPose());
-        //             
-        //             if (GUILayout.Button("Create Blend", "button"))
-        //             {
-        //                 if (!_propertyBlendWasCreated.boolValue)
-        //                 {
-        //                     // Create New
-        //                     blendName.stringValue = "New Blend";
-        //                     
-        //                     from.objectReferenceValue = _propertyPose.objectReferenceValue as XRSkeletonPose;
-        //                     to.objectReferenceValue = _propertySecondaryPose.objectReferenceValue as XRSkeletonPose;
-        //                     
-        //                     _propertyBlendWasCreated.boolValue = true;
-        //                 }
-        //                 else
-        //                 {
-        //                     EditorUtility.DisplayDialog("Error!",
-        //                         "You already have a blend active! You cannot create a new one.", "ok");
-        //                 }
-        //             }
-        //
-        //             enabled.boolValue = IndentedFoldoutHeader(enabled.boolValue, blendName.stringValue);
-        //
-        //             if (enabled.boolValue)
-        //             {
-        //                 
-        //                 EditorGUI.BeginChangeCheck();                        
-        //                 EditorGUILayout.PropertyField(blendName);
-        //                 if (EditorGUI.EndChangeCheck())
-        //                 {
-        //                     if (string.IsNullOrEmpty(blendName.stringValue)) blendName.stringValue = "New Blend";
-        //                 }
-        //
-        //                 EditorGUILayout.Space();
-        //
-        //                 var pose = _propertyPose.objectReferenceValue as XRSkeletonPose;
-        //                 var secondaryPose = _propertySecondaryPose.objectReferenceValue as XRSkeletonPose;
-        //
-        //                 if (!(pose is null)) EditorGUILayout.LabelField("Primary Pose: " + pose.name);
-        //                 if (!(secondaryPose is null)) EditorGUILayout.LabelField("Secondary Pose: " + secondaryPose.name);
-        //                 
-        //                 // EditorGUI.BeginChangeCheck();
-        //
-        //                 EditorGUIUtility.labelWidth = 70;
-        //                 EditorGUILayout.PropertyField(_propertyBlendInput);
-        //
-        //                 // if (EditorGUI.EndChangeCheck())
-        //             }
-        //         }
-        //
-        //         EditorGUILayout.EndVertical();
-        //     }
-        // }
+        private void DrawBlendEditor()
+        {
+            if (Application.isPlaying)
+            {
+                EditorGUILayout.LabelField("Cannot modify blends in playmode.");
+            }
+            else
+            {
+                EditorGUILayout.BeginVertical("box");
+                
+                _propertyShowBlendEditor.boolValue =
+                    IndentedFoldoutHeader(_propertyShowBlendEditor.boolValue, "Blend Editor");
+                
+                if (_propertyShowBlendEditor.boolValue)
+                {
+                    // var blender = _propertyBlendBehaviour;
+                    // var enabled = blender.FindPropertyRelative("enabled");
+                    // var blendName = blender.FindPropertyRelative("blendName");
+                    // var from = blender.FindPropertyRelative("from");
+                    // var to = blender.FindPropertyRelative("to");
+                    
+                    // from.objectReferenceValue = _propertyPose.objectReferenceValue as XRSkeletonPose;
+                    // to.objectReferenceValue = _propertySecondaryPose.objectReferenceValue as XRSkeletonPose;
+                    //
+                    // EditorGUI.BeginDisabledGroup(!_poser.FetchSecondaryPose() || !_poser.FetchMainPose());
+                    
+                    if (GUILayout.Button("Create Blend", "button"))
+                    {
+                        if (!_propertyBlendWasCreated.boolValue)
+                        {
+                            // Create New
+                            
+                            // blendName.stringValue = "New Blend";
+                            
+                            // from.objectReferenceValue = _propertyPose.objectReferenceValue as XRSkeletonPose;
+                            // to.objectReferenceValue = _propertySecondaryPose.objectReferenceValue as XRSkeletonPose;
+                            
+                            _propertyBlendWasCreated.boolValue = true;
+                        }
+                        else
+                        {
+                            EditorUtility.DisplayDialog("Error!",
+                                "You already have a blend active! You cannot create a new one.", "ok");
+                        }
+                    }
+                
+                    // enabled.boolValue = IndentedFoldoutHeader(enabled.boolValue, blendName.stringValue);
+                    //
+                    // if (enabled.boolValue)
+                    // {
+                    //     
+                    //     EditorGUI.BeginChangeCheck();                        
+                    //     EditorGUILayout.PropertyField(blendName);
+                    //     if (EditorGUI.EndChangeCheck())
+                    //     {
+                    //         if (string.IsNullOrEmpty(blendName.stringValue)) blendName.stringValue = "New Blend";
+                    //     }
+                    //
+                    //     EditorGUILayout.Space();
+                    //
+                    //     var pose = _propertyPose.objectReferenceValue as XRSkeletonPose;
+                    //     var secondaryPose = _propertySecondaryPose.objectReferenceValue as XRSkeletonPose;
+                    //
+                    //     if (!(pose is null)) EditorGUILayout.LabelField("Primary Pose: " + pose.name);
+                    //     if (!(secondaryPose is null)) EditorGUILayout.LabelField("Secondary Pose: " + secondaryPose.name);
+                    //     
+                    //     // EditorGUI.BeginChangeCheck();
+                    //
+                    //     EditorGUIUtility.labelWidth = 70;
+                    //     EditorGUILayout.PropertyField(_propertyBlendInput);
+                    //
+                    //     // if (EditorGUI.EndChangeCheck())
+                    // }
+                }
+                
+                EditorGUILayout.EndVertical();
+            }
+        }
         
         private bool IndentedFoldoutHeader(bool fold, string text, int indent = 1)
         {
