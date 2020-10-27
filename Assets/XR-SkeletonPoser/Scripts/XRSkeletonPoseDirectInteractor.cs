@@ -197,6 +197,7 @@ namespace yellowyears.SkeletonPoser
             
 
             _isSkeletonPoseInteractable = false;
+            _shouldCheckForBlendInput = false;
         }
 
         private void CheckForBlendInput()
@@ -221,7 +222,7 @@ namespace yellowyears.SkeletonPoser
                         device.TryGetFeatureValue(triggerUsage, out var triggerValue);
             
                         // Blend Pose
-                        _selectedPoser.BlendRightPose(_handBones, triggerValue);
+                        _selectedPoser.BlendLeftPose(_handBones, triggerValue);
                         break;
                     // case XRSkeletonPoser.BlendInput.Grip:
                     //     // Get value

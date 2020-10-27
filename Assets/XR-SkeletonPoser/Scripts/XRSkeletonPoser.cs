@@ -136,60 +136,6 @@ namespace yellowyears.SkeletonPoser
                 fingers[i].localRotation = Quaternion.Slerp(mainPoseRot[i], secondaryPoseRot[i], blendValue);
             }
         }
-
-        // public XRSkeletonPose GetBlendToPose(XRSkeletonPose inputPose)
-        // {
-        //     return inputPose.blendTo;
-        // }
-        //
-        // public string GetBlendName(XRSkeletonPose inputPose)
-        // {
-        //     return inputPose.blendName;
-        // }
-        
-        // public Quaternion InverseBoneRotations(Quaternion boneRot)
-        // {
-        //     Quaternion normalQuat = boneRot;
-        //     float mirrorY = -normalQuat.y;
-        //     float mirrorZ = -normalQuat.z;
-        //     
-        //     Quaternion newQuat = new Quaternion(boneRot.x, mirrorY, mirrorZ, boneRot.w);
-        //     return newQuat;
-        // }
-        
-        // public Vector3 InverseBonePositions(Vector3 bonePos)
-        // {
-        //     Vector3 normalVector3 = bonePos;
-        //     float mirrorY = -normalVector3.y;
-        //     float mirrorZ = normalVector3.z;
-        //     
-        //     Vector3 newVector3 = new Vector3(bonePos.x, mirrorY, mirrorZ);
-        //     return newVector3;
-        // }
-
-        // public Quaternion MirrorBoneRotation(Quaternion boneRot)
-        // {
-        //     boneRot.y = boneRot.y * -1;
-        //     boneRot.z = boneRot.z * -1;
-        //
-        //     return boneRot;
-        // }
-        //
-        // public Vector3 MirrorBonePosition(Vector3 bonePos)
-        // {
-        //     bonePos = bonePos * -1;
-        //
-        //     return bonePos;
-        // }
-
-        // [Serializable]
-        // public class BlendBehaviour
-        // {
-        //     public string blendName;
-        //     public bool enabled = false;
-        //     public XRSkeletonPose from;
-        //     public XRSkeletonPose to;
-        // }
         
     }
 }

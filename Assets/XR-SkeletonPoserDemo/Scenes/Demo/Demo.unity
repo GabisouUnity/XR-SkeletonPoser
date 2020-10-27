@@ -4675,8 +4675,8 @@ MonoBehaviour:
   blendInput: 0
   showPoses: 1
   showPoseEditor: 1
-  showBlendEditor: 0
-  useBlend: 0
+  showBlendEditor: 1
+  useBlend: 1
   showLeft: 0
   tempLeft: {fileID: 0}
   showRight: 0
