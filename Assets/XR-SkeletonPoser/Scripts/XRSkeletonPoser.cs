@@ -110,7 +110,7 @@ namespace yellowyears.SkeletonPoser
         //     return selectedPose;
         // }
         
-        public XRSkeletonPose FetchMainPose()
+        public XRSkeletonPose FetchPose()
         {
             return pose;
         }

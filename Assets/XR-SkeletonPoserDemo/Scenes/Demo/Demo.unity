@@ -2788,12 +2788,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pose: {fileID: 11400000, guid: 9fbfdfa493d8f46408ff5376e13a91f5, type: 2}
-  selectedPose: 0
+  selectedPose: 1
   blendInput: 0
   showPoses: 1
   showPoseEditor: 1
   showBlendEditor: 1
-  useBlend: 0
+  useBlend: 1
   showLeft: 1
   tempLeft: {fileID: 849793044}
   showRight: 1
@@ -4670,8 +4670,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f1eceacd75691a4d9fb4fb19618e242, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pose: {fileID: 0}
-  selectedPose: 0
+  pose: {fileID: 11400000, guid: a9dd64d05c651524283af80795d28bb6, type: 2}
+  selectedPose: 1
   blendInput: 0
   showPoses: 1
   showPoseEditor: 1

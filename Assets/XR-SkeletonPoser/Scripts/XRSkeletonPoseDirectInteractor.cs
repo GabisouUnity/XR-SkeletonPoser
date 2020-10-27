@@ -166,46 +166,7 @@ namespace yellowyears.SkeletonPoser
             _handBones[0].localPosition = Vector3.zero;
             _handBones[0].localRotation = Quaternion.identity;
         }
-
-        // private void LerpPose(XRSkeletonPose pose)
-        // {
-        //     _handBones = handObject.GetComponentsInChildren<Transform>().ToArray();
-        //
-        //     var leftPosePos = pose.leftBonePositions;
-        //     var leftPoseRot = pose.leftBoneRotations;
-        //
-        //     var rightPosePos = pose.rightBonePositions;
-        //     var rightPoseRot = pose.rightBoneRotations;
-        //
-        //     switch (handType)
-        //     {
-        //         case HandType.Left:
-        //         {
-        //             for (int i = 0; i < _handBones.Length; i++)
-        //             {
-        //                 StartCoroutine(LerpPosition(_handBones[i], leftPosePos[i], _poserSettings.fingerLerpTime));
-        //                 // _handBones[i].localPosition = Vector3.Lerp(_handBones[i].localPosition, leftPosePos[i],
-        //                 //     _poserSettings.fingerLerpTime);
-        //             }
-        //
-        //             break;
-        //         }
-        //         case HandType.Right:
-        //         {
-        //             for (int i = 0; i < _handBones.Length; i++)
-        //             {
-        //                 StartCoroutine(LerpPosition(_handBones[i], rightPosePos[i], _poserSettings.fingerLerpTime));
-        //                 // _handBones[i].localPosition = Vector3.Lerp(_handBones[i].localPosition, rightPosePos[i],
-        //                 //     _poserSettings.fingerLerpTime);
-        //             }
-        //
-        //             break;
-        //         }
-        //         default:
-        //             throw new ArgumentOutOfRangeException();
-        //     }
-        // }
-
+        
         protected override void OnSelectEnter(XRBaseInteractable interactable)
         {
             base.OnSelectEnter(interactable);
@@ -213,14 +174,8 @@ namespace yellowyears.SkeletonPoser
             // Do not run the below code if the object isn't a skeleton poser, ie do not pose hand if not a poser interactable
             if (!interactable.TryGetComponent(out _selectedPoser)) return;
 
-            var pose = _selectedPoser.FetchMainPose();
-
-            // if (_poserSettings.lerpFingersOnSelect)
-            // {
-            //     LerpPose(pose);
-            // }
-            // else SetPose(pose);
-
+            var pose = _selectedPoser.FetchPose();
+            
             SetPose(pose);
             
             SetOffset();
@@ -228,6 +183,7 @@ namespace yellowyears.SkeletonPoser
             // if (_selectedPoser.blendWasCreated) _shouldCheckForBlendInput = true;
 
             _isSkeletonPoseInteractable = true;
+            _shouldCheckForBlendInput = _selectedPoser.useBlend;
         }
         
         protected override void OnSelectExit(XRBaseInteractable interactable)
@@ -302,29 +258,6 @@ namespace yellowyears.SkeletonPoser
             }
             
         }
-
-        // private IEnumerator LerpPosition(Transform start, Vector3 target, float time)
-        // {
-        //     float currentTime = 0;
-        //     var currentPos = start.localPosition;
-        //
-        //     while (currentTime < time)
-        //     {
-        //         currentTime += Time.deltaTime / time;
-        //         start.position = Vector3.Lerp(currentPos, target, time);
-        //         yield return null;
-        //     }
-        // }
-
-        // private IEnumerator LerpRotation(Quaternion start, Vector3 target, float time)
-        // {
-        //     while (start)
-        //     {
-        //         
-        //     }
-        //
-        //     yield return null;
-        // }
         
     }
 }

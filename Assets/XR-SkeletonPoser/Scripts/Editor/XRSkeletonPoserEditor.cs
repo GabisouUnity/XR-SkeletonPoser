@@ -106,6 +106,8 @@ namespace yellowyears.SkeletonPoser
                 EditorGUILayout.BeginHorizontal();
                 EditorGUI.BeginDisabledGroup(!_propertyShowLeft.boolValue || !_propertyShowRight.boolValue || _poser.pose == null);
 
+                // TODO: disable buttons if there is no saved data
+                
                 if (GUILayout.Button(_propertyPose.name + " (MAIN)"))
                 {
                     // _propertySelectedPose = _propertyPose;
@@ -362,7 +364,7 @@ namespace yellowyears.SkeletonPoser
                     // from.objectReferenceValue = _propertyPose.objectReferenceValue as XRSkeletonPose;
                     // to.objectReferenceValue = _propertySecondaryPose.objectReferenceValue as XRSkeletonPose;
                     //
-                    // EditorGUI.BeginDisabledGroup(!_poser.FetchSecondaryPose() || !_poser.FetchMainPose());
+                    // EditorGUI.BeginDisabledGroup(!_poser.FetchSecondaryPose() || !_poser.FetchPose());
                     
                     // if (GUILayout.Button("Create Blend", "button"))
                     // {
@@ -526,7 +528,7 @@ namespace yellowyears.SkeletonPoser
         //     // Create copy of pose to stop error whilst saving ("Object already exists")
         //     var copy = Instantiate(inputPose);
         //
-        //     // var main = _poser.FetchMainPose();
+        //     // var main = _poser.FetchPose();
         //     // var secondary = _poser.FetchSecondaryPose();
         //     
         //     copy.leftBonePositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
@@ -767,7 +769,7 @@ namespace yellowyears.SkeletonPoser
 
         private void LoadPose(XRSkeletonPose loadedPose)
         {
-            // var loadedPose = _poser.FetchMainPose();
+            // var loadedPose = _poser.FetchPose();
 
             var leftHandObject = _propertyTempLeft.objectReferenceValue as GameObject;
             var rightHandObject = _propertyTempRight.objectReferenceValue as GameObject;
