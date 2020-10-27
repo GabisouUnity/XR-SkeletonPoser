@@ -10,24 +10,13 @@ namespace yellowyears.SkeletonPoser
     [RequireComponent(typeof(XRGrabInteractable))]
     public class XRSkeletonPoser : MonoBehaviour
     {
-
-        // [Tooltip("Left hand model to be spawned in as a left preview. Should be the same as your in game left hand")]
-        // public GameObject leftHand = null;
-        //
-        // [Tooltip("Left hand model to be spawned in as a left preview. Should be the same as your in game left hand")] 
-        // public GameObject rightHand = null;
-
-        // #region Editor Stuff
-        //
-        // public string[] poseNames;
-        //
-        // #endregion
         
         // Serialized Properties
         
         public enum SelectedPose { Main, Secondary }
         
-        public enum BlendInput { Trigger, Grip }
+        // Only trigger right now, will be adding more soon along with boolean / analogue input options.
+        public enum BlendInput { Trigger }
         
         [HideInInspector] public XRSkeletonPose pose;
         [HideInInspector] public SelectedPose selectedPose;
@@ -38,8 +27,6 @@ namespace yellowyears.SkeletonPoser
         [HideInInspector] public bool showPoseEditor = true; // Used in editor foldout
         [HideInInspector] public bool showBlendEditor = false;
         [HideInInspector] public bool useBlend = false;
-
-        // [HideInInspector] public float scale;
         
         [HideInInspector] public bool showLeft;
         [HideInInspector] public GameObject tempLeft;
@@ -105,20 +92,10 @@ namespace yellowyears.SkeletonPoser
             methodInfo?.Invoke(window, new object[] {gameObject.GetInstanceID(), expand});
         }
         
-        // public XRSkeletonPose FetchSelectedPose()
-        // {
-        //     return selectedPose;
-        // }
-        
         public XRSkeletonPose FetchPose()
         {
             return pose;
         }
-        
-        // public XRSkeletonPose FetchSecondaryPose()
-        // {
-        //     return secondaryPose;
-        // }
         
         public Vector3[] GetBonePositions(GameObject target)
         {

@@ -207,7 +207,7 @@ namespace yellowyears.SkeletonPoser
             
             // Get input and convert to common usages
             var triggerUsage = CommonUsages.trigger;
-            var gripUsage = CommonUsages.trigger;
+            // var gripUsage = CommonUsages.trigger;
 
             _handBones = handObject.GetComponentsInChildren<Transform>().ToArray();
 
@@ -223,15 +223,15 @@ namespace yellowyears.SkeletonPoser
                         // Blend Pose
                         _selectedPoser.BlendRightPose(_handBones, triggerValue);
                         break;
-                    case XRSkeletonPoser.BlendInput.Grip:
-                        // Get value
-                        device.TryGetFeatureValue(gripUsage, out var gripValue);
-            
-                        // Blend Pose
-                        _selectedPoser.BlendRightPose(_handBones, gripValue);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
+                    // case XRSkeletonPoser.BlendInput.Grip:
+                    //     // Get value
+                    //     device.TryGetFeatureValue(gripUsage, out var gripValue);
+                    //
+                    //     // Blend Pose
+                    //     _selectedPoser.BlendRightPose(_handBones, gripValue);
+                    //     break;
+                    // default:
+                    //     throw new ArgumentOutOfRangeException();
                 }
             }
             else if (handType == HandType.Right)
@@ -245,15 +245,15 @@ namespace yellowyears.SkeletonPoser
                         // Blend Pose
                         _selectedPoser.BlendRightPose(_handBones, triggerValue);
                         break;
-                    case XRSkeletonPoser.BlendInput.Grip:
-                        // Get value
-                        device.TryGetFeatureValue(gripUsage, out var gripValue);
-            
-                        // Blend Pose
-                        _selectedPoser.BlendRightPose(_handBones, gripValue);
-                        break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
+                    // case XRSkeletonPoser.BlendInput.Grip:
+                    //     // Get value
+                    //     device.TryGetFeatureValue(gripUsage, out var gripValue);
+                    //
+                    //     // Blend Pose
+                    //     _selectedPoser.BlendRightPose(_handBones, gripValue);
+                    //     break;
+                    // default:
+                    //     throw new ArgumentOutOfRangeException();
                 }
             }
             
