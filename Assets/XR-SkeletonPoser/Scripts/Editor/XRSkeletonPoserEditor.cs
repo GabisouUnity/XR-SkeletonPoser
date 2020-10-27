@@ -24,6 +24,7 @@ namespace yellowyears.SkeletonPoser
         private SerializedProperty _propertyShowPoses = null;
         private SerializedProperty _propertyShowPoseEditor = null;
         private SerializedProperty _propertyShowBlendEditor = null;
+        private SerializedProperty _propertyUseBlend = null;
         // private SerializedProperty _propertyScale = null;
 
         // private bool _updateHands = false;
@@ -33,7 +34,7 @@ namespace yellowyears.SkeletonPoser
 
         private SerializedProperty _propertyShowRight = null;
         private SerializedProperty _propertyTempRight = null;
-        
+
         private void OnEnable()
         {
             _poser = (XRSkeletonPoser) target;
@@ -52,6 +53,7 @@ namespace yellowyears.SkeletonPoser
             _propertyShowPoses = serializedObject.FindProperty("showPoses");
             _propertyShowPoseEditor = serializedObject.FindProperty("showPoseEditor");
             _propertyShowBlendEditor = serializedObject.FindProperty("showBlendEditor");
+            _propertyUseBlend = serializedObject.FindProperty("useBlend");
             // _propertyScale = serializedObject.FindProperty("scale");
             
             _propertyShowLeft = serializedObject.FindProperty("showLeft");
@@ -102,7 +104,7 @@ namespace yellowyears.SkeletonPoser
                 EditorGUILayout.PropertyField(_propertyPose);
                 
                 EditorGUILayout.BeginHorizontal();
-                EditorGUI.BeginDisabledGroup(!_propertyShowLeft.boolValue || !_propertyShowRight.boolValue);
+                EditorGUI.BeginDisabledGroup(!_propertyShowLeft.boolValue || !_propertyShowRight.boolValue || _poser.pose == null);
 
                 if (GUILayout.Button(_propertyPose.name + " (MAIN)"))
                 {
@@ -143,8 +145,8 @@ namespace yellowyears.SkeletonPoser
                     GUI.skin.font = poserSettings.guiFont;
                 }
         
-                // Create new instance of XRSkeletonPose, this is the one that is edited
-                var newPose = CreateInstance<XRSkeletonPose>();
+                // // Create new instance of XRSkeletonPose, this is the one that is edited
+                // var newPose = CreateInstance<XRSkeletonPose>();
         
                 // _propertyShowPoseEditor.boolValue = EditorGUILayout.BeginFoldoutHeaderGroup(_propertyShowPoseEditor.boolValue, "Show Pose Editor");
                 // _propertyShowPoseEditor.boolValue = EditorGUILayout.Foldout(_propertyShowPoseEditor.boolValue, "Show Pose Editor");
@@ -409,8 +411,13 @@ namespace yellowyears.SkeletonPoser
                     //
                     //     // if (EditorGUI.EndChangeCheck())
                     // }
-                    
-                    EditorGUILayout.PropertyField(_propertyBlendInput);
+
+                    EditorGUILayout.PropertyField(_propertyUseBlend);
+
+                    if (_propertyUseBlend.boolValue)
+                    {
+                        EditorGUILayout.PropertyField(_propertyBlendInput);
+                    }
                 }
                 
                 EditorGUILayout.EndVertical();

@@ -37,6 +37,7 @@ namespace yellowyears.SkeletonPoser
         [HideInInspector] public bool showPoses = false;
         [HideInInspector] public bool showPoseEditor = true; // Used in editor foldout
         [HideInInspector] public bool showBlendEditor = false;
+        [HideInInspector] public bool useBlend = false;
 
         // [HideInInspector] public float scale;
         
@@ -204,14 +205,14 @@ namespace yellowyears.SkeletonPoser
         //     return bonePos;
         // }
 
-        [Serializable]
-        public class BlendBehaviour
-        {
-            public string blendName;
-            public bool enabled = false;
-            public XRSkeletonPose from;
-            public XRSkeletonPose to;
-        }
+        // [Serializable]
+        // public class BlendBehaviour
+        // {
+        //     public string blendName;
+        //     public bool enabled = false;
+        //     public XRSkeletonPose from;
+        //     public XRSkeletonPose to;
+        // }
         
     }
 }
