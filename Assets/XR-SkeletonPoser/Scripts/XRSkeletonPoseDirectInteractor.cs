@@ -111,9 +111,7 @@ namespace yellowyears.SkeletonPoser
         {
             // Get grabbable's attach point
             var selectTargetVar = ((XRGrabInteractable) selectTarget);
-
-            // var selectTargetAttach = ((XRGrabInteractable) selectTarget).attachTransform;
-
+            
             // Move first index (hand model parent) to the grabbable's attach transform
             if (selectTargetVar.attachTransform == null) return;
 
@@ -179,9 +177,7 @@ namespace yellowyears.SkeletonPoser
             SetPose(pose);
             
             SetOffset();
-
-            // if (_selectedPoser.blendWasCreated) _shouldCheckForBlendInput = true;
-
+            
             _isSkeletonPoseInteractable = true;
             _shouldCheckForBlendInput = _selectedPoser.useBlend;
         }
@@ -193,8 +189,6 @@ namespace yellowyears.SkeletonPoser
             if (_isSkeletonPoseInteractable)
                 
                 SetDefaultPose(); // Reset back to default bone pose on select exit if it was a skeleton poser
-            // if (_selectedPoser.blendWasCreated) _shouldCheckForBlendInput = false;
-            
 
             _isSkeletonPoseInteractable = false;
             _shouldCheckForBlendInput = false;
@@ -208,7 +202,6 @@ namespace yellowyears.SkeletonPoser
             
             // Get input and convert to common usages
             var triggerUsage = CommonUsages.trigger;
-            // var gripUsage = CommonUsages.trigger;
 
             _handBones = handObject.GetComponentsInChildren<Transform>().ToArray();
 
@@ -223,16 +216,8 @@ namespace yellowyears.SkeletonPoser
             
                         // Blend Pose
                         _selectedPoser.BlendLeftPose(_handBones, triggerValue);
+                        SetOffset();
                         break;
-                    // case XRSkeletonPoser.BlendInput.Grip:
-                    //     // Get value
-                    //     device.TryGetFeatureValue(gripUsage, out var gripValue);
-                    //
-                    //     // Blend Pose
-                    //     _selectedPoser.BlendRightPose(_handBones, gripValue);
-                    //     break;
-                    // default:
-                    //     throw new ArgumentOutOfRangeException();
                 }
             }
             else if (handType == HandType.Right)
@@ -245,16 +230,8 @@ namespace yellowyears.SkeletonPoser
             
                         // Blend Pose
                         _selectedPoser.BlendRightPose(_handBones, triggerValue);
+                        SetOffset();
                         break;
-                    // case XRSkeletonPoser.BlendInput.Grip:
-                    //     // Get value
-                    //     device.TryGetFeatureValue(gripUsage, out var gripValue);
-                    //
-                    //     // Blend Pose
-                    //     _selectedPoser.BlendRightPose(_handBones, gripValue);
-                    //     break;
-                    // default:
-                    //     throw new ArgumentOutOfRangeException();
                 }
             }
             
