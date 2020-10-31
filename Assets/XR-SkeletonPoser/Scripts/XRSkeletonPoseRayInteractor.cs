@@ -37,12 +37,12 @@ namespace yellowyears.SkeletonPoser
             switch (handType)
             {
                 case HandType.Left:
-                    pose.leftBonePositions = handObject.GetComponentsInChildren<Transform>().Select(x => x.localPosition).ToArray();
-                    pose.leftBoneRotations = handObject.GetComponentsInChildren<Transform>().Select(x => x.localRotation).ToArray();
+                    pose.leftHandPositions = handObject.GetComponentsInChildren<Transform>().Select(x => x.localPosition).ToArray();
+                    pose.leftHandRotations = handObject.GetComponentsInChildren<Transform>().Select(x => x.localRotation).ToArray();
                     break;
                 case HandType.Right:
-                    pose.rightBonePositions = handObject.GetComponentsInChildren<Transform>().Select(x => x.localPosition).ToArray();
-                    pose.rightBoneRotations = handObject.GetComponentsInChildren<Transform>().Select(x => x.localRotation).ToArray();
+                    pose.rightHandPositions = handObject.GetComponentsInChildren<Transform>().Select(x => x.localPosition).ToArray();
+                    pose.rightHandRotations = handObject.GetComponentsInChildren<Transform>().Select(x => x.localRotation).ToArray();
                     break;
             }
 
@@ -57,8 +57,8 @@ namespace yellowyears.SkeletonPoser
                 {
                     for (int i = 0; i < _handBones.Length; i++)
                     {
-                        _handBones[i].localPosition = _defaultPose.leftBonePositions[i];
-                        _handBones[i].localRotation = _defaultPose.leftBoneRotations[i];
+                        _handBones[i].localPosition = _defaultPose.leftHandPositions[i];
+                        _handBones[i].localRotation = _defaultPose.leftHandRotations[i];
                     }
                 
                     // Reset main hand object to local 0,0,0
@@ -71,8 +71,8 @@ namespace yellowyears.SkeletonPoser
                 {
                     for (int i = 0; i < _handBones.Length; i++)
                     {
-                        _handBones[i].localPosition = _defaultPose.rightBonePositions[i];
-                        _handBones[i].localRotation = _defaultPose.rightBoneRotations[i];
+                        _handBones[i].localPosition = _defaultPose.rightHandPositions[i];
+                        _handBones[i].localRotation = _defaultPose.rightHandRotations[i];
                     }
                 
                     // Reset main hand object to local 0,0,0
@@ -100,11 +100,11 @@ namespace yellowyears.SkeletonPoser
             
             _handBones = handObject.GetComponentsInChildren<Transform>().ToArray();
 
-            var leftPosePos = pose.leftBonePositions;
-            var leftPoseRot = pose.leftBoneRotations;
+            var leftPosePos = pose.leftHandPositions;
+            var leftPoseRot = pose.leftHandRotations;
 
-            var rightPosePos = pose.rightBonePositions;
-            var rightPoseRot = pose.rightBoneRotations;
+            var rightPosePos = pose.rightHandPositions;
+            var rightPoseRot = pose.rightHandRotations;
             
             // Set values to loaded pose
 

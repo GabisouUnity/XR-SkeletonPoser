@@ -109,7 +109,7 @@ namespace yellowyears.SkeletonPoser
 
         public void BlendLeftPose(Transform[] fingers, float blendValue)
         {
-            var mainPosePos = pose.leftBonePositions;
+            var mainPosePos = pose.leftHandPositions;
             var mainPoseRot = pose.leftSecondaryRotations;
 
             var secondaryPosePos = pose.leftSecondaryPositions;
@@ -124,7 +124,7 @@ namespace yellowyears.SkeletonPoser
         
         public void BlendRightPose(Transform[] fingers, float blendValue)
         {
-            var mainPosePos = pose.rightBonePositions;
+            var mainPosePos = pose.rightHandPositions;
             var mainPoseRot = pose.rightSecondaryRotations;
 
             var secondaryPosePos = pose.rightSecondaryPositions;

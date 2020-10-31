@@ -67,11 +67,11 @@ namespace yellowyears.SkeletonPoser
         {
             // Get default values from the hand prefab.
             
-            _defaultPose.leftBonePositions = _poser.GetBonePositions(XRSkeletonPoserSettings.Instance.leftHand);
-            _defaultPose.leftBoneRotations = _poser.GetBoneRotations(XRSkeletonPoserSettings.Instance.leftHand);
+            _defaultPose.leftHandPositions = _poser.GetBonePositions(XRSkeletonPoserSettings.Instance.leftHand);
+            _defaultPose.leftHandRotations = _poser.GetBoneRotations(XRSkeletonPoserSettings.Instance.leftHand);
 
-            _defaultPose.rightBonePositions = _poser.GetBonePositions(XRSkeletonPoserSettings.Instance.rightHand);
-            _defaultPose.rightBoneRotations = _poser.GetBoneRotations(XRSkeletonPoserSettings.Instance.rightHand);
+            _defaultPose.rightHandPositions = _poser.GetBonePositions(XRSkeletonPoserSettings.Instance.rightHand);
+            _defaultPose.rightHandRotations = _poser.GetBoneRotations(XRSkeletonPoserSettings.Instance.rightHand);
         }
         
         public override void OnInspectorGUI()
@@ -451,33 +451,33 @@ namespace yellowyears.SkeletonPoser
 
                 // private void CopyToRight(XRSkeletonPose source, XRSkeletonPose destination)
         // {
-        //     destination.leftBonePositions = source.leftBonePositions;
-        //     destination.leftBoneRotations = source.leftBoneRotations;
+        //     destination.leftHandPositions = source.leftHandPositions;
+        //     destination.leftHandRotations = source.leftHandRotations;
         //     
-        //     // destination.rightBoneRotations = source.rightBoneRotations;
-        //     // destination.rightBonePositions = source.rightBonePositions;
+        //     // destination.rightHandRotations = source.rightHandRotations;
+        //     // destination.rightHandPositions = source.rightHandPositions;
         //     
-        //     for (int i = 0; i < destination.rightBoneRotations.Length; i++)
+        //     for (int i = 0; i < destination.rightHandRotations.Length; i++)
         //     {
-        //         // destination.rightBoneRotations[i] = source.leftBoneRotations[i];
-        //         // destination.rightBoneRotations[i] = _poser.MirrorBoneRotation(source.leftBoneRotations[i]);
+        //         // destination.rightHandRotations[i] = source.leftHandRotations[i];
+        //         // destination.rightHandRotations[i] = _poser.MirrorBoneRotation(source.leftHandRotations[i]);
         //         
-        //         var reflectedRotation = new Quaternion(-source.rightBoneRotations[i].y, source.rightBoneRotations[i].y, source.rightBoneRotations[i].z, -source.rightBoneRotations[i].w);
+        //         var reflectedRotation = new Quaternion(-source.rightHandRotations[i].y, source.rightHandRotations[i].y, source.rightHandRotations[i].z, -source.rightHandRotations[i].w);
         //
-        //         destination.rightBoneRotations[i] = reflectedRotation;
+        //         destination.rightHandRotations[i] = reflectedRotation;
         //
-        //         // EditorUtility.DisplayProgressBar("Copying...", "Copying right hand pose", i / destination.leftBoneRotations.Length / 2f);
+        //         // EditorUtility.DisplayProgressBar("Copying...", "Copying right hand pose", i / destination.leftHandRotations.Length / 2f);
         //     }
         //     
         //     // Save it (if saved using SavePose() it overwrites the data for the assigned bone pos and rot)
         //
         //     var copy = CreateInstance<XRSkeletonPose>();
         //
-        //     copy.leftBonePositions = destination.leftBonePositions;
-        //     copy.leftBoneRotations = destination.leftBoneRotations;
+        //     copy.leftHandPositions = destination.leftHandPositions;
+        //     copy.leftHandRotations = destination.leftHandRotations;
         //
-        //     // copy.rightBonePositions = destination.rightBonePositions;
-        //     copy.rightBoneRotations = destination.rightBoneRotations;
+        //     // copy.rightHandPositions = destination.rightHandPositions;
+        //     copy.rightHandRotations = destination.rightHandRotations;
         //     
         //     if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))
         //     {
@@ -501,14 +501,14 @@ namespace yellowyears.SkeletonPoser
         //     
         //     var rightTransforms = rightHandObject.GetComponentsInChildren<Transform>().ToArray();
         //
-        //     // for (int i = 0; i < copy.rightBonePositions.Length; i++)
+        //     // for (int i = 0; i < copy.rightHandPositions.Length; i++)
         //     // {
-        //     //     rightTransforms[i].localPosition = copy.rightBonePositions[i];
+        //     //     rightTransforms[i].localPosition = copy.rightHandPositions[i];
         //     // }
         //     
-        //     for (int i = 0; i < copy.rightBoneRotations.Length; i++)
+        //     for (int i = 0; i < copy.rightHandRotations.Length; i++)
         //     {
-        //         rightTransforms[i].localRotation = copy.rightBoneRotations[i];
+        //         rightTransforms[i].localRotation = copy.rightHandRotations[i];
         //     }
         //     
         //     // EditorUtility.ClearProgressBar();
@@ -531,11 +531,11 @@ namespace yellowyears.SkeletonPoser
         //     // var main = _poser.FetchPose();
         //     // var secondary = _poser.FetchSecondaryPose();
         //     
-        //     copy.leftBonePositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
-        //     copy.leftBoneRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
+        //     copy.leftHandPositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
+        //     copy.leftHandRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
         //
-        //     copy.rightBonePositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
-        //     copy.rightBoneRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
+        //     copy.rightHandPositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
+        //     copy.rightHandRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
         //
         //     // Set pose to new pose data to avoid the need for reassignment after saving
         //     // _poser.selectedPose = copy;
@@ -559,11 +559,11 @@ namespace yellowyears.SkeletonPoser
             
             var copy = Instantiate(pose);
             
-            copy.leftBonePositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
-            copy.leftBoneRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
+            copy.leftHandPositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
+            copy.leftHandRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
         
-            copy.rightBonePositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
-            copy.rightBoneRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
+            copy.rightHandPositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
+            copy.rightHandRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
         
             // Don't overwrite secondary stuff
         
@@ -618,24 +618,24 @@ namespace yellowyears.SkeletonPoser
         
             // Don't overwrite main stuff
         
-            if (copy.leftBonePositions != null)
+            if (copy.leftHandPositions != null)
             {
-                copy.leftBonePositions = pose.leftBonePositions;
+                copy.leftHandPositions = pose.leftHandPositions;
             }
         
-            if (copy.leftBoneRotations != null)
+            if (copy.leftHandRotations != null)
             {
-                copy.leftBoneRotations = pose.leftBoneRotations;
+                copy.leftHandRotations = pose.leftHandRotations;
             }
         
-            if (copy.rightBonePositions != null)
+            if (copy.rightHandPositions != null)
             {
-                copy.rightBonePositions = pose.rightBonePositions;
+                copy.rightHandPositions = pose.rightHandPositions;
             }
         
-            if (copy.rightBoneRotations != null)
+            if (copy.rightHandRotations != null)
             {
-                copy.rightBoneRotations = pose.rightBoneRotations;
+                copy.rightHandRotations = pose.rightHandRotations;
             }
 
             _poser.pose = copy;
@@ -660,11 +660,11 @@ namespace yellowyears.SkeletonPoser
             // Create copy of pose to stop error whilst saving ("Object already exists")
             var copy = CreateInstance<XRSkeletonPose>();
 
-            copy.leftBonePositions = _defaultPose.leftBonePositions;
-            copy.leftBoneRotations = _defaultPose.leftBoneRotations;
+            copy.leftHandPositions = _defaultPose.leftHandPositions;
+            copy.leftHandRotations = _defaultPose.leftHandRotations;
 
-            copy.rightBonePositions = _defaultPose.rightBonePositions;
-            copy.rightBoneRotations = _defaultPose.rightBoneRotations;
+            copy.rightHandPositions = _defaultPose.rightHandPositions;
+            copy.rightHandRotations = _defaultPose.rightHandRotations;
             
             // _poser.selectedPose = copy;
 
@@ -699,11 +699,11 @@ namespace yellowyears.SkeletonPoser
 
             var referencePose = XRSkeletonPoserSettings.Instance.referencePose;
             
-            copy.leftBonePositions = referencePose.leftBonePositions;
-            copy.leftBoneRotations = referencePose.leftBoneRotations;
+            copy.leftHandPositions = referencePose.leftHandPositions;
+            copy.leftHandRotations = referencePose.leftHandRotations;
 
-            copy.rightBonePositions = referencePose.rightBonePositions;
-            copy.rightBoneRotations = referencePose.rightBoneRotations;
+            copy.rightHandPositions = referencePose.rightHandPositions;
+            copy.rightHandRotations = referencePose.rightHandRotations;
             
             // _poser.selectedPose = copy;
 
@@ -733,11 +733,11 @@ namespace yellowyears.SkeletonPoser
         {
             // Get pose without saving
             
-            inputPose.leftBonePositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
-            inputPose.leftBoneRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
+            inputPose.leftHandPositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
+            inputPose.leftHandRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
         
-            inputPose.rightBonePositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
-            inputPose.rightBoneRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
+            inputPose.rightHandPositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
+            inputPose.rightHandRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
 
             // Get input XRPose instance and return it but full from scene
             return inputPose;
@@ -774,11 +774,11 @@ namespace yellowyears.SkeletonPoser
             var leftHandObject = _propertyTempLeft.objectReferenceValue as GameObject;
             var rightHandObject = _propertyTempRight.objectReferenceValue as GameObject;
             
-            var leftBonePositions = loadedPose.leftBonePositions;
-            var leftBoneRotations = loadedPose.leftBoneRotations;
+            var leftBonePositions = loadedPose.leftHandPositions;
+            var leftBoneRotations = loadedPose.leftHandRotations;
 
-            var rightBonePositions = loadedPose.rightBonePositions;
-            var rightBoneRotations = loadedPose.rightBoneRotations;
+            var rightBonePositions = loadedPose.rightHandPositions;
+            var rightBoneRotations = loadedPose.rightHandRotations;
 
             if (leftHandObject == null) return;
 
