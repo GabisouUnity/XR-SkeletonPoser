@@ -13,13 +13,13 @@ namespace yellowyears.SkeletonPoser
         
         // Serialized Properties
         
-        public enum SelectedPose { Main, Secondary }
+        // public enum SelectedPose { Main, Secondary }
         
         // Only trigger right now, will be adding more soon along with boolean / analogue input options.
         public enum BlendInput { Trigger }
         
         [HideInInspector] public XRSkeletonPose pose;
-        [HideInInspector] public SelectedPose selectedPose;
+        // [HideInInspector] public SelectedPose selectedPose;
         
         [HideInInspector] public BlendInput blendInput;
         
@@ -136,6 +136,117 @@ namespace yellowyears.SkeletonPoser
                 fingers[i].localRotation = Quaternion.Slerp(mainPoseRot[i], secondaryPoseRot[i], blendValue);
             }
         }
+     
+        public void SetDefaultPose(HandType handType, Transform[] handBones, XRSkeletonPose defaultPose)
+        {
+            switch (handType)
+            {
+                case HandType.Left:
+                {
+                    for (int i = 0; i < handBones.Length; i++)
+                    {
+                        handBones[i].localPosition = defaultPose.leftHandPositions[i];
+                        handBones[i].localRotation = defaultPose.leftHandRotations[i];
+                    }
+                
+                    // Reset main hand object to local 0,0,0
+
+                    handBones[0].localPosition = Vector3.zero;
+                    handBones[0].localRotation = Quaternion.identity;
+                    break;
+                }
+                case HandType.Right:
+                {
+                    for (int i = 0; i < handBones.Length; i++)
+                    {
+                        handBones[i].localPosition = defaultPose.rightHandPositions[i];
+                        handBones[i].localRotation = defaultPose.rightHandRotations[i];
+                    }
+                
+                    // Reset main hand object to local 0,0,0
+
+                    handBones[0].localPosition = Vector3.zero;
+                    handBones[0].localRotation = Quaternion.identity;
+                    break;
+                }
+            }
+        }
+        
+        public XRSkeletonPose GetDefaultPose(HandType handType, GameObject handObject)
+        {
+            var defaultPose = ScriptableObject.CreateInstance<XRSkeletonPose>();
+
+            switch (handType)
+            {
+                case HandType.Left:
+                    defaultPose.leftHandPositions = handObject.GetComponentsInChildren<Transform>().Select(x => x.localPosition).ToArray();
+                    defaultPose.leftHandRotations = handObject.GetComponentsInChildren<Transform>().Select(x => x.localRotation).ToArray();
+                    break;
+                case HandType.Right:
+                    defaultPose.rightHandPositions = handObject.GetComponentsInChildren<Transform>().Select(x => x.localPosition).ToArray();
+                    defaultPose.rightHandRotations = handObject.GetComponentsInChildren<Transform>().Select(x => x.localRotation).ToArray();
+                    break;
+            }
+
+            return defaultPose;
+        }
+
+        public void SetOffset(XRBaseInteractable selectTarget, Transform[] handBones)
+        {
+            // Get grabbable's attach point
+            var selectTargetAttach = ((XRGrabInteractable) selectTarget).attachTransform;
+
+            // Move first index (hand model parent) to the grabbable's attach transform
+            handBones[0].localPosition = selectTargetAttach.localPosition;
+            handBones[0].localRotation = selectTargetAttach.localRotation;
+        }
+
+        public void SetPose(XRSkeletonPose inputPose, Transform[] handBones, GameObject handObject, HandType handType)
+        {
+            // Get hand bones
+            
+            handBones = handObject.GetComponentsInChildren<Transform>().ToArray();
+
+            var leftPosePos = pose.leftHandPositions;
+            var leftPoseRot = pose.leftHandRotations;
+
+            var rightPosePos = pose.rightHandPositions;
+            var rightPoseRot = pose.rightHandRotations;
+            
+            // Set values to loaded pose
+
+            switch (handType)
+            {
+                case HandType.Left:
+                {
+                    for (int i = 0; i < handBones.Length; i++)
+                    {
+                        handBones[i].localPosition = leftPosePos[i];
+                        handBones[i].localRotation = leftPoseRot[i];
+                    }
+
+                    break;
+                }
+                case HandType.Right:
+                {
+                    for (int i = 0; i < handBones.Length; i++)
+                    {
+                        handBones[i].localPosition = rightPosePos[i];
+                        handBones[i].localRotation = rightPoseRot[i];
+                    }
+
+                    break;
+                }
+            }
+            
+            // Reset main hand object to local 0,0,0
+
+            handBones[0].localPosition = Vector3.zero;
+            handBones[0].localRotation = Quaternion.identity;
+        }
         
     }
+    
+    public enum HandType { Left, Right } // TODO: Could possibly be accessed and set from the XRController?
+
 }

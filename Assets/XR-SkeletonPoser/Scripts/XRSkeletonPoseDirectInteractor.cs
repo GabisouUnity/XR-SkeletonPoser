@@ -14,16 +14,14 @@ namespace yellowyears.SkeletonPoser
 
         [Space] [Tooltip("What hand is a child of the controller?")]
         public GameObject handObject;
-
-        public enum HandType { Left, Right } // TODO: Could possibly be accessed and set from the XRController?
-
+        
         [Tooltip("What hand is attached to the XR_SkeletonPoseInteractor?")]
         public HandType handType;
 
         #endregion
 
         private XRSkeletonPose _defaultPose;
-        private XRSkeletonPoser _selectedPoser;
+        private XRSkeletonPoser _poser;
         private XRController _inputController;
         private Transform[] _handBones = null;
 
@@ -39,130 +37,12 @@ namespace yellowyears.SkeletonPoser
             _poserSettings = XRSkeletonPoserSettings.Instance;
 
             // Cache default pose at runtime
-            _defaultPose = GetDefaultPose();
+            _defaultPose = _poser.GetDefaultPose(handType, handObject);
         }
 
         private void Update()
         {
             CheckForBlendInput();
-        }
-
-        private XRSkeletonPose GetDefaultPose()
-        {
-            var pose = ScriptableObject.CreateInstance<XRSkeletonPose>();
-
-            switch (handType)
-            {
-                case HandType.Left:
-                    pose.leftHandPositions = handObject.GetComponentsInChildren<Transform>()
-                        .Select(x => x.localPosition).ToArray();
-                    pose.leftHandRotations = handObject.GetComponentsInChildren<Transform>()
-                        .Select(x => x.localRotation).ToArray();
-                    break;
-                case HandType.Right:
-                    pose.rightHandPositions = handObject.GetComponentsInChildren<Transform>()
-                        .Select(x => x.localPosition).ToArray();
-                    pose.rightHandRotations = handObject.GetComponentsInChildren<Transform>()
-                        .Select(x => x.localRotation).ToArray();
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            return pose;
-        }
-
-        private void SetDefaultPose()
-        {
-            switch (handType)
-            {
-                case HandType.Left:
-                {
-                    for (int i = 0; i < _handBones.Length; i++)
-                    {
-                        _handBones[i].localPosition = _defaultPose.leftHandPositions[i];
-                        _handBones[i].localRotation = _defaultPose.leftHandRotations[i];
-                    }
-
-                    // Reset main hand object to local 0,0,0
-
-                    _handBones[0].localPosition = Vector3.zero;
-                    _handBones[0].localRotation = Quaternion.identity;
-                    break;
-                }
-                case HandType.Right:
-                {
-                    for (int i = 0; i < _handBones.Length; i++)
-                    {
-                        _handBones[i].localPosition = _defaultPose.rightHandPositions[i];
-                        _handBones[i].localRotation = _defaultPose.rightHandRotations[i];
-                    }
-
-                    // Reset main hand object to local 0,0,0
-
-                    _handBones[0].localPosition = Vector3.zero;
-                    _handBones[0].localRotation = Quaternion.identity;
-                    break;
-                }
-            }
-        }
-
-        private void SetOffset()
-        {
-            // Get grabbable's attach point
-            var selectTargetVar = ((XRGrabInteractable) selectTarget);
-            
-            // Move first index (hand model parent) to the grabbable's attach transform
-            if (selectTargetVar.attachTransform == null) return;
-
-            _handBones[0].localPosition = selectTargetVar.attachTransform.localPosition;
-            _handBones[0].localRotation = selectTargetVar.attachTransform.localRotation;
-        }
-
-        private void SetPose(XRSkeletonPose pose)
-        {
-            // Get hand bones
-
-            _handBones = handObject.GetComponentsInChildren<Transform>().ToArray();
-
-            var leftPosePos = pose.leftHandPositions;
-            var leftPoseRot = pose.leftHandRotations;
-
-            var rightPosePos = pose.rightHandPositions;
-            var rightPoseRot = pose.rightHandRotations;
-
-            // Set values to loaded pose
-
-            switch (handType)
-            {
-                case HandType.Left:
-                {
-                    for (int i = 0; i < _handBones.Length; i++)
-                    {
-                        _handBones[i].localPosition = leftPosePos[i];
-                        _handBones[i].localRotation = leftPoseRot[i];
-                    }
-
-                    break;
-                }
-                case HandType.Right:
-                {
-                    for (int i = 0; i < _handBones.Length; i++)
-                    {
-                        _handBones[i].localPosition = rightPosePos[i];
-                        _handBones[i].localRotation = rightPoseRot[i];
-                    }
-
-                    break;
-                }
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            // Reset main hand object to local 0,0,0
-
-            _handBones[0].localPosition = Vector3.zero;
-            _handBones[0].localRotation = Quaternion.identity;
         }
         
         protected override void OnSelectEnter(XRBaseInteractable interactable)
@@ -170,16 +50,16 @@ namespace yellowyears.SkeletonPoser
             base.OnSelectEnter(interactable);
 
             // Do not run the below code if the object isn't a skeleton poser, ie do not pose hand if not a poser interactable
-            if (!interactable.TryGetComponent(out _selectedPoser)) return;
+            if (!interactable.TryGetComponent(out _poser)) return;
 
-            var pose = _selectedPoser.FetchPose();
+            var pose = _poser.FetchPose();
             
-            SetPose(pose);
+            _poser.SetPose(pose, _handBones, handObject, handType);
             
-            SetOffset();
+            _poser.SetOffset(selectTarget, _handBones);
             
             _isSkeletonPoseInteractable = true;
-            _shouldCheckForBlendInput = _selectedPoser.useBlend;
+            _shouldCheckForBlendInput = _poser.useBlend;
         }
         
         protected override void OnSelectExit(XRBaseInteractable interactable)
@@ -187,9 +67,10 @@ namespace yellowyears.SkeletonPoser
             base.OnSelectExit(interactable);
 
             if (_isSkeletonPoseInteractable)
-                
-                SetDefaultPose(); // Reset back to default bone pose on select exit if it was a skeleton poser
-
+            {
+                _poser.SetDefaultPose(handType, _handBones, _defaultPose); // Reset back to default bone pose on select exit if it was a skeleton poser
+            }
+            
             _isSkeletonPoseInteractable = false;
             _shouldCheckForBlendInput = false;
         }
@@ -208,29 +89,29 @@ namespace yellowyears.SkeletonPoser
             if (handType == HandType.Left)
             {
                 // Check for input
-                switch (_selectedPoser.blendInput)
+                switch (_poser.blendInput)
                 {
                     case XRSkeletonPoser.BlendInput.Trigger:
                         // Get value
                         device.TryGetFeatureValue(triggerUsage, out var triggerValue);
             
                         // Blend Pose
-                        _selectedPoser.BlendLeftPose(_handBones, triggerValue);
-                        SetOffset();
+                        _poser.BlendLeftPose(_handBones, triggerValue);
+                        _poser.SetOffset(selectTarget, _handBones);
                         break;
                 }
             }
             else if (handType == HandType.Right)
             {
-                switch (_selectedPoser.blendInput)
+                switch (_poser.blendInput)
                 {
                     case XRSkeletonPoser.BlendInput.Trigger:
                         // Get value
                         device.TryGetFeatureValue(triggerUsage, out var triggerValue);
             
                         // Blend Pose
-                        _selectedPoser.BlendRightPose(_handBones, triggerValue);
-                        SetOffset();
+                        _poser.BlendRightPose(_handBones, triggerValue);
+                        _poser.SetOffset(selectTarget, _handBones);
                         break;
                 }
             }
