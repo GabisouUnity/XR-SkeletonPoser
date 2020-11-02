@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Linq;
 using UnityEditor;
 using UnityEngine.SceneManagement;
+using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 
 namespace yellowyears.SkeletonPoser
@@ -137,6 +138,49 @@ namespace yellowyears.SkeletonPoser
             }
         }
      
+        public void CheckForBlendInput(bool shouldCheckForBlendInput, XRController inputController, Transform[] handBones, GameObject handObject, HandType handType, XRBaseInteractable selectTarget)
+        {
+            if (!shouldCheckForBlendInput) return;
+
+            var device = inputController.inputDevice;
+            
+            // Get input and convert to common usages
+            var triggerUsage = CommonUsages.trigger;
+
+            handBones = handObject.GetComponentsInChildren<Transform>().ToArray();
+
+            if (handType == HandType.Left)
+            {
+                // Check for input
+                switch (blendInput)
+                {
+                    case XRSkeletonPoser.BlendInput.Trigger:
+                        // Get value
+                        device.TryGetFeatureValue(triggerUsage, out var triggerValue);
+            
+                        // Blend Pose
+                        BlendLeftPose(handBones, triggerValue);
+                        SetOffset(selectTarget, handBones);
+                        break;
+                }
+            }
+            else if (handType == HandType.Right)
+            {
+                switch (blendInput)
+                {
+                    case XRSkeletonPoser.BlendInput.Trigger:
+                        // Get value
+                        device.TryGetFeatureValue(triggerUsage, out var triggerValue);
+            
+                        // Blend Pose
+                        BlendRightPose(handBones, triggerValue);
+                        SetOffset(selectTarget, handBones);
+                        break;
+                }
+            }
+            
+        }
+
         public void SetDefaultPose(HandType handType, Transform[] handBones, XRSkeletonPose defaultPose)
         {
             switch (handType)

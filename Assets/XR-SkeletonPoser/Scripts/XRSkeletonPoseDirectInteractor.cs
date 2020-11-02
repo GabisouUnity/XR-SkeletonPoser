@@ -42,7 +42,7 @@ namespace yellowyears.SkeletonPoser
 
         private void Update()
         {
-            CheckForBlendInput();
+            _poser.CheckForBlendInput(_shouldCheckForBlendInput, _inputController, _handBones, handObject, handType, selectTarget);
         }
         
         protected override void OnSelectEnter(XRBaseInteractable interactable)
@@ -73,49 +73,6 @@ namespace yellowyears.SkeletonPoser
             
             _isSkeletonPoseInteractable = false;
             _shouldCheckForBlendInput = false;
-        }
-
-        private void CheckForBlendInput()
-        {
-            if (!_shouldCheckForBlendInput) return;
-
-            var device = _inputController.inputDevice;
-            
-            // Get input and convert to common usages
-            var triggerUsage = CommonUsages.trigger;
-
-            _handBones = handObject.GetComponentsInChildren<Transform>().ToArray();
-
-            if (handType == HandType.Left)
-            {
-                // Check for input
-                switch (_poser.blendInput)
-                {
-                    case XRSkeletonPoser.BlendInput.Trigger:
-                        // Get value
-                        device.TryGetFeatureValue(triggerUsage, out var triggerValue);
-            
-                        // Blend Pose
-                        _poser.BlendLeftPose(_handBones, triggerValue);
-                        _poser.SetOffset(selectTarget, _handBones);
-                        break;
-                }
-            }
-            else if (handType == HandType.Right)
-            {
-                switch (_poser.blendInput)
-                {
-                    case XRSkeletonPoser.BlendInput.Trigger:
-                        // Get value
-                        device.TryGetFeatureValue(triggerUsage, out var triggerValue);
-            
-                        // Blend Pose
-                        _poser.BlendRightPose(_handBones, triggerValue);
-                        _poser.SetOffset(selectTarget, _handBones);
-                        break;
-                }
-            }
-            
         }
         
     }
