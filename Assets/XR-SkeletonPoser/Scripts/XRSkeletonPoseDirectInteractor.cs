@@ -37,11 +37,13 @@ namespace yellowyears.SkeletonPoser
             _poserSettings = XRSkeletonPoserSettings.Instance;
 
             // Cache default pose at runtime
-            _defaultPose = _poser.GetDefaultPose(handType, handObject);
+            _defaultPose = XRSkeletonPoser.GetDefaultPose(handType, handObject);
         }
 
         private void Update()
         {
+            if (!_poser) return;
+            
             _poser.CheckForBlendInput(_shouldCheckForBlendInput, _inputController, _handBones, handObject, handType, selectTarget);
         }
         
@@ -54,7 +56,7 @@ namespace yellowyears.SkeletonPoser
 
             var pose = _poser.FetchPose();
             
-            _poser.SetPose(pose, _handBones, handObject, handType);
+            _poser.SetPose(pose, handObject, handType);
             
             _poser.SetOffset(selectTarget, _handBones);
             

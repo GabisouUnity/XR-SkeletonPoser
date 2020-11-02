@@ -216,7 +216,7 @@ namespace yellowyears.SkeletonPoser
             }
         }
         
-        public XRSkeletonPose GetDefaultPose(HandType handType, GameObject handObject)
+        public static XRSkeletonPose GetDefaultPose(HandType handType, GameObject handObject)
         {
             var defaultPose = ScriptableObject.CreateInstance<XRSkeletonPose>();
 
@@ -245,17 +245,17 @@ namespace yellowyears.SkeletonPoser
             handBones[0].localRotation = selectTargetAttach.localRotation;
         }
 
-        public void SetPose(XRSkeletonPose inputPose, Transform[] handBones, GameObject handObject, HandType handType)
+        public void SetPose(XRSkeletonPose inputPose, GameObject handObject, HandType handType)
         {
             // Get hand bones
             
-            handBones = handObject.GetComponentsInChildren<Transform>().ToArray();
+            var handBones = handObject.GetComponentsInChildren<Transform>().ToArray();
 
-            var leftPosePos = pose.leftHandPositions;
-            var leftPoseRot = pose.leftHandRotations;
+            var leftPosePos = inputPose.leftHandPositions;
+            var leftPoseRot = inputPose.leftHandRotations;
 
-            var rightPosePos = pose.rightHandPositions;
-            var rightPoseRot = pose.rightHandRotations;
+            var rightPosePos = inputPose.rightHandPositions;
+            var rightPoseRot = inputPose.rightHandRotations;
             
             // Set values to loaded pose
 

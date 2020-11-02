@@ -28,7 +28,7 @@ namespace yellowyears.SkeletonPoser
             base.Awake();
             
             // Cache default pose at runtime
-            _defaultPose = _poser.GetDefaultPose(handType, handObject);
+            _defaultPose = XRSkeletonPoser.GetDefaultPose(handType, handObject);
         }
 
         protected override void OnSelectEnter(XRBaseInteractable interactable)
@@ -40,7 +40,7 @@ namespace yellowyears.SkeletonPoser
             
             var pose = _poser.FetchPose();
                 
-            _poser.SetPose(pose, _handBones, handObject, handType);
+            _poser.SetPose(pose, handObject, handType);
             _poser.SetOffset(selectTarget, _handBones);
             
             _isSkeletonPoseInteractable = true;
