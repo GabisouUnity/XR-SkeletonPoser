@@ -69,10 +69,12 @@ namespace yellowyears.SkeletonPoser
         [Tooltip("Left hand model to be spawned in as a left preview. Should be the same as your in game left hand")] 
         public GameObject rightHand;
 
-        [Space] 
-        
-        public XRSkeletonPose referencePose;
+        [Space]
 
+        // public XRSkeletonPose referencePose;
+
+        public string poseNamePrefix;
+        
         [Tooltip("Expand all children gameobjects recursively when the show hand button is pressed")]
         public bool defaultExpandPreview;
         

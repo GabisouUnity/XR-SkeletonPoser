@@ -375,12 +375,12 @@ namespace yellowyears.SkeletonPoser
             {
                 // Folder doesn't exist, create new
                 AssetDatabase.CreateFolder("Assets", "XRPoses");
-                AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
+                AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poserSettings.poseNamePrefix}{_poser.gameObject.name}.asset");
             }
             else
             {
                 // Folder exists
-                AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
+                AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poserSettings.poseNamePrefix}{_poser.gameObject.name}.asset");
             }
         }
         
@@ -424,12 +424,12 @@ namespace yellowyears.SkeletonPoser
             {
                 // Folder doesn't exist, create new
                 AssetDatabase.CreateFolder("Assets", "XRPoses");
-                AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
+                AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poserSettings.poseNamePrefix}{_poser.gameObject.name}.asset");
             }
             else
             {
                 // Folder exists
-                AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
+                AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poserSettings.poseNamePrefix}{_poser.gameObject.name}.asset");
             }
         }
 
@@ -606,39 +606,39 @@ namespace yellowyears.SkeletonPoser
             var leftHandObject = _propertyTempLeft.objectReferenceValue as GameObject;
             var rightHandObject = _propertyTempRight.objectReferenceValue as GameObject;
             
-            var leftBlendPositions = loadedPose.leftSecondaryPositions;
-            var leftBlendRotations = loadedPose.leftSecondaryRotations;
+            var leftSecondaryPositions = loadedPose.leftSecondaryPositions;
+            var leftSecondaryRotations = loadedPose.leftSecondaryRotations;
 
-            var rightBlendPositions = loadedPose.rightSecondaryPositions;
-            var rightBlendRotations = loadedPose.rightSecondaryRotations;
+            var rightSecondaryPositions = loadedPose.rightSecondaryPositions;
+            var rightSecondaryRotations = loadedPose.rightSecondaryRotations;
 
             if (leftHandObject == null) return;
 
             var leftTransforms = leftHandObject.GetComponentsInChildren<Transform>().ToArray();
 
             // Set left values to loaded pose
-            for (int i = 0; i < leftBlendPositions.Length; i++)
+            for (int i = 0; i < leftSecondaryPositions.Length; i++)
             {
-                leftTransforms[i].localPosition = leftBlendPositions[i];
+                leftTransforms[i].localPosition = leftSecondaryPositions[i];
             }
 
-            for (int i = 0; i < leftBlendRotations.Length; i++)
+            for (int i = 0; i < leftSecondaryRotations.Length; i++)
             {
-                leftTransforms[i].localRotation = leftBlendRotations[i];
+                leftTransforms[i].localRotation = leftSecondaryRotations[i];
             }
 
             if (rightHandObject == null) return;
             
             var rightTransforms = rightHandObject.GetComponentsInChildren<Transform>().ToArray();
 
-            for (int i = 0; i < rightBlendPositions.Length; i++)
+            for (int i = 0; i < rightSecondaryPositions.Length; i++)
             {
-                rightTransforms[i].localPosition = rightBlendPositions[i];
+                rightTransforms[i].localPosition = rightSecondaryPositions[i];
             }
 
-            for (int i = 0; i < rightBlendRotations.Length; i++)
+            for (int i = 0; i < rightSecondaryRotations.Length; i++)
             {
-                rightTransforms[i].localRotation = rightBlendRotations[i];
+                rightTransforms[i].localRotation = rightSecondaryRotations[i];
             }
         }
     }    
