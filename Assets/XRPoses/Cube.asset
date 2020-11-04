@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fae3f408de0e1ed4aa9b700cca848c5b, type: 3}
   m_Name: Cube
   m_EditorClassIdentifier: 
-  leftBonePositions:
+  leftHandPositions:
   - {x: 0, y: 0, z: 0}
   - {x: -0, y: 0, z: 0}
   - {x: 0.018232824, y: 0.037278358, z: 0.14895558}
@@ -47,7 +47,7 @@ MonoBehaviour:
   - {x: -0.030464003, y: 2.2559732e-17, z: -1.9739765e-17}
   - {x: -0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
-  leftBoneRotations:
+  leftHandRotations:
   - {x: 0, y: 0, z: 0, w: 1}
   - {x: 0, y: -0, z: -0, w: 1}
   - {x: -0.3123255, y: -0.59722805, z: 0.7084193, w: -0.20955543}
@@ -82,7 +82,7 @@ MonoBehaviour:
   - {x: 0, y: -0, z: -0, w: 1}
   - {x: 0, y: -0, z: -0, w: 1}
   - {x: 0, y: 0, z: 0, w: 1}
-  rightBonePositions:
+  rightHandPositions:
   - {x: 0, y: 0, z: 0}
   - {x: -0, y: 0, z: 0}
   - {x: -0.018232813, y: 0.037278313, z: 0.14895566}
@@ -117,7 +117,7 @@ MonoBehaviour:
   - {x: 0.030463902, y: 0.00000016269207, z: 0.0000000792839}
   - {x: -0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
-  rightBoneRotations:
+  rightHandRotations:
   - {x: 0, y: 0, z: 0, w: 1}
   - {x: 0, y: -0, z: -0, w: 1}
   - {x: 0.20955543, y: 0.7084193, z: 0.59722805, w: -0.3123255}
@@ -152,9 +152,7 @@ MonoBehaviour:
   - {x: 0, y: -0, z: -0, w: 1}
   - {x: 0, y: -0, z: -0, w: 1}
   - {x: 0, y: 0, z: 0, w: 1}
-  blendName: My Blend
-  blendTo: {fileID: 0}
-  leftBlendPositions:
+  leftSecondaryPositions:
   - {x: 0, y: 0, z: 0}
   - {x: -0, y: 0, z: 0}
   - {x: 0.018232824, y: 0.037278358, z: 0.14895558}
@@ -189,7 +187,7 @@ MonoBehaviour:
   - {x: -0.030464003, y: 2.2559732e-17, z: -1.9739765e-17}
   - {x: -0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
-  leftBlendRotations:
+  leftSecondaryRotations:
   - {x: 0, y: 0, z: 0, w: 1}
   - {x: 0, y: -0, z: -0, w: 1}
   - {x: -0.3123255, y: -0.59722805, z: 0.7084193, w: -0.20955543}
@@ -224,7 +222,7 @@ MonoBehaviour:
   - {x: 0, y: -0, z: -0, w: 1}
   - {x: 0, y: -0, z: -0, w: 1}
   - {x: 0, y: 0, z: 0, w: 1}
-  rightBlendPositions:
+  rightSecondaryPositions:
   - {x: 0, y: 0, z: 0}
   - {x: -0, y: 0, z: 0}
   - {x: -0.018232813, y: 0.037278313, z: 0.14895566}
@@ -259,8 +257,8 @@ MonoBehaviour:
   - {x: 0.030463902, y: 0.00000016269207, z: 0.0000000792839}
   - {x: -0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
-  rightBlendRotations:
-  - {x: -0.7266268, y: -0, z: -0, w: 0.68703246}
+  rightSecondaryRotations:
+  - {x: 0, y: 0, z: 0, w: 1}
   - {x: 0, y: -0, z: -0, w: 1}
   - {x: 0.20955543, y: 0.7084193, z: 0.59722805, w: -0.3123255}
   - {x: 0.22114079, y: 0.67740285, z: 0.6470612, w: -0.27117142}

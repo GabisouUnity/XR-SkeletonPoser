@@ -54,7 +54,7 @@ namespace yellowyears.SkeletonPoser
             _instance.savePoseColour = new Color32(160, 255, 66, 40);
             
             _instance.resetPoseColour = new Color32(255, 101, 101, 96);
-            _instance.resetToReferencePoseColour = new Color32(255, 101, 101, 96);
+            // _instance.resetToReferencePoseColour = new Color32(255, 101, 101, 96);
             
             AssetDatabase.SaveAssets();
         }
@@ -76,12 +76,12 @@ namespace yellowyears.SkeletonPoser
         [Tooltip("Expand all children gameobjects recursively when the show hand button is pressed")]
         public bool defaultExpandPreview;
         
-        [Space]
-        
-        [Tooltip("Lerp fingers on select for a smooth transition between the free pose to the object")]
-        public bool lerpFingersOnSelect;
-        
-        public float fingerLerpTime = 3f;
+        // [Space]
+        //
+        // [Tooltip("Lerp fingers on select for a smooth transition between the free pose to the object")]
+        // public bool lerpFingersOnSelect;
+        //
+        // public float fingerLerpTime = 3f;
         
         [Space]
         
@@ -101,7 +101,7 @@ namespace yellowyears.SkeletonPoser
         public Color loadPoseColour;
         public Color savePoseColour;
         public Color resetPoseColour;
-        public Color resetToReferencePoseColour;
+        // public Color resetToReferencePoseColour;
 
     }    
 }

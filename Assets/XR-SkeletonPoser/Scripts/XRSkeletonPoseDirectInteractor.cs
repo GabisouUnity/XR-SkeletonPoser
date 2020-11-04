@@ -19,7 +19,7 @@ namespace yellowyears.SkeletonPoser
         private XRSkeletonPose _defaultPose;
         private XRSkeletonPoser _poser;
         private XRController _inputController;
-        private Transform[] _handBones = null;
+        // private Transform[] _handBones = null;
 
         // private XRSkeletonPoserSettings _poserSettings;
         private bool _isSkeletonPoseInteractable = false;
