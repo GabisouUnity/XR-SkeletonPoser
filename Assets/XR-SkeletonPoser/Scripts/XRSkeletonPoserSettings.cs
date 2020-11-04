@@ -76,6 +76,8 @@ namespace yellowyears.SkeletonPoser
         [Tooltip("Expand all children gameobjects recursively when the show hand button is pressed")]
         public bool defaultExpandPreview;
         
+        [Space]
+        
         [Tooltip("Lerp fingers on select for a smooth transition between the free pose to the object")]
         public bool lerpFingersOnSelect;
         
@@ -85,10 +87,16 @@ namespace yellowyears.SkeletonPoser
         
         public Font guiFont;
 
+        [Space]
         public Color showLeftHandColour;
-        public Color showRightHandColour;
+        [Space]
         public Color hideLeftHandColour;
+        [Space]
+        public Color showRightHandColour;
+        [Space]
         public Color hideRightHandColour;
+        
+        [Space]
         
         public Color loadPoseColour;
         public Color savePoseColour;

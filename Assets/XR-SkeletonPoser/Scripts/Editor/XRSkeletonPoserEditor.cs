@@ -35,9 +35,12 @@ namespace yellowyears.SkeletonPoser
         private SerializedProperty _propertyShowRight = null;
         private SerializedProperty _propertyTempRight = null;
 
+        private XRSkeletonPoserSettings _poserSettings = null;
+        
         private void OnEnable()
         {
             _poser = (XRSkeletonPoser) target;
+            _poserSettings = XRSkeletonPoserSettings.Instance;
 
             _defaultPose = CreateInstance<XRSkeletonPose>();
             GetDefaultPose();
@@ -107,6 +110,8 @@ namespace yellowyears.SkeletonPoser
                 EditorGUI.BeginDisabledGroup(!_propertyShowLeft.boolValue || !_propertyShowRight.boolValue || _poser.pose == null);
 
                 // TODO: disable buttons if there is no saved data
+
+                GUI.backgroundColor = _poserSettings.loadPoseColour;
                 
                 if (GUILayout.Button(_propertyPose.name + " (MAIN)"))
                 {
@@ -139,12 +144,10 @@ namespace yellowyears.SkeletonPoser
             else
             {
                 EditorGUILayout.BeginVertical("box");
-        
-                var poserSettings = XRSkeletonPoserSettings.Instance;
                 
-                if (poserSettings.guiFont != null)
+                if (_poserSettings.guiFont != null)
                 {
-                    GUI.skin.font = poserSettings.guiFont;
+                    GUI.skin.font = _poserSettings.guiFont;
                 }
         
                 // // Create new instance of XRSkeletonPose, this is the one that is edited
@@ -162,7 +165,7 @@ namespace yellowyears.SkeletonPoser
                    
                    if (!_propertyShowLeft.boolValue)
                    {
-                       GUI.backgroundColor = poserSettings.showLeftHandColour;
+                       GUI.backgroundColor = _poserSettings.showLeftHandColour;
                        
                        if (GUILayout.Button("Show Left Hand"))
                        {
@@ -182,7 +185,7 @@ namespace yellowyears.SkeletonPoser
                    }
                    else
                    {
-                       GUI.backgroundColor = poserSettings.hideLeftHandColour;
+                       GUI.backgroundColor = _poserSettings.hideLeftHandColour;
                        
                        if (GUILayout.Button("Hide Left Hand"))
                        {
@@ -199,7 +202,7 @@ namespace yellowyears.SkeletonPoser
                    
                    if (!_propertyShowRight.boolValue)
                    {
-                       GUI.backgroundColor = poserSettings.showRightHandColour;
+                       GUI.backgroundColor = _poserSettings.showRightHandColour;
                        
                        if (GUILayout.Button("Show Right Hand"))
                        {
@@ -218,7 +221,7 @@ namespace yellowyears.SkeletonPoser
                    }
                    else
                    {
-                       GUI.backgroundColor = poserSettings.hideRightHandColour;
+                       GUI.backgroundColor = _poserSettings.hideRightHandColour;
                        
                        if (GUILayout.Button("Hide Right Hand"))
                        {
@@ -238,7 +241,7 @@ namespace yellowyears.SkeletonPoser
                    // // GUI.backgroundColor = new Color32(160, 255, 66, 100);
                    // // GUI.backgroundColor = Color.green;
                    //
-                   // GUI.backgroundColor = poserSettings.loadPoseColour;
+                   // GUI.backgroundColor = _poserSettings.loadPoseColour;
                    //
                    // if (GUILayout.Button("Load Pose", "button"))
                    // {
@@ -250,7 +253,7 @@ namespace yellowyears.SkeletonPoser
                    // Grey it out if hands aren't active
                    EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false || _propertyShowRight.boolValue == false);
         
-                   GUI.backgroundColor = poserSettings.savePoseColour;
+                   GUI.backgroundColor = _poserSettings.savePoseColour;
                    
                    if (GUILayout.Button("Save Main Pose", "button"))
                    {
@@ -270,7 +273,7 @@ namespace yellowyears.SkeletonPoser
         
                    EditorGUILayout.BeginHorizontal();
                    
-                   GUI.backgroundColor = poserSettings.resetPoseColour;
+                   GUI.backgroundColor = _poserSettings.resetPoseColour;
                    
                    if (GUILayout.Button("Reset Pose", "button"))
                    {
@@ -287,7 +290,7 @@ namespace yellowyears.SkeletonPoser
                    
                    EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false && _propertyShowRight.boolValue == false || XRSkeletonPoserSettings.Instance.referencePose == null);
         
-                   GUI.backgroundColor = poserSettings.resetToReferencePoseColour;
+                   GUI.backgroundColor = _poserSettings.resetToReferencePoseColour;
                    
                    if (GUILayout.Button("Reset To Reference Pose", "button"))
                    {
