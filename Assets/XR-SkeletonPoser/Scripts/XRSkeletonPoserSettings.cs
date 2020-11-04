@@ -91,11 +91,10 @@ namespace yellowyears.SkeletonPoser
 
         [Space]
         public Color showLeftHandColour;
-        [Space]
         public Color hideLeftHandColour;
+        
         [Space]
         public Color showRightHandColour;
-        [Space]
         public Color hideRightHandColour;
         
         [Space]

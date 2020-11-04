@@ -223,6 +223,17 @@ namespace yellowyears.SkeletonPoser
                    }
         
                    EditorGUI.EndDisabledGroup(); EditorGUILayout.EndHorizontal();
+
+                   EditorGUILayout.BeginHorizontal();
+                   EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false || _propertyShowRight.boolValue == false);
+                   
+                   if (GUILayout.Button("Copy left to right"))
+                   {
+                       _poser.CopyToRight(_propertyTempRight.objectReferenceValue as GameObject, _propertyTempLeft.objectReferenceValue as GameObject);
+                   }
+                   
+                   EditorGUI.EndDisabledGroup();
+                   EditorGUILayout.EndHorizontal();
                    
                    EditorGUILayout.BeginHorizontal();
                    
