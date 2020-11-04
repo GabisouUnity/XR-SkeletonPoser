@@ -1,26 +1,25 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using System.Linq;
 using UnityEditor;
-using UnityEngine.SceneManagement;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 
 namespace yellowyears.SkeletonPoser
 {
+    public enum HandType { Left, Right } // TODO: Could possibly be accessed and set from the XRController?
+
     [RequireComponent(typeof(XRGrabInteractable))]
     public class XRSkeletonPoser : MonoBehaviour
     {
         
         // Serialized Properties
         
-        // public enum SelectedPose { Main, Secondary }
-        
-        // Only trigger right now, will be adding more soon along with boolean / analogue input options.
-        public enum BlendInput { Trigger }
+        public enum SelectedPose { Main, Secondary }
+
+        public enum BlendInput { Trigger } // Only trigger right now, will be adding more soon along with boolean / analogue input options.
         
         [HideInInspector] public XRSkeletonPose pose;
-        // [HideInInspector] public SelectedPose selectedPose;
+        [HideInInspector] public SelectedPose selectedPose;
         
         [HideInInspector] public BlendInput blendInput;
         
@@ -108,7 +107,7 @@ namespace yellowyears.SkeletonPoser
             return target != null ? target.GetComponentsInChildren<Transform>().Select(x => x.localRotation).ToArray() : null;
         }
 
-        public void BlendLeftPose(Transform[] fingers, float blendValue)
+        private void BlendLeftPose(Transform[] fingers, float blendValue)
         {
             var mainPosePos = pose.leftHandPositions;
             var mainPoseRot = pose.leftSecondaryRotations;
@@ -123,7 +122,7 @@ namespace yellowyears.SkeletonPoser
             }
         }
         
-        public void BlendRightPose(Transform[] fingers, float blendValue)
+        private void BlendRightPose(Transform[] fingers, float blendValue)
         {
             var mainPosePos = pose.rightHandPositions;
             var mainPoseRot = pose.rightSecondaryRotations;
@@ -154,7 +153,7 @@ namespace yellowyears.SkeletonPoser
                 // Check for input
                 switch (blendInput)
                 {
-                    case XRSkeletonPoser.BlendInput.Trigger:
+                    case BlendInput.Trigger:
                         // Get value
                         device.TryGetFeatureValue(triggerUsage, out var triggerValue);
             
@@ -168,7 +167,7 @@ namespace yellowyears.SkeletonPoser
             {
                 switch (blendInput)
                 {
-                    case XRSkeletonPoser.BlendInput.Trigger:
+                    case BlendInput.Trigger:
                         // Get value
                         device.TryGetFeatureValue(triggerUsage, out var triggerValue);
             
@@ -290,7 +289,4 @@ namespace yellowyears.SkeletonPoser
         }
         
     }
-    
-    public enum HandType { Left, Right } // TODO: Could possibly be accessed and set from the XRController?
-
 }

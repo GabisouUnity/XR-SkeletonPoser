@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Linq;
-using UnityEngine.XR.Interaction.Toolkit;
+﻿using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine;
-using UnityEngine.XR;
 
 namespace yellowyears.SkeletonPoser
 {
@@ -25,7 +21,7 @@ namespace yellowyears.SkeletonPoser
         private XRController _inputController;
         private Transform[] _handBones = null;
 
-        private XRSkeletonPoserSettings _poserSettings;
+        // private XRSkeletonPoserSettings _poserSettings;
         private bool _isSkeletonPoseInteractable = false;
         private bool _shouldCheckForBlendInput = false;
 
@@ -34,7 +30,7 @@ namespace yellowyears.SkeletonPoser
             base.Awake();
 
             _inputController = GetComponent<XRController>();
-            _poserSettings = XRSkeletonPoserSettings.Instance;
+            // _poserSettings = XRSkeletonPoserSettings.Instance;
 
             // Cache default pose at runtime
             _defaultPose = XRSkeletonPoser.GetDefaultPose(handType, handObject);
@@ -75,6 +71,8 @@ namespace yellowyears.SkeletonPoser
             
             _isSkeletonPoseInteractable = false;
             _shouldCheckForBlendInput = false;
+
+            _poser = null;
         }
         
     }
