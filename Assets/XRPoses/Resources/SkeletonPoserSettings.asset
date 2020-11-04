@@ -16,14 +16,14 @@ MonoBehaviour:
     type: 3}
   rightHand: {fileID: 126567881452638359, guid: fa7a20ddd8e285b4abd7a6a6b7f8881c,
     type: 3}
-  referencePose: {fileID: 11400000, guid: 34f84c2d51b4e0b45948d451004a98e6, type: 2}
-  defaultExpandPreview: 0
-  lerpFingersOnSelect: 1
+  referencePose: {fileID: 0}
+  defaultExpandPreview: 1
+  lerpFingersOnSelect: 0
   fingerLerpTime: 1
   guiFont: {fileID: 0}
   showLeftHandColour: {r: 1, g: 1, b: 1, a: 1}
-  showRightHandColour: {r: 1, g: 1, b: 1, a: 1}
   hideLeftHandColour: {r: 1, g: 1, b: 1, a: 1}
+  showRightHandColour: {r: 1, g: 1, b: 1, a: 1}
   hideRightHandColour: {r: 1, g: 1, b: 1, a: 1}
   loadPoseColour: {r: 0.627451, g: 1, b: 0.25882354, a: 0.15686275}
   savePoseColour: {r: 0.627451, g: 1, b: 0.25882354, a: 0.15686275}

@@ -16,7 +16,7 @@ namespace yellowyears.SkeletonPoser
         #endregion
 
         private XRSkeletonPose _defaultPose;
-        private Transform[] _handBones = null;
+        // private Transform[] _handBones = null;
         private XRSkeletonPoser _poser = null;
 
         private bool _isSkeletonPoseInteractable = false;
@@ -39,7 +39,7 @@ namespace yellowyears.SkeletonPoser
             var pose = _poser.FetchPose();
                 
             _poser.SetPose(pose, handObject, handType);
-            _poser.SetOffset(selectTarget, _handBones);
+            _poser.SetOffset(selectTarget, handObject);
             
             _isSkeletonPoseInteractable = true;
         }
@@ -48,7 +48,7 @@ namespace yellowyears.SkeletonPoser
         {
             base.OnSelectExit(interactable);
 
-            if(_isSkeletonPoseInteractable) _poser.SetDefaultPose(handType, _handBones, _defaultPose); // Reset back to default bone pose on select exit if it was a poser interactable
+            if(_isSkeletonPoseInteractable) _poser.SetDefaultPose(handType, handObject, _defaultPose); // Reset back to default bone pose on select exit if it was a poser interactable
 
             _isSkeletonPoseInteractable = false;
         }

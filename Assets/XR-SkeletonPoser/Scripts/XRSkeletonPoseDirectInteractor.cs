@@ -40,7 +40,7 @@ namespace yellowyears.SkeletonPoser
         {
             if (!_poser) return;
             
-            _poser.CheckForBlendInput(_shouldCheckForBlendInput, _inputController, _handBones, handObject, handType, selectTarget);
+            _poser.CheckForBlendInput(_shouldCheckForBlendInput, _inputController, handObject, handType, selectTarget);
         }
         
         protected override void OnSelectEnter(XRBaseInteractable interactable)
@@ -54,7 +54,7 @@ namespace yellowyears.SkeletonPoser
             
             _poser.SetPose(pose, handObject, handType);
             
-            _poser.SetOffset(selectTarget, _handBones);
+            _poser.SetOffset(selectTarget, handObject);
             
             _isSkeletonPoseInteractable = true;
             _shouldCheckForBlendInput = _poser.useBlend;
@@ -66,7 +66,7 @@ namespace yellowyears.SkeletonPoser
 
             if (_isSkeletonPoseInteractable)
             {
-                _poser.SetDefaultPose(handType, _handBones, _defaultPose); // Reset back to default bone pose on select exit if it was a skeleton poser
+                _poser.SetDefaultPose(handType, handObject, _defaultPose); // Reset back to default bone pose on select exit if it was a skeleton poser
             }
             
             _isSkeletonPoseInteractable = false;

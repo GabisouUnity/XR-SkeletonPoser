@@ -120,6 +120,8 @@ namespace yellowyears.SkeletonPoser
                 fingers[i].localPosition = Vector3.Slerp(mainPosePos[i], secondaryPosePos[i], blendValue);
                 fingers[i].localRotation = Quaternion.Slerp(mainPoseRot[i], secondaryPoseRot[i], blendValue);
             }
+            
+            Debug.Log(blendValue);
         }
         
         private void BlendRightPose(Transform[] fingers, float blendValue)
@@ -137,7 +139,7 @@ namespace yellowyears.SkeletonPoser
             }
         }
      
-        public void CheckForBlendInput(bool shouldCheckForBlendInput, XRController inputController, Transform[] handBones, GameObject handObject, HandType handType, XRBaseInteractable selectTarget)
+        public void CheckForBlendInput(bool shouldCheckForBlendInput, XRController inputController, GameObject handObject, HandType handType, XRBaseInteractable selectTarget)
         {
             if (!shouldCheckForBlendInput) return;
 
@@ -146,7 +148,7 @@ namespace yellowyears.SkeletonPoser
             // Get input and convert to common usages
             var triggerUsage = CommonUsages.trigger;
 
-            handBones = handObject.GetComponentsInChildren<Transform>().ToArray();
+            var handBones = handObject.GetComponentsInChildren<Transform>().ToArray();
 
             if (handType == HandType.Left)
             {
@@ -159,7 +161,7 @@ namespace yellowyears.SkeletonPoser
             
                         // Blend Pose
                         BlendLeftPose(handBones, triggerValue);
-                        SetOffset(selectTarget, handBones);
+                        SetOffset(selectTarget, handObject);
                         break;
                 }
             }
@@ -173,15 +175,17 @@ namespace yellowyears.SkeletonPoser
             
                         // Blend Pose
                         BlendRightPose(handBones, triggerValue);
-                        SetOffset(selectTarget, handBones);
+                        SetOffset(selectTarget, handObject);
                         break;
                 }
             }
             
         }
 
-        public void SetDefaultPose(HandType handType, Transform[] handBones, XRSkeletonPose defaultPose)
+        public void SetDefaultPose(HandType handType, GameObject handObject, XRSkeletonPose defaultPose)
         {
+            var handBones = handObject.GetComponentsInChildren<Transform>().ToArray();
+            
             switch (handType)
             {
                 case HandType.Left:
@@ -234,10 +238,12 @@ namespace yellowyears.SkeletonPoser
             return defaultPose;
         }
 
-        public void SetOffset(XRBaseInteractable selectTarget, Transform[] handBones)
+        public void SetOffset(XRBaseInteractable selectTarget, GameObject handObject)
         {
             // Get grabbable's attach point
             var selectTargetAttach = ((XRGrabInteractable) selectTarget).attachTransform;
+            
+            var handBones = handObject.GetComponentsInChildren<Transform>().ToArray();
 
             // Move first index (hand model parent) to the grabbable's attach transform
             handBones[0].localPosition = selectTargetAttach.localPosition;
