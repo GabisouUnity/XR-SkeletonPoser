@@ -293,29 +293,6 @@ namespace yellowyears.SkeletonPoser
             handBones[0].localPosition = Vector3.zero;
             handBones[0].localRotation = Quaternion.identity;
         }
-
-        public void CopyToRight(GameObject target, GameObject left)
-        {
-            var targetTransforms = target.GetComponentsInChildren<Transform>().ToArray();
-            var leftTransforms = left.GetComponentsInChildren<Transform>().ToArray();
-            
-            for (var i = 0; i < leftTransforms.Length; i++)
-            {
-                // targetTransforms[i].localPosition = leftTransforms[i].localPosition;
-                // targetTransforms[i].localRotation = leftTransforms[i].localRotation;
-
-                // targetTransforms[i].localPosition = MirrorPosition(leftTransforms[i].localPosition);
-
-                // Doesn't work, probably need to not inverse the wrist
-                targetTransforms[i].localPosition *= -1;
-            }
-        }
-
-        // private Vector3 MirrorPosition(Vector3 position)
-        // {
-        //     return position *= -1;
-        // }
-        
         
     }
 }
