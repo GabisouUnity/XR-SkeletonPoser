@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Linq;
 using UnityEditor;
 using UnityEngine.XR;
@@ -34,6 +35,8 @@ namespace yellowyears.SkeletonPoser
         [HideInInspector] public bool showRight;
         [HideInInspector] public GameObject tempRight;
 
+        private bool _showGizmos = false;
+        
         private void Awake()
         {
             // Destroy preview hands on awake so they are not visible as we play the game.
@@ -54,12 +57,14 @@ namespace yellowyears.SkeletonPoser
                 SetExpandedRecursive(preview, true);
             }
 
+            _showGizmos = true;
             return preview;
         }
 
         public void DestroyLeftPreview(GameObject obj)
         {
             DestroyImmediate(obj);
+            _showGizmos = false;
         }
 
         public GameObject ShowRightPreview()
@@ -72,13 +77,43 @@ namespace yellowyears.SkeletonPoser
             {
                 SetExpandedRecursive(preview, true);
             }
-            
+
+            _showGizmos = true;
             return preview;
         }
 
         public void DestroyRightPreview(GameObject obj)
         {
             DestroyImmediate(obj);
+            _showGizmos = false;
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (!_showGizmos || Application.isPlaying) return;
+            
+            DrawLeftGizmos();
+            DrawRightGizmos();
+        }
+
+        private void DrawLeftGizmos()
+        {
+            var bones = tempLeft.GetComponentsInChildren<Transform>().ToArray();
+            
+            foreach (var bone in bones)
+            {
+                Gizmos.DrawSphere(bone.position, 0.01f);
+            }
+        }
+
+        private void DrawRightGizmos()
+        {
+            var bones = tempRight.GetComponentsInChildren<Transform>().ToArray();
+
+            foreach (var bone in bones)
+            {
+                Gizmos.DrawSphere(bone.position, 0.01f);
+            }
         }
 
         private static void SetExpandedRecursive(GameObject gameObject, bool expand)
