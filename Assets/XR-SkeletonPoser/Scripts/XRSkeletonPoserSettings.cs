@@ -42,6 +42,7 @@ namespace yellowyears.SkeletonPoser
         private static void SetDefaultValues()
         {
             _instance.defaultExpandPreview = true;
+            _instance.useBoneGizmos = true;
             // _instance.lerpFingersOnSelect = true;
 
             _instance.showLeftHandColour = Color.white;
@@ -77,6 +78,8 @@ namespace yellowyears.SkeletonPoser
         
         [Tooltip("Expand all children gameobjects recursively when the show hand button is pressed")]
         public bool defaultExpandPreview;
+
+        public bool useBoneGizmos;
         
         // [Space]
         //

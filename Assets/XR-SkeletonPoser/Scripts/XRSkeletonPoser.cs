@@ -93,6 +93,7 @@ namespace yellowyears.SkeletonPoser
         private void OnDrawGizmos()
         {
             if (Application.isPlaying) return;
+            if (Application.isPlaying || !XRSkeletonPoserSettings.Instance.useBoneGizmos) return;
 
             if (_showLeftGizmos)
             {
