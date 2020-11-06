@@ -35,7 +35,9 @@ namespace yellowyears.SkeletonPoser
         [HideInInspector] public bool showRight;
         [HideInInspector] public GameObject tempRight;
 
-        private bool _showGizmos = false;
+        // Might be able to get these from the showLeft and showRight but works for now
+        private bool _showLeftGizmos = false;
+        private bool _showRightGizmos = false;
         
         private void Awake()
         {
@@ -57,14 +59,14 @@ namespace yellowyears.SkeletonPoser
                 SetExpandedRecursive(preview, true);
             }
 
-            _showGizmos = true;
+            _showLeftGizmos = true;
             return preview;
         }
 
         public void DestroyLeftPreview(GameObject obj)
         {
             DestroyImmediate(obj);
-            _showGizmos = false;
+            _showLeftGizmos = false;
         }
 
         public GameObject ShowRightPreview()
@@ -78,22 +80,29 @@ namespace yellowyears.SkeletonPoser
                 SetExpandedRecursive(preview, true);
             }
 
-            _showGizmos = true;
+            _showRightGizmos = true;
             return preview;
         }
 
         public void DestroyRightPreview(GameObject obj)
         {
             DestroyImmediate(obj);
-            _showGizmos = false;
+            _showRightGizmos = false;
         }
 
         private void OnDrawGizmos()
         {
-            if (!_showGizmos || Application.isPlaying) return;
-            
-            DrawLeftGizmos();
-            DrawRightGizmos();
+            if (Application.isPlaying) return;
+
+            if (_showLeftGizmos)
+            {
+                DrawLeftGizmos();
+            }
+
+            if (_showRightGizmos)
+            {
+                DrawRightGizmos();
+            } 
         }
 
         private void DrawLeftGizmos()
