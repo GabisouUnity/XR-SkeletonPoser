@@ -42,7 +42,9 @@ namespace yellowyears.SkeletonPoser
         private static void SetDefaultValues()
         {
             _instance.defaultExpandPreview = true;
+            
             _instance.useBoneGizmos = true;
+            _instance.boneGizmoColour = Color.yellow;
             // _instance.lerpFingersOnSelect = true;
 
             _instance.showLeftHandColour = Color.white;
@@ -80,6 +82,7 @@ namespace yellowyears.SkeletonPoser
         public bool defaultExpandPreview;
 
         public bool useBoneGizmos;
+        public Color boneGizmoColour;
         
         // [Space]
         //

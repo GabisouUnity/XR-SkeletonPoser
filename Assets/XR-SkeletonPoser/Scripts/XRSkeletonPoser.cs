@@ -92,40 +92,32 @@ namespace yellowyears.SkeletonPoser
 
         private void OnDrawGizmos()
         {
-            if (Application.isPlaying) return;
             if (Application.isPlaying || !XRSkeletonPoserSettings.Instance.useBoneGizmos) return;
 
             if (_showLeftGizmos)
             {
-                DrawLeftGizmos();
+                // CustomGizmos.DrawLeftBones(this, GizmoType.Pickable);
+                var bones = tempLeft.GetComponentsInChildren<Transform>();
+                
+                // Gizmos.color = XRSkeletonPoserSettings.Instance.boneGizmoColour;
+                Handles.color = XRSkeletonPoserSettings.Instance.boneGizmoColour;
+                
+                foreach (var bone in bones)
+                {
+                    // Gizmos.DrawSphere(bone.position, 0.01f);
+                    if (Handles.Button(bone.position, bone.rotation, 0.01f, 0.01f, Handles.SphereHandleCap))
+                    {
+                        
+                    }
+                }
             }
 
-            if (_showRightGizmos)
-            {
-                DrawRightGizmos();
-            } 
+            // if (_showRightGizmos)
+            // {
+            //     DrawRightGizmos();
+            // } 
         }
-
-        private void DrawLeftGizmos()
-        {
-            var bones = tempLeft.GetComponentsInChildren<Transform>().ToArray();
-            
-            foreach (var bone in bones)
-            {
-                Gizmos.DrawSphere(bone.position, 0.01f);
-            }
-        }
-
-        private void DrawRightGizmos()
-        {
-            var bones = tempRight.GetComponentsInChildren<Transform>().ToArray();
-
-            foreach (var bone in bones)
-            {
-                Gizmos.DrawSphere(bone.position, 0.01f);
-            }
-        }
-
+        
         private static void SetExpandedRecursive(GameObject gameObject, bool expand)
         {
             var type = typeof(EditorWindow).Assembly.GetType("UnityEditor.SceneHierarchyWindow");
@@ -340,4 +332,26 @@ namespace yellowyears.SkeletonPoser
         }
         
     }
+
+    // public class CustomGizmos
+    // {
+    //     [DrawGizmo(GizmoType.Pickable)]
+    //     public static void DrawLeftBones(XRSkeletonPoser poser, GizmoType type)
+    //     {
+    //         Transform[] bones = poser.tempLeft.GetComponentsInChildren<Transform>();
+    //         
+    //         Gizmos.color = XRSkeletonPoserSettings.Instance.boneGizmoColour;
+    //
+    //         foreach (var bone in bones)
+    //         {
+    //             Gizmos.DrawSphere(bone.position, 0.01f);
+    //         }
+    //     }
+    //
+    //     [DrawGizmo(GizmoType.Pickable)]
+    //     public static void DrawRightBones(XRSkeletonPoser poser, GizmoType type)
+    //     {
+    //         
+    //     }
+    // }
 }
