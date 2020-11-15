@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 using UnityEditor;
 using UnityEngine;
@@ -90,6 +91,41 @@ namespace yellowyears.SkeletonPoser
             DrawBlendEditor();
             
             serializedObject.ApplyModifiedProperties();
+        }
+        
+        public void OnSceneGUI()
+        {
+            if (Application.isPlaying || !XRSkeletonPoserSettings.Instance.useBoneGizmos) return;
+
+            if (_propertyShowLeft.boolValue)
+            {
+                // CustomGizmos.DrawLeftBones(this, GizmoType.Pickable);
+                DrawBoneHandles();
+            }
+
+            // if (_showRightGizmos)
+            // {
+            //     DrawRightGizmos();
+            // } 
+        }
+
+        private void DrawBoneHandles()
+        {
+            var left = _propertyTempLeft.objectReferenceValue as GameObject;
+
+            if (!left) return;
+            
+            var bones = left.GetComponentsInChildren<Transform>();
+
+            Handles.color = XRSkeletonPoserSettings.Instance.boneGizmoColour;
+            
+            foreach (var bone in bones)
+            {
+                if (Handles.Button(bone.position, bone.rotation, 0.01f, 0.01f, Handles.SphereHandleCap))
+                {
+                    Selection.activeGameObject = bone.gameObject;
+                }
+            }
         }
 
         private void DrawAdditionalPoses()

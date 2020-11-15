@@ -34,10 +34,6 @@ namespace yellowyears.SkeletonPoser
 
         [HideInInspector] public bool showRight;
         [HideInInspector] public GameObject tempRight;
-
-        // Might be able to get these from the showLeft and showRight but works for now
-        private bool _showLeftGizmos = false;
-        private bool _showRightGizmos = false;
         
         private void Awake()
         {
@@ -58,15 +54,12 @@ namespace yellowyears.SkeletonPoser
             {
                 SetExpandedRecursive(preview, true);
             }
-
-            _showLeftGizmos = true;
             return preview;
         }
 
         public void DestroyLeftPreview(GameObject obj)
         {
             DestroyImmediate(obj);
-            _showLeftGizmos = false;
         }
 
         public GameObject ShowRightPreview()
@@ -79,43 +72,12 @@ namespace yellowyears.SkeletonPoser
             {
                 SetExpandedRecursive(preview, true);
             }
-
-            _showRightGizmos = true;
             return preview;
         }
 
         public void DestroyRightPreview(GameObject obj)
         {
             DestroyImmediate(obj);
-            _showRightGizmos = false;
-        }
-
-        private void OnDrawGizmos()
-        {
-            if (Application.isPlaying || !XRSkeletonPoserSettings.Instance.useBoneGizmos) return;
-
-            if (_showLeftGizmos)
-            {
-                // CustomGizmos.DrawLeftBones(this, GizmoType.Pickable);
-                var bones = tempLeft.GetComponentsInChildren<Transform>();
-                
-                // Gizmos.color = XRSkeletonPoserSettings.Instance.boneGizmoColour;
-                Handles.color = XRSkeletonPoserSettings.Instance.boneGizmoColour;
-                
-                foreach (var bone in bones)
-                {
-                    // Gizmos.DrawSphere(bone.position, 0.01f);
-                    if (Handles.Button(bone.position, bone.rotation, 0.01f, 0.01f, Handles.SphereHandleCap))
-                    {
-                        
-                    }
-                }
-            }
-
-            // if (_showRightGizmos)
-            // {
-            //     DrawRightGizmos();
-            // } 
         }
         
         private static void SetExpandedRecursive(GameObject gameObject, bool expand)
@@ -332,26 +294,4 @@ namespace yellowyears.SkeletonPoser
         }
         
     }
-
-    // public class CustomGizmos
-    // {
-    //     [DrawGizmo(GizmoType.Pickable)]
-    //     public static void DrawLeftBones(XRSkeletonPoser poser, GizmoType type)
-    //     {
-    //         Transform[] bones = poser.tempLeft.GetComponentsInChildren<Transform>();
-    //         
-    //         Gizmos.color = XRSkeletonPoserSettings.Instance.boneGizmoColour;
-    //
-    //         foreach (var bone in bones)
-    //         {
-    //             Gizmos.DrawSphere(bone.position, 0.01f);
-    //         }
-    //     }
-    //
-    //     [DrawGizmo(GizmoType.Pickable)]
-    //     public static void DrawRightBones(XRSkeletonPoser poser, GizmoType type)
-    //     {
-    //         
-    //     }
-    // }
 }
