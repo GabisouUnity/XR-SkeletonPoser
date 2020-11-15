@@ -124,7 +124,7 @@ namespace yellowyears.SkeletonPoser
             
             foreach (var bone in bones)
             {
-                // if (!IsValidBone(bone)) return;
+                if (!IsValidBone(bone)) continue;
                 
                 if (Handles.Button(bone.position, bone.rotation, 0.01f, 0.01f, Handles.SphereHandleCap))
                 {
@@ -137,9 +137,14 @@ namespace yellowyears.SkeletonPoser
         {
             if (bone == null) return false;
             
-            var ignoredBones = _poserSettings.ignoredBones;
+            var ignoredBones = _poserSettings.ignoredBoneKeywords;
 
-            return ignoredBones.Any(ignoredBone => bone.name == ignoredBone.name);
+            foreach (var ignoredBone in ignoredBones)
+            {
+                if (bone.name.Contains(ignoredBone)) return false;
+            }
+
+            return true;
         }
         
         private void DrawAdditionalPoses()

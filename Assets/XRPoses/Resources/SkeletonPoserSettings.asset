@@ -20,6 +20,10 @@ MonoBehaviour:
   defaultExpandPreview: 1
   useBoneGizmos: 1
   boneGizmoColour: {r: 0.6791116, g: 0.7169812, b: 0, a: 1}
+  ignoredBoneKeywords:
+  - end
+  - root
+  - aux
   guiFont: {fileID: 0}
   showLeftHandColour: {r: 1, g: 1, b: 1, a: 1}
   hideLeftHandColour: {r: 1, g: 1, b: 1, a: 1}

@@ -83,6 +83,8 @@ namespace yellowyears.SkeletonPoser
 
         public bool useBoneGizmos;
         public Color boneGizmoColour;
+
+        public string[] ignoredBoneKeywords;
         
         // [Space]
         //
