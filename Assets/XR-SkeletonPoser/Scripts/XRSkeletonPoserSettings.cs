@@ -78,20 +78,26 @@ namespace yellowyears.SkeletonPoser
 
         public string poseNamePrefix;
         
+        [Space]
+        
         [Tooltip("Expand all children gameobjects recursively when the show hand button is pressed")]
         public bool defaultExpandPreview;
 
+        [Space]
+        
         public bool useBoneGizmos;
         public Color boneGizmoColour;
 
+        // [Space]
+        
         public string[] ignoredBoneKeywords;
         
-        // [Space]
-        //
-        // [Tooltip("Lerp fingers on select for a smooth transition between the free pose to the object")]
-        // public bool lerpFingersOnSelect;
-        //
-        // public float fingerLerpTime = 3f;
+        [Space]
+        
+        [Tooltip("Lerp fingers on select for a smooth transition between the free pose to the object")]
+        public bool lerpFingersOnSelect;
+        
+        public float fingerLerpDuration = 3f;
         
         [Space]
         

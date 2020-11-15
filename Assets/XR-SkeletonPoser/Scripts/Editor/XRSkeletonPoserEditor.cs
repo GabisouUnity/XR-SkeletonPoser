@@ -119,9 +119,6 @@ namespace yellowyears.SkeletonPoser
 
             Handles.color = XRSkeletonPoserSettings.Instance.boneGizmoColour;
             
-            // When you select the button all of them disappear, also some gameobjects do nothing but are still drawn
-            // ^ That's just something with the steamvr hand, but gonna add an ignored gameobject array then don't draw it if it is called something from that
-            
             foreach (var bone in bones)
             {
                 if (!IsValidBone(bone)) continue;
