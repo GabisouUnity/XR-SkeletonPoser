@@ -48,36 +48,44 @@ namespace yellowyears.SkeletonPoser
         {
             var poserSettings = XRSkeletonPoserSettings.Instance;
             
-            var preview = Instantiate(poserSettings.leftHand);
+            tempLeft = Instantiate(poserSettings.leftHand);
 
             if (poserSettings.defaultExpandPreview)
             {
-                SetExpandedRecursive(preview, true);
+                SetExpandedRecursive(tempLeft, true);
             }
-            return preview;
+
+            showLeft = true;
+            
+            return tempLeft;
         }
 
         public void DestroyLeftPreview(GameObject obj)
         {
             DestroyImmediate(obj);
+            showLeft = false;
         }
 
         public GameObject ShowRightPreview()
         {
             var poserSettings = XRSkeletonPoserSettings.Instance;
             
-            var preview = Instantiate(poserSettings.rightHand);
+            tempLeft = Instantiate(poserSettings.rightHand);
             
             if (poserSettings.defaultExpandPreview)
             {
-                SetExpandedRecursive(preview, true);
+                SetExpandedRecursive(tempLeft, true);
             }
-            return preview;
+
+            showRight = true;
+            
+            return tempLeft;
         }
 
         public void DestroyRightPreview(GameObject obj)
         {
             DestroyImmediate(obj);
+            showRight = false;
         }
         
         private static void SetExpandedRecursive(GameObject gameObject, bool expand)

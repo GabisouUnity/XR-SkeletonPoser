@@ -19,7 +19,7 @@ MonoBehaviour:
   poseNamePrefix: 
   defaultExpandPreview: 1
   useBoneGizmos: 1
-  boneGizmoColour: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  boneGizmoColour: {r: 0.6791116, g: 0.7169812, b: 0, a: 1}
   guiFont: {fileID: 0}
   showLeftHandColour: {r: 1, g: 1, b: 1, a: 1}
   hideLeftHandColour: {r: 1, g: 1, b: 1, a: 1}
