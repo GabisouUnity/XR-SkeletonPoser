@@ -17,13 +17,15 @@ MonoBehaviour:
   rightHand: {fileID: 126567881452638359, guid: fa7a20ddd8e285b4abd7a6a6b7f8881c,
     type: 3}
   poseNamePrefix: 
-  defaultExpandPreview: 1
-  useBoneGizmos: 0
+  defaultExpandPreview: 0
+  useBoneGizmos: 1
   boneGizmoColour: {r: 0.6791116, g: 0.7169812, b: 0, a: 1}
   ignoredBoneKeywords:
   - end
   - root
   - aux
+  lerpFingersOnSelect: 0
+  fingerLerpDuration: 3
   guiFont: {fileID: 0}
   showLeftHandColour: {r: 1, g: 1, b: 1, a: 1}
   hideLeftHandColour: {r: 1, g: 1, b: 1, a: 1}

@@ -100,22 +100,20 @@ namespace yellowyears.SkeletonPoser
             if (_propertyShowLeft.boolValue)
             {
                 // CustomGizmos.DrawLeftBones(this, GizmoType.Pickable);
-                DrawBoneHandles();
+                DrawBoneHandles(_propertyTempLeft.objectReferenceValue as GameObject);
             }
 
-            // if (_showRightGizmos)
-            // {
-            //     DrawRightGizmos();
-            // } 
+            if (_propertyShowRight.boolValue)
+            {
+                DrawBoneHandles(_propertyTempRight.objectReferenceValue as GameObject);
+            } 
         }
 
-        private void DrawBoneHandles()
+        private void DrawBoneHandles(GameObject targetHand)
         {
-            var left = _propertyTempLeft.objectReferenceValue as GameObject;
-
-            if (!left) return;
+            if (!targetHand) return;
             
-            var bones = left.GetComponentsInChildren<Transform>();
+            var bones = targetHand.GetComponentsInChildren<Transform>();
 
             Handles.color = XRSkeletonPoserSettings.Instance.boneGizmoColour;
             
