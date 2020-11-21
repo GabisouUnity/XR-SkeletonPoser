@@ -131,6 +131,8 @@ namespace yellowyears.SkeletonPoser
         private bool IsValidBone(Transform bone)
         {
             if (bone == null) return false;
+
+            if (SceneVisibilityManager.instance.IsPickingDisabled(bone.gameObject)) return false;
             
             var ignoredBones = _poserSettings.ignoredBoneKeywords;
             
@@ -139,7 +141,7 @@ namespace yellowyears.SkeletonPoser
             foreach (var ignoredBone in lowerIgnoredBones)
             {
                 var boneLower = bone.name.ToLower();
-            
+                
                 if (boneLower.Contains(ignoredBone)) return false;
             }
 
