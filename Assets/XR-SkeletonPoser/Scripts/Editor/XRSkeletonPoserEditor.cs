@@ -141,6 +141,16 @@ namespace yellowyears.SkeletonPoser
 
             return true;
         }
+
+        private bool IsValidMainPose(XRSkeletonPose pose)
+        {
+            return pose.leftHandPositions != null && pose.leftHandRotations != null && pose.rightHandPositions != null && pose.rightHandRotations != null;
+        }
+        
+        private bool IsValidSecondaryPose(XRSkeletonPose pose)
+        {
+            return pose.leftSecondaryPositions != null && pose.leftSecondaryRotations != null && pose.rightSecondaryPositions != null && pose.rightSecondaryRotations != null;
+        }
         
         private void DrawAdditionalPoses()
         {
@@ -157,7 +167,7 @@ namespace yellowyears.SkeletonPoser
                 EditorGUILayout.PropertyField(_propertyPose);
                 
                 EditorGUILayout.BeginHorizontal();
-                EditorGUI.BeginDisabledGroup(!_propertyShowLeft.boolValue || !_propertyShowRight.boolValue || _poser.pose == null);
+                EditorGUI.BeginDisabledGroup(!_propertyShowLeft.boolValue || !_propertyShowRight.boolValue || _poser.pose == null || !IsValidMainPose(_poser.pose) || !IsValidSecondaryPose(_poser.pose));
 
                 // TODO: disable buttons if there is no saved data
 
