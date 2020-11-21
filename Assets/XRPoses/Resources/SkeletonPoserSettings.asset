@@ -20,10 +20,16 @@ MonoBehaviour:
   defaultExpandPreview: 0
   useBoneGizmos: 1
   boneGizmoColour: {r: 0.6791116, g: 0.7169812, b: 0, a: 1}
+  boneGizmoSize: 0.01
+  boneGizmoPickSize: 0.01
   ignoredBoneKeywords:
   - end
   - root
   - aux
+  - attach
+  - wrist
+  - vr_glove_left_slim
+  - vr_glove_right_slim
   lerpFingersOnSelect: 0
   fingerLerpDuration: 3
   guiFont: {fileID: 0}
