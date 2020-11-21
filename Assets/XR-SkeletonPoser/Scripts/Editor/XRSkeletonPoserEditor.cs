@@ -133,10 +133,14 @@ namespace yellowyears.SkeletonPoser
             if (bone == null) return false;
             
             var ignoredBones = _poserSettings.ignoredBoneKeywords;
+            
+            var lowerIgnoredBones = ignoredBones.Select(s => s.ToLowerInvariant()).ToArray();
 
-            foreach (var ignoredBone in ignoredBones)
+            foreach (var ignoredBone in lowerIgnoredBones)
             {
-                if (bone.name.Contains(ignoredBone)) return false;
+                var boneLower = bone.name.ToLower();
+            
+                if (boneLower.Contains(ignoredBone)) return false;
             }
 
             return true;
