@@ -45,6 +45,8 @@ namespace yellowyears.SkeletonPoser
             
             _instance.useBoneGizmos = true;
             _instance.boneGizmoColour = Color.yellow;
+            _instance.boneGizmoSize = 0.01f;
+            _instance.boneGizmoPickSize = 0.01f;
             // _instance.lerpFingersOnSelect = true;
 
             _instance.showLeftHandColour = Color.white;
@@ -87,6 +89,8 @@ namespace yellowyears.SkeletonPoser
         
         public bool useBoneGizmos;
         public Color boneGizmoColour;
+        public float boneGizmoSize;
+        public float boneGizmoPickSize;
 
         // [Space]
         

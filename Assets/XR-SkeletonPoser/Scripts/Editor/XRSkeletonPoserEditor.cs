@@ -115,13 +115,13 @@ namespace yellowyears.SkeletonPoser
             
             var bones = targetHand.GetComponentsInChildren<Transform>();
 
-            Handles.color = XRSkeletonPoserSettings.Instance.boneGizmoColour;
+            Handles.color = _poserSettings.boneGizmoColour;
             
             foreach (var bone in bones)
             {
                 if (!IsValidBone(bone)) continue;
                 
-                if (Handles.Button(bone.position, bone.rotation, 0.01f, 0.01f, Handles.SphereHandleCap))
+                if (Handles.Button(bone.position, bone.rotation, _poserSettings.boneGizmoSize, _poserSettings.boneGizmoPickSize, Handles.SphereHandleCap))
                 {
                     Selection.activeGameObject = bone.gameObject;
                 }
