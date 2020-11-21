@@ -396,6 +396,8 @@ namespace yellowyears.SkeletonPoser
         private void SaveMainPose()
         {
             var pose = _propertyPose.objectReferenceValue as XRSkeletonPose;
+
+            if (pose == null) pose = ScriptableObject.CreateInstance<XRSkeletonPose>();
             
             var copy = Instantiate(pose);
             
@@ -448,6 +450,8 @@ namespace yellowyears.SkeletonPoser
         {
             var pose = _propertyPose.objectReferenceValue as XRSkeletonPose;
             
+            if (pose == null) pose = ScriptableObject.CreateInstance<XRSkeletonPose>();
+
             var copy = Instantiate(pose);
             
             copy.leftSecondaryPositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
