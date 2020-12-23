@@ -302,21 +302,21 @@ namespace yellowyears.SkeletonPoser
             handBones[0].localRotation = Quaternion.identity;
         }
 
-        private IEnumerator SetPose()
-        {
-            float elapsedTime = 0;
-
-            while (elapsedTime < XRSkeletonPoserSettings.Instance.fingerLerpDuration)
-            {
-                // valueToLerp = Vector3.Lerp(startValue, endValue, elapsedTime / fingerLerpDuration;
-                
-                elapsedTime += Time.deltaTime;
-
-                yield return null;
-            }
-            
-            // valueToLerp = endValue;
-        }
+        // private IEnumerator SetPose()
+        // {
+        //     float elapsedTime = 0;
+        //
+        //     while (elapsedTime < XRSkeletonPoserSettings.Instance.fingerLerpDuration)
+        //     {
+        //         // valueToLerp = Vector3.Lerp(startValue, endValue, elapsedTime / fingerLerpDuration;
+        //         
+        //         elapsedTime += Time.deltaTime;
+        //
+        //         yield return null;
+        //     }
+        //     
+        //     // valueToLerp = endValue;
+        // }
         
     }
 }

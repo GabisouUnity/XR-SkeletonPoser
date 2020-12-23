@@ -134,6 +134,7 @@ namespace yellowyears.SkeletonPoser
 
             if (SceneVisibilityManager.instance.IsPickingDisabled(bone.gameObject)) return false;
             if (SceneVisibilityManager.instance.IsHidden(bone.gameObject)) return false;
+            if (bone.gameObject.activeInHierarchy == false) return false;
             
             var ignoredBones = _poserSettings.ignoredBoneKeywords;
             
