@@ -3,13 +3,13 @@ using UnityEditor;
 
 namespace yellowyears.SkeletonPoser
 {
-    [CustomEditor(typeof(XR_SkeletonPoseDirectInteractor))]
-    internal class XR_SkeletonPoseDirectInteractorEditor : Editor
+    [CustomEditor(typeof(XRSkeletonPoseDirectInteractor))]
+    internal class XRSkeletonPoseDirectInteractorEditor : Editor
     {
         
-        // Copied from the XRDirectInteractorEditor to maintain editor formatting from a derivative class for XR_SkeletonPoseDirectInteractor
+        // Copied from the XRDirectInteractorEditor to maintain editor formatting from a derivative class for XRSkeletonPoseDirectInteractor
 
-        #region XR_SkeletonPoseDirectInteractor variables
+        #region XRSkeletonPoseDirectInteractor variables
 
         private SerializedProperty _propertyHandObject = null;
         private SerializedProperty _propertyHandType = null;
@@ -126,7 +126,7 @@ namespace yellowyears.SkeletonPoser
         public override void OnInspectorGUI()
         {
             GUI.enabled = false;
-            EditorGUILayout.ObjectField("Script", MonoScript.FromMonoBehaviour((XR_SkeletonPoseDirectInteractor)target), typeof(XR_SkeletonPoseDirectInteractor), false);
+            EditorGUILayout.ObjectField("Script", MonoScript.FromMonoBehaviour((XRSkeletonPoseDirectInteractor)target), typeof(XRSkeletonPoseDirectInteractor), false);
             GUI.enabled = true;
             
             serializedObject.Update();

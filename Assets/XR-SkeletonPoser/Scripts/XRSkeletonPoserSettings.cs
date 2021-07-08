@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace yellowyears.SkeletonPoser
 {
-    public class XR_SkeletonPoserSettings : ScriptableObject
+    public class XRSkeletonPoserSettings : ScriptableObject
     {
 
-        private static XR_SkeletonPoserSettings _instance;
+        private static XRSkeletonPoserSettings _instance;
 
-        public static XR_SkeletonPoserSettings Instance
+        public static XRSkeletonPoserSettings Instance
         {
             get
             {
@@ -22,11 +22,11 @@ namespace yellowyears.SkeletonPoser
         {
             if (_instance != null) return;
             
-            _instance = Resources.Load<XR_SkeletonPoserSettings>("SkeletonPoserSettings");
+            _instance = Resources.Load<XRSkeletonPoserSettings>("SkeletonPoserSettings");
             
             if (_instance != null) return;
             
-            _instance = CreateInstance<XR_SkeletonPoserSettings>();
+            _instance = CreateInstance<XRSkeletonPoserSettings>();
                     
             if(!AssetDatabase.IsValidFolder("Assets/XRPoses/Resources"))
             {
@@ -42,6 +42,12 @@ namespace yellowyears.SkeletonPoser
         private static void SetDefaultValues()
         {
             _instance.defaultExpandPreview = true;
+            
+            _instance.useBoneGizmos = true;
+            _instance.boneGizmoColour = Color.yellow;
+            _instance.boneGizmoSize = 0.01f;
+            _instance.boneGizmoPickSize = 0.01f;
+            // _instance.lerpFingersOnSelect = true;
 
             _instance.showLeftHandColour = Color.white;
             _instance.hideLeftHandColour = Color.white;
@@ -53,7 +59,7 @@ namespace yellowyears.SkeletonPoser
             _instance.savePoseColour = new Color32(160, 255, 66, 40);
             
             _instance.resetPoseColour = new Color32(255, 101, 101, 96);
-            _instance.resetToReferencePoseColour = new Color32(255, 101, 101, 96);
+            // _instance.resetToReferencePoseColour = new Color32(255, 101, 101, 96);
             
             AssetDatabase.SaveAssets();
         }
@@ -68,26 +74,54 @@ namespace yellowyears.SkeletonPoser
         [Tooltip("Left hand model to be spawned in as a left preview. Should be the same as your in game left hand")] 
         public GameObject rightHand;
 
-        [Space] 
-        
-        public XR_SkeletonPose referencePose;
+        [Space]
 
+        // public XRSkeletonPose referencePose;
+
+        public string poseNamePrefix;
+        
+        [Space]
+        
         [Tooltip("Expand all children gameobjects recursively when the show hand button is pressed")]
         public bool defaultExpandPreview;
 
         [Space]
         
+        public bool useBoneGizmos;
+        public Color boneGizmoColour;
+        public float boneGizmoSize;
+        public float boneGizmoPickSize;
+
+        // [Space]
+        
+        public string[] ignoredBoneKeywords;
+        
+        [Space]
+        
+        [Tooltip("Lerp fingers on select for a smooth transition between the free pose to the object")]
+        public bool lerpFingersOnSelect;
+        
+        public float fingerLerpDuration = 3f;
+        
+        [Space]
+        
         public Font guiFont;
 
+        [Space]
         public Color showLeftHandColour;
-        public Color showRightHandColour;
+        [Space]
         public Color hideLeftHandColour;
+        [Space]
+        public Color showRightHandColour;
+        [Space]
         public Color hideRightHandColour;
+        
+        [Space]
         
         public Color loadPoseColour;
         public Color savePoseColour;
         public Color resetPoseColour;
-        public Color resetToReferencePoseColour;
+        // public Color resetToReferencePoseColour;
 
     }    
 }

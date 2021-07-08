@@ -16,13 +16,27 @@ MonoBehaviour:
     type: 3}
   rightHand: {fileID: 126567881452638359, guid: fa7a20ddd8e285b4abd7a6a6b7f8881c,
     type: 3}
-  referencePose: {fileID: 11400000, guid: 34f84c2d51b4e0b45948d451004a98e6, type: 2}
+  poseNamePrefix: 
+  defaultExpandPreview: 0
+  useBoneGizmos: 0
+  boneGizmoColour: {r: 0.6791116, g: 0.7169812, b: 0, a: 1}
+  boneGizmoSize: 0.01
+  boneGizmoPickSize: 0.01
+  ignoredBoneKeywords:
+  - end
+  - root
+  - aux
+  - attach
+  - wrist
+  - vr_glove_left_slim
+  - vr_glove_right_slim
+  lerpFingersOnSelect: 0
+  fingerLerpDuration: 3
   guiFont: {fileID: 0}
   showLeftHandColour: {r: 1, g: 1, b: 1, a: 1}
-  showRightHandColour: {r: 1, g: 1, b: 1, a: 1}
   hideLeftHandColour: {r: 1, g: 1, b: 1, a: 1}
+  showRightHandColour: {r: 1, g: 1, b: 1, a: 1}
   hideRightHandColour: {r: 1, g: 1, b: 1, a: 1}
   loadPoseColour: {r: 0.627451, g: 1, b: 0.25882354, a: 0.15686275}
   savePoseColour: {r: 0.627451, g: 1, b: 0.25882354, a: 0.15686275}
   resetPoseColour: {r: 1, g: 0.39607844, b: 0.39607844, a: 0.3764706}
-  resetToReferencePoseColour: {r: 1, g: 0.39607844, b: 0.39607844, a: 0.3764706}
