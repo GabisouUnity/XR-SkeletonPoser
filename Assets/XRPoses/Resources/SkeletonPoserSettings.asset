@@ -18,7 +18,7 @@ MonoBehaviour:
     type: 3}
   poseNamePrefix: 
   defaultExpandPreview: 0
-  useBoneGizmos: 0
+  useBoneGizmos: 1
   boneGizmoColour: {r: 0.6791116, g: 0.7169812, b: 0, a: 1}
   boneGizmoSize: 0.01
   boneGizmoPickSize: 0.01
