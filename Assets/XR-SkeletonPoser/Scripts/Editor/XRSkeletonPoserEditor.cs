@@ -155,7 +155,7 @@ namespace yellowyears.SkeletonPoser
 
                 GUI.backgroundColor = _poserSettings.loadPoseColour;
                 
-                if (GUILayout.Button(_propertyPose.name + " (MAIN)"))
+                if (GUILayout.Button($"Load pose: '{_propertyPose.name}' (MAIN)"))
                 {
                     LoadPose(_propertyPose.objectReferenceValue as XRSkeletonPose);
                 }
