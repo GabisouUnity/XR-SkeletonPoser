@@ -30,17 +30,9 @@ namespace yellowyears.SkeletonPoser
             base.Awake();
 
             _inputController = GetComponent<XRController>();
-            // _poserSettings = XRSkeletonPoserSettings.Instance;
 
             // Cache default pose at runtime
             _defaultPose = XRSkeletonPoser.GetDefaultPose(handType, handObject);
-        }
-
-        private void Update()
-        {
-            if (!_poser) return;
-            
-            _poser.CheckForBlendInput(_shouldCheckForBlendInput, _inputController, handObject, handType, selectTarget);
         }
         
         protected override void OnSelectEnter(XRBaseInteractable interactable)
