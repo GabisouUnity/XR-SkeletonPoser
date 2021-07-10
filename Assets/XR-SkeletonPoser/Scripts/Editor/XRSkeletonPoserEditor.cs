@@ -15,20 +15,9 @@ namespace yellowyears.SkeletonPoser
         private XRSkeletonPose _defaultPose = null;
 
         private SerializedProperty _propertyPose = null;
-        // private SerializedProperty _propertySecondaryPose = null;
-        private SerializedProperty _propertySelectedPose = null;
-        // private SerializedProperty _propertyActivePoseEnum = null;
-        // private SerializedProperty _propertyBlendBehaviour = null;
-        // private SerializedProperty _propertyBlendWasCreated = null;
-        private SerializedProperty _propertyBlendInput = null;
 
         private SerializedProperty _propertyShowPoses = null;
         private SerializedProperty _propertyShowPoseEditor = null;
-        private SerializedProperty _propertyShowBlendEditor = null;
-        private SerializedProperty _propertyUseBlend = null;
-        // private SerializedProperty _propertyScale = null;
-
-        // private bool _updateHands = false;
         
         private SerializedProperty _propertyShowLeft = null;
         private SerializedProperty _propertyTempLeft = null;
@@ -47,18 +36,9 @@ namespace yellowyears.SkeletonPoser
             GetDefaultPose();
 
             _propertyPose = serializedObject.FindProperty("pose");
-            // _propertySecondaryPose = serializedObject.FindProperty("secondaryPose");
-            _propertySelectedPose = serializedObject.FindProperty("selectedPose");
-            // _propertyActivePoseEnum = serializedObject.FindProperty("activePoseEnum");
-            // _propertyBlendBehaviour = serializedObject.FindProperty("blendBehaviour");
-            // _propertyBlendWasCreated = serializedObject.FindProperty("blendWasCreated");
-            _propertyBlendInput = serializedObject.FindProperty("blendInput");
             
             _propertyShowPoses = serializedObject.FindProperty("showPoses");
             _propertyShowPoseEditor = serializedObject.FindProperty("showPoseEditor");
-            // _propertyShowBlendEditor = serializedObject.FindProperty("showBlendEditor");
-            // _propertyUseBlend = serializedObject.FindProperty("useBlend");
-            // _propertyScale = serializedObject.FindProperty("scale");
             
             _propertyShowLeft = serializedObject.FindProperty("showLeft");
             _propertyTempLeft = serializedObject.FindProperty("tempLeft");
@@ -84,11 +64,9 @@ namespace yellowyears.SkeletonPoser
             
             serializedObject.Update();
             
-            DrawAdditionalPoses();
+            DrawPoseManager();
             
             DrawPoseEditor();
-            
-            // DrawBlendEditor();
             
             serializedObject.ApplyModifiedProperties();
         }
@@ -155,12 +133,7 @@ namespace yellowyears.SkeletonPoser
             return pose.leftHandPositions != null && pose.leftHandRotations != null && pose.rightHandPositions != null && pose.rightHandRotations != null;
         }
         
-        private bool IsValidSecondaryPose(XRSkeletonPose pose)
-        {
-            return pose.leftSecondaryPositions != null && pose.leftSecondaryRotations != null && pose.rightSecondaryPositions != null && pose.rightSecondaryRotations != null;
-        }
-        
-        private void DrawAdditionalPoses()
+        private void DrawPoseManager()
         {
             if (Application.isPlaying) return;
             
@@ -175,7 +148,7 @@ namespace yellowyears.SkeletonPoser
                 EditorGUILayout.PropertyField(_propertyPose);
                 
                 EditorGUILayout.BeginHorizontal();
-                EditorGUI.BeginDisabledGroup(!_propertyShowLeft.boolValue || !_propertyShowRight.boolValue || _poser.pose == null || !IsValidMainPose(_poser.pose) || !IsValidSecondaryPose(_poser.pose));
+                EditorGUI.BeginDisabledGroup(!_propertyShowLeft.boolValue || !_propertyShowRight.boolValue || _poser.pose == null || !IsValidMainPose(_poser.pose));
 
                 // TODO: disable buttons if there is no saved data
 
@@ -183,16 +156,7 @@ namespace yellowyears.SkeletonPoser
                 
                 if (GUILayout.Button(_propertyPose.name + " (MAIN)"))
                 {
-                    // _propertySelectedPose = _propertyPose;
-                    _propertySelectedPose.enumValueIndex = 0; // Main
                     LoadPose(_propertyPose.objectReferenceValue as XRSkeletonPose);
-                }
-
-                if (GUILayout.Button(_propertyPose.name + " (SECONDARY)"))
-                {
-                    // _propertySelectedPose = _propertySecondaryPose;
-                    _propertySelectedPose.enumValueIndex = 1; // Secondary
-                    LoadSecondaryPose(_propertyPose.objectReferenceValue as XRSkeletonPose);
                 }
                 
                 EditorGUI.EndDisabledGroup();
@@ -524,13 +488,9 @@ namespace yellowyears.SkeletonPoser
             copy.rightSecondaryPositions = _defaultPose.rightSecondaryPositions;
             copy.rightSecondaryRotations = _defaultPose.rightSecondaryRotations;
             
-            // _poser.selectedPose = copy;
             _poser.pose = copy;
 
             LoadPose(copy); // Load pose automatically for convenience
-            
-            // SaveMainPose();
-            // SaveSecondaryPose();
             
             // Save and overwrite
             if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))
@@ -543,96 +503,12 @@ namespace yellowyears.SkeletonPoser
             }
             else
             {
-                // Folder exists
-
-                // Overwrite the pose with a default pose
-
                 AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
-                // AssetDatabase.SaveAssets();
             }
         }
-        
-        // private void ResetToReferencePose()
-        // {
-        //     // Set pose to new pose data to avoid the need for reassignment after saving the file
-        //     
-        //     // Create copy of pose to stop error whilst saving ("Object already exists")
-        //     var copy = CreateInstance<XRSkeletonPose>();
-        //
-        //     var referencePose = XRSkeletonPoserSettings.Instance.referencePose;
-        //     
-        //     copy.leftHandPositions = referencePose.leftHandPositions;
-        //     copy.leftHandRotations = referencePose.leftHandRotations;
-        //
-        //     copy.rightHandPositions = referencePose.rightHandPositions;
-        //     copy.rightHandRotations = referencePose.rightHandRotations;
-        //     
-        //     // _poser.selectedPose = copy;
-        //
-        //     LoadPose(copy); // Load pose automatically for convenience
-        //     
-        //     // Save and overwrite
-        //     if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))
-        //     {
-        //         // Folder doesn't exist, create new
-        //         AssetDatabase.CreateFolder("Assets", "XRPoses");
-        //
-        //         // Overwrite the pose with a default pose
-        //         AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
-        //     }
-        //     else
-        //     {
-        //         // Folder exists
-        //
-        //         // Overwrite the pose with a default pose
-        //
-        //         AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poser.gameObject.name}.asset");
-        //         // AssetDatabase.SaveAssets();
-        //     }
-        // }
-
-        // private XRSkeletonPose GetMainPose(XRSkeletonPose inputPose)
-        // {
-        //     // Get pose without saving
-        //     
-        //     inputPose.leftHandPositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
-        //     inputPose.leftHandRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
-        //
-        //     inputPose.rightHandPositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
-        //     inputPose.rightHandRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
-        //
-        //     // Get input XRPose instance and return it but full from scene
-        //     return inputPose;
-        // }
-        //
-        // private XRSkeletonPose GetSecondaryPose(XRSkeletonPose inputPose)
-        // {
-        //     inputPose.leftSecondaryPositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
-        //     inputPose.leftSecondaryRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
-        //
-        //     inputPose.rightSecondaryPositions =
-        //         _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
-        //     inputPose.rightSecondaryRotations =
-        //         _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
-        //
-        //     return inputPose;
-        // }
-        //
-        // private XRSkeletonPose RemoveSecondaryPose(XRSkeletonPose inputPose)
-        // {
-        //     inputPose.leftSecondaryPositions = null;
-        //     inputPose.leftSecondaryRotations = null;
-        //
-        //     inputPose.rightSecondaryPositions = null;
-        //     inputPose.rightSecondaryRotations = null;
-        //
-        //     return inputPose;
-        // }
 
         private void LoadPose(XRSkeletonPose loadedPose)
         {
-            // var loadedPose = _poser.FetchPose();
-
             var leftHandObject = _propertyTempLeft.objectReferenceValue as GameObject;
             var rightHandObject = _propertyTempRight.objectReferenceValue as GameObject;
             
@@ -673,45 +549,5 @@ namespace yellowyears.SkeletonPoser
             
         }
 
-        private void LoadSecondaryPose(XRSkeletonPose loadedPose)
-        {
-            var leftHandObject = _propertyTempLeft.objectReferenceValue as GameObject;
-            var rightHandObject = _propertyTempRight.objectReferenceValue as GameObject;
-            
-            var leftSecondaryPositions = loadedPose.leftSecondaryPositions;
-            var leftSecondaryRotations = loadedPose.leftSecondaryRotations;
-
-            var rightSecondaryPositions = loadedPose.rightSecondaryPositions;
-            var rightSecondaryRotations = loadedPose.rightSecondaryRotations;
-
-            if (leftHandObject == null) return;
-
-            var leftTransforms = leftHandObject.GetComponentsInChildren<Transform>().ToArray();
-
-            // Set left values to loaded pose
-            for (int i = 0; i < leftSecondaryPositions.Length; i++)
-            {
-                leftTransforms[i].localPosition = leftSecondaryPositions[i];
-            }
-
-            for (int i = 0; i < leftSecondaryRotations.Length; i++)
-            {
-                leftTransforms[i].localRotation = leftSecondaryRotations[i];
-            }
-
-            if (rightHandObject == null) return;
-            
-            var rightTransforms = rightHandObject.GetComponentsInChildren<Transform>().ToArray();
-
-            for (int i = 0; i < rightSecondaryPositions.Length; i++)
-            {
-                rightTransforms[i].localPosition = rightSecondaryPositions[i];
-            }
-
-            for (int i = 0; i < rightSecondaryRotations.Length; i++)
-            {
-                rightTransforms[i].localRotation = rightSecondaryRotations[i];
-            }
-        }
     }    
 }
