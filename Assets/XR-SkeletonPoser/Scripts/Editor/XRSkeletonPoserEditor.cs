@@ -1,9 +1,6 @@
-﻿using System;
-using System.Linq;
-
+﻿using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using yellowyears.SkeletonPoser;
 
 namespace yellowyears.SkeletonPoser
 {
@@ -263,9 +260,9 @@ namespace yellowyears.SkeletonPoser
         
                    GUI.backgroundColor = _poserSettings.savePoseColour;
                    
-                   if (GUILayout.Button("Save Main Pose", "button"))
+                   if (GUILayout.Button("Save Pose", "button"))
                    {
-                       SaveMainPose();
+                       SavePose();
                    }
                    
                    EditorGUILayout.EndHorizontal();
@@ -314,7 +311,7 @@ namespace yellowyears.SkeletonPoser
             return fold;
         }
         
-        private void SaveMainPose()
+        private void SavePose()
         {
             var pose = _propertyPose.objectReferenceValue as XRSkeletonPose;
 
