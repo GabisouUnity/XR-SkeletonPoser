@@ -47,13 +47,15 @@ namespace yellowyears.SkeletonPoser
             _instance.boneGizmoColour = Color.yellow;
             _instance.boneGizmoSize = 0.01f;
             _instance.boneGizmoPickSize = 0.01f;
-            // _instance.lerpFingersOnSelect = true;
 
             _instance.showLeftHandColour = Color.white;
             _instance.hideLeftHandColour = Color.white;
 
             _instance.showRightHandColour = Color.white;
             _instance.hideRightHandColour = Color.white;
+            
+            _instance.showBothHandsColour = Color.white;
+            _instance.hideBothHandsColour = Color.white;
             
             _instance.loadPoseColour = new Color32(160, 255, 66, 40);
             _instance.savePoseColour = new Color32(160, 255, 66, 40);
@@ -74,9 +76,7 @@ namespace yellowyears.SkeletonPoser
         public GameObject rightHand;
 
         [Space]
-
-        // public XRSkeletonPose referencePose;
-
+        
         public string poseNamePrefix;
         
         [Space]
@@ -98,13 +98,19 @@ namespace yellowyears.SkeletonPoser
         public Font guiFont;
 
         [Space]
+        
         public Color showLeftHandColour;
-        [Space]
         public Color hideLeftHandColour;
+        
         [Space]
+        
         public Color showRightHandColour;
-        [Space]
         public Color hideRightHandColour;
+        
+        [Space]
+        
+        public Color showBothHandsColour;
+        public Color hideBothHandsColour;
         
         [Space]
         
