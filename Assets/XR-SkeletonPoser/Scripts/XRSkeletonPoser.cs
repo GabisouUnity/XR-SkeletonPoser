@@ -33,6 +33,8 @@ namespace yellowyears.SkeletonPoser
 
         [HideInInspector] public bool showRight;
         [HideInInspector] public GameObject tempRight;
+
+        [HideInInspector] public bool bothShown;
         
         private void Awake()
         {

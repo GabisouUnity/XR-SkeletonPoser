@@ -22,6 +22,8 @@ namespace yellowyears.SkeletonPoser
         private SerializedProperty _propertyShowRight = null;
         private SerializedProperty _propertyTempRight = null;
 
+        private SerializedProperty _propertyBothShown = null;
+        
         private XRSkeletonPoserSettings _poserSettings = null;
         
         private void OnEnable()
@@ -42,6 +44,8 @@ namespace yellowyears.SkeletonPoser
 
             _propertyShowRight = serializedObject.FindProperty("showRight");
             _propertyTempRight = serializedObject.FindProperty("tempRight");
+
+            _propertyBothShown = serializedObject.FindProperty("bothShown");
         }
         
         private void GetDefaultPose()
@@ -252,6 +256,61 @@ namespace yellowyears.SkeletonPoser
                    }
         
                    EditorGUI.EndDisabledGroup(); EditorGUILayout.EndHorizontal();
+                   
+                   EditorGUILayout.BeginHorizontal();
+
+                   if (!_propertyBothShown.boolValue)
+                   {
+                       GUI.backgroundColor = _poserSettings.showLeftHandColour;
+                       EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue && _propertyShowRight.boolValue);
+
+                       if (GUILayout.Button("Show Both Hands"))
+                       {
+                           var leftGameObject = _poser.ShowLeftPreview();
+                           var rightGameObject = _poser.ShowRightPreview();
+                           
+                           leftGameObject.transform.parent = null;
+                           leftGameObject.transform.parent = _poser.transform;
+                           leftGameObject.transform.localPosition = Vector3.zero;
+                           leftGameObject.transform.localRotation = Quaternion.identity;
+                           
+                           rightGameObject.transform.parent = null;
+                           rightGameObject.transform.parent = _poser.transform;
+                           rightGameObject.transform.localPosition = Vector3.zero;
+                           rightGameObject.transform.localRotation = Quaternion.identity;
+
+                           _propertyShowLeft.boolValue = true;
+                           _propertyShowRight.boolValue = true;
+                           
+                           _propertyTempLeft.objectReferenceValue = leftGameObject;
+                           _propertyTempRight.objectReferenceValue = rightGameObject;
+
+                           _propertyBothShown.boolValue = true;
+                       }
+                       
+                       EditorGUI.EndDisabledGroup();
+                   }
+                   else
+                   {
+                       GUI.backgroundColor = _poserSettings.showLeftHandColour;
+                       EditorGUI.BeginDisabledGroup(!_propertyShowLeft.boolValue && !_propertyShowRight.boolValue);
+
+                       if (GUILayout.Button("Hide Both Hands"))
+                       {
+                           _poser.DestroyLeftPreview(_propertyTempLeft.objectReferenceValue as GameObject);
+                           _propertyShowLeft.boolValue = false;
+                           
+                           _poser.DestroyRightPreview(_propertyTempRight.objectReferenceValue as GameObject);
+                           _propertyShowRight.boolValue = false;
+                           
+                           _propertyBothShown.boolValue = false;
+                       }
+                       
+                       EditorGUI.EndDisabledGroup();
+                   }
+                   
+                   EditorGUI.EndDisabledGroup();
+                   EditorGUILayout.EndHorizontal();
                    
                    EditorGUILayout.BeginHorizontal();
                    
