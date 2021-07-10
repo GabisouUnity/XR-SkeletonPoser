@@ -56,8 +56,8 @@ namespace yellowyears.SkeletonPoser
             
             _propertyShowPoses = serializedObject.FindProperty("showPoses");
             _propertyShowPoseEditor = serializedObject.FindProperty("showPoseEditor");
-            _propertyShowBlendEditor = serializedObject.FindProperty("showBlendEditor");
-            _propertyUseBlend = serializedObject.FindProperty("useBlend");
+            // _propertyShowBlendEditor = serializedObject.FindProperty("showBlendEditor");
+            // _propertyUseBlend = serializedObject.FindProperty("useBlend");
             // _propertyScale = serializedObject.FindProperty("scale");
             
             _propertyShowLeft = serializedObject.FindProperty("showLeft");
@@ -88,7 +88,7 @@ namespace yellowyears.SkeletonPoser
             
             DrawPoseEditor();
             
-            DrawBlendEditor();
+            // DrawBlendEditor();
             
             serializedObject.ApplyModifiedProperties();
         }
@@ -362,32 +362,32 @@ namespace yellowyears.SkeletonPoser
             }
         }
 
-        private void DrawBlendEditor()
-        {
-            if (Application.isPlaying)
-            {
-                EditorGUILayout.LabelField("Cannot modify blends in playmode.");
-            }
-            else
-            {
-                EditorGUILayout.BeginVertical("box");
-                
-                _propertyShowBlendEditor.boolValue =
-                    IndentedFoldoutHeader(_propertyShowBlendEditor.boolValue, "Blend Editor");
-                
-                if (_propertyShowBlendEditor.boolValue)
-                {
-                    EditorGUILayout.PropertyField(_propertyUseBlend);
-
-                    if (_propertyUseBlend.boolValue)
-                    {
-                        EditorGUILayout.PropertyField(_propertyBlendInput);
-                    }
-                }
-                
-                EditorGUILayout.EndVertical();
-            }
-        }
+        // private void DrawBlendEditor()
+        // {
+        //     if (Application.isPlaying)
+        //     {
+        //         EditorGUILayout.LabelField("Cannot modify blends in playmode.");
+        //     }
+        //     else
+        //     {
+        //         EditorGUILayout.BeginVertical("box");
+        //         
+        //         _propertyShowBlendEditor.boolValue =
+        //             IndentedFoldoutHeader(_propertyShowBlendEditor.boolValue, "Blend Editor");
+        //         
+        //         if (_propertyShowBlendEditor.boolValue)
+        //         {
+        //             EditorGUILayout.PropertyField(_propertyUseBlend);
+        //
+        //             if (_propertyUseBlend.boolValue)
+        //             {
+        //                 EditorGUILayout.PropertyField(_propertyBlendInput);
+        //             }
+        //         }
+        //         
+        //         EditorGUILayout.EndVertical();
+        //     }
+        // }
         
         private bool IndentedFoldoutHeader(bool fold, string text, int indent = 1)
         {
