@@ -267,11 +267,6 @@ namespace yellowyears.SkeletonPoser
                    {
                        SaveMainPose();
                    }
-
-                   if (GUILayout.Button("Save Secondary Pose", "button"))
-                   {
-                       SaveSecondaryPose();
-                   }
                    
                    EditorGUILayout.EndHorizontal();
                    
@@ -298,25 +293,6 @@ namespace yellowyears.SkeletonPoser
                    
                    EditorGUI.EndDisabledGroup();
                    
-                   // EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue == false && _propertyShowRight.boolValue == false || XRSkeletonPoserSettings.Instance.referencePose == null);
-                   //
-                   // GUI.backgroundColor = _poserSettings.resetToReferencePoseColour;
-                   //
-                   // if (GUILayout.Button("Reset To Reference Pose", "button"))
-                   // {
-                   //     // Make sure we warn the user before they reset their pose
-                   //     if (EditorUtility.DisplayDialog("Reset Pose?",
-                   //         "Are you sure you want to do this? You will lose your pose on this object!", "Yes", "No"))
-                   //     {
-                   //         // They are sure, reset pose
-                   //         ResetToReferencePose(); // Reset new pose instance to reference pose
-                   //     }
-                   // }
-                   //
-                   // GUI.backgroundColor = Color.white;
-                   //
-                   // EditorGUI.EndDisabledGroup();
-                   
                    EditorGUILayout.EndHorizontal();
                 }
         
@@ -325,33 +301,6 @@ namespace yellowyears.SkeletonPoser
                 EditorGUILayout.EndVertical();
             }
         }
-
-        // private void DrawBlendEditor()
-        // {
-        //     if (Application.isPlaying)
-        //     {
-        //         EditorGUILayout.LabelField("Cannot modify blends in playmode.");
-        //     }
-        //     else
-        //     {
-        //         EditorGUILayout.BeginVertical("box");
-        //         
-        //         _propertyShowBlendEditor.boolValue =
-        //             IndentedFoldoutHeader(_propertyShowBlendEditor.boolValue, "Blend Editor");
-        //         
-        //         if (_propertyShowBlendEditor.boolValue)
-        //         {
-        //             EditorGUILayout.PropertyField(_propertyUseBlend);
-        //
-        //             if (_propertyUseBlend.boolValue)
-        //             {
-        //                 EditorGUILayout.PropertyField(_propertyBlendInput);
-        //             }
-        //         }
-        //         
-        //         EditorGUILayout.EndVertical();
-        //     }
-        // }
         
         private bool IndentedFoldoutHeader(bool fold, string text, int indent = 1)
         {
@@ -418,57 +367,6 @@ namespace yellowyears.SkeletonPoser
             }
         }
         
-        private void SaveSecondaryPose()
-        {
-            var pose = _propertyPose.objectReferenceValue as XRSkeletonPose;
-            
-            if (pose == null) pose = ScriptableObject.CreateInstance<XRSkeletonPose>();
-
-            var copy = Instantiate(pose);
-            
-            copy.leftSecondaryPositions = _poser.GetBonePositions(_propertyTempLeft.objectReferenceValue as GameObject);
-            copy.leftSecondaryRotations = _poser.GetBoneRotations(_propertyTempLeft.objectReferenceValue as GameObject);
-        
-            copy.rightSecondaryPositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
-            copy.rightSecondaryRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
-        
-            // Don't overwrite main stuff
-        
-            if (copy.leftHandPositions != null)
-            {
-                copy.leftHandPositions = pose.leftHandPositions;
-            }
-        
-            if (copy.leftHandRotations != null)
-            {
-                copy.leftHandRotations = pose.leftHandRotations;
-            }
-        
-            if (copy.rightHandPositions != null)
-            {
-                copy.rightHandPositions = pose.rightHandPositions;
-            }
-        
-            if (copy.rightHandRotations != null)
-            {
-                copy.rightHandRotations = pose.rightHandRotations;
-            }
-
-            _poser.pose = copy;
-            
-            if (!AssetDatabase.IsValidFolder("Assets/XRPoses"))
-            {
-                // Folder doesn't exist, create new
-                AssetDatabase.CreateFolder("Assets", "XRPoses");
-                AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poserSettings.poseNamePrefix}{_poser.gameObject.name}.asset");
-            }
-            else
-            {
-                // Folder exists
-                AssetDatabase.CreateAsset(copy, $"Assets/XRPoses/{_poserSettings.poseNamePrefix}{_poser.gameObject.name}.asset");
-            }
-        }
-
         private void ResetPose()
         {
             // Set pose to new pose data to avoid the need for reassignment after saving the file
