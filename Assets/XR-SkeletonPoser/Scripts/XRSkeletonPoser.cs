@@ -189,6 +189,11 @@ namespace yellowyears.SkeletonPoser
             
             var handBones = handObject.GetComponentsInChildren<Transform>().ToArray();
 
+            if (!inputPose)
+            {
+                Debug.LogError($"There is no pose for {gameObject.name}!");
+            }
+            
             var leftPosePos = inputPose.leftHandPositions;
             var leftPoseRot = inputPose.leftHandRotations;
 
