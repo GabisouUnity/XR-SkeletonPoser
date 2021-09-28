@@ -47,7 +47,6 @@ namespace yellowyears.SkeletonPoser
             _instance.boneGizmoColour = Color.yellow;
             _instance.boneGizmoSize = 0.01f;
             _instance.boneGizmoPickSize = 0.01f;
-            // _instance.lerpFingersOnSelect = true;
 
             _instance.showLeftHandColour = Color.white;
             _instance.hideLeftHandColour = Color.white;
@@ -55,11 +54,13 @@ namespace yellowyears.SkeletonPoser
             _instance.showRightHandColour = Color.white;
             _instance.hideRightHandColour = Color.white;
             
+            _instance.showBothHandsColour = Color.white;
+            _instance.hideBothHandsColour = Color.white;
+            
             _instance.loadPoseColour = new Color32(160, 255, 66, 40);
             _instance.savePoseColour = new Color32(160, 255, 66, 40);
             
             _instance.resetPoseColour = new Color32(255, 101, 101, 96);
-            // _instance.resetToReferencePoseColour = new Color32(255, 101, 101, 96);
             
             AssetDatabase.SaveAssets();
         }
@@ -75,9 +76,7 @@ namespace yellowyears.SkeletonPoser
         public GameObject rightHand;
 
         [Space]
-
-        // public XRSkeletonPose referencePose;
-
+        
         public string poseNamePrefix;
         
         [Space]
@@ -91,37 +90,33 @@ namespace yellowyears.SkeletonPoser
         public Color boneGizmoColour;
         public float boneGizmoSize;
         public float boneGizmoPickSize;
-
-        // [Space]
         
         public string[] ignoredBoneKeywords;
-        
-        [Space]
-        
-        [Tooltip("Lerp fingers on select for a smooth transition between the free pose to the object")]
-        public bool lerpFingersOnSelect;
-        
-        public float fingerLerpDuration = 3f;
         
         [Space]
         
         public Font guiFont;
 
         [Space]
+        
         public Color showLeftHandColour;
-        [Space]
         public Color hideLeftHandColour;
+        
         [Space]
+        
         public Color showRightHandColour;
-        [Space]
         public Color hideRightHandColour;
+        
+        [Space]
+        
+        public Color showBothHandsColour;
+        public Color hideBothHandsColour;
         
         [Space]
         
         public Color loadPoseColour;
         public Color savePoseColour;
         public Color resetPoseColour;
-        // public Color resetToReferencePoseColour;
 
     }    
 }

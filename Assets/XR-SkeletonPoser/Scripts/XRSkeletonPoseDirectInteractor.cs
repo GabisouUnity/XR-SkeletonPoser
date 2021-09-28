@@ -19,36 +19,25 @@ namespace yellowyears.SkeletonPoser
         private XRSkeletonPose _defaultPose;
         private XRSkeletonPoser _poser;
         private XRController _inputController;
-        // private Transform[] _handBones = null;
 
-        // private XRSkeletonPoserSettings _poserSettings;
         private bool _isSkeletonPoseInteractable = false;
-        private bool _shouldCheckForBlendInput = false;
 
         protected override void Awake()
         {
             base.Awake();
 
             _inputController = GetComponent<XRController>();
-            // _poserSettings = XRSkeletonPoserSettings.Instance;
 
             // Cache default pose at runtime
             _defaultPose = XRSkeletonPoser.GetDefaultPose(handType, handObject);
         }
-
-        private void Update()
-        {
-            if (!_poser) return;
-            
-            _poser.CheckForBlendInput(_shouldCheckForBlendInput, _inputController, handObject, handType, selectTarget);
-        }
         
-        protected override void OnSelectEnter(XRBaseInteractable interactable)
+        protected override void OnSelectEntered(SelectEnterEventArgs selectEnterEventArgs)
         {
-            base.OnSelectEnter(interactable);
+            base.OnSelectEntered(new SelectEnterEventArgs());
 
             // Do not run the below code if the object isn't a skeleton poser, ie do not pose hand if not a poser interactable
-            if (!interactable.TryGetComponent(out _poser)) return;
+            if (!selectEnterEventArgs.interactable.TryGetComponent(out _poser)) return;
 
             var pose = _poser.FetchPose();
             
@@ -57,12 +46,11 @@ namespace yellowyears.SkeletonPoser
             _poser.SetOffset(selectTarget, handObject);
             
             _isSkeletonPoseInteractable = true;
-            _shouldCheckForBlendInput = _poser.useBlend;
         }
         
-        protected override void OnSelectExit(XRBaseInteractable interactable)
+        protected override void OnSelectExited(SelectExitEventArgs selectExitEventArgs)
         {
-            base.OnSelectExit(interactable);
+            base.OnSelectExited(selectExitEventArgs);
 
             if (_isSkeletonPoseInteractable)
             {
@@ -70,7 +58,6 @@ namespace yellowyears.SkeletonPoser
             }
             
             _isSkeletonPoseInteractable = false;
-            _shouldCheckForBlendInput = false;
 
             _poser = null;
         }

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using System.Linq;
 using UnityEditor;
-using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 
 namespace yellowyears.SkeletonPoser
@@ -16,25 +13,18 @@ namespace yellowyears.SkeletonPoser
         
         // Serialized Properties
         
-        public enum SelectedPose { Main, Secondary }
-
-        public enum BlendInput { Trigger } // Only trigger right now, will be adding more soon along with boolean / analogue input options.
-        
         [HideInInspector] public XRSkeletonPose pose;
-        [HideInInspector] public SelectedPose selectedPose;
-        
-        [HideInInspector] public BlendInput blendInput;
         
         [HideInInspector] public bool showPoses = false;
         [HideInInspector] public bool showPoseEditor = true; // Used in editor foldout
-        [HideInInspector] public bool showBlendEditor = false;
-        [HideInInspector] public bool useBlend = false;
         
         [HideInInspector] public bool showLeft;
         [HideInInspector] public GameObject tempLeft;
 
         [HideInInspector] public bool showRight;
         [HideInInspector] public GameObject tempRight;
+
+        [HideInInspector] public bool bothShown;
         
         private void Awake()
         {
@@ -114,82 +104,7 @@ namespace yellowyears.SkeletonPoser
         {
             return target != null ? target.GetComponentsInChildren<Transform>().Select(x => x.localRotation).ToArray() : null;
         }
-
-        private void BlendLeftPose(Transform[] fingers, float blendValue)
-        {
-            var mainPosePos = pose.leftHandPositions;
-            var mainPoseRot = pose.leftSecondaryRotations;
-
-            var secondaryPosePos = pose.leftSecondaryPositions;
-            var secondaryPoseRot = pose.leftSecondaryRotations;
-
-            for (int i = 0; i < fingers.Length; i++)
-            {
-                fingers[i].localPosition = Vector3.Slerp(mainPosePos[i], secondaryPosePos[i], blendValue);
-                fingers[i].localRotation = Quaternion.Slerp(mainPoseRot[i], secondaryPoseRot[i], blendValue);
-            }
-            
-            Debug.Log(blendValue);
-        }
         
-        private void BlendRightPose(Transform[] fingers, float blendValue)
-        {
-            var mainPosePos = pose.rightHandPositions;
-            var mainPoseRot = pose.rightSecondaryRotations;
-
-            var secondaryPosePos = pose.rightSecondaryPositions;
-            var secondaryPoseRot = pose.rightSecondaryRotations;
-
-            for (int i = 0; i < fingers.Length; i++)
-            {
-                fingers[i].localPosition = Vector3.Slerp(mainPosePos[i], secondaryPosePos[i], blendValue);
-                fingers[i].localRotation = Quaternion.Slerp(mainPoseRot[i], secondaryPoseRot[i], blendValue);
-            }
-        }
-     
-        public void CheckForBlendInput(bool shouldCheckForBlendInput, XRController inputController, GameObject handObject, HandType handType, XRBaseInteractable selectTarget)
-        {
-            if (!shouldCheckForBlendInput) return;
-
-            var device = inputController.inputDevice;
-            
-            // Get input and convert to common usages
-            var triggerUsage = CommonUsages.trigger;
-
-            var handBones = handObject.GetComponentsInChildren<Transform>().ToArray();
-
-            if (handType == HandType.Left)
-            {
-                // Check for input
-                switch (blendInput)
-                {
-                    case BlendInput.Trigger:
-                        // Get value
-                        device.TryGetFeatureValue(triggerUsage, out var triggerValue);
-            
-                        // Blend Pose
-                        BlendLeftPose(handBones, triggerValue);
-                        SetOffset(selectTarget, handObject);
-                        break;
-                }
-            }
-            else if (handType == HandType.Right)
-            {
-                switch (blendInput)
-                {
-                    case BlendInput.Trigger:
-                        // Get value
-                        device.TryGetFeatureValue(triggerUsage, out var triggerValue);
-            
-                        // Blend Pose
-                        BlendRightPose(handBones, triggerValue);
-                        SetOffset(selectTarget, handObject);
-                        break;
-                }
-            }
-            
-        }
-
         public void SetDefaultPose(HandType handType, GameObject handObject, XRSkeletonPose defaultPose)
         {
             var handBones = handObject.GetComponentsInChildren<Transform>().ToArray();
@@ -264,6 +179,11 @@ namespace yellowyears.SkeletonPoser
             
             var handBones = handObject.GetComponentsInChildren<Transform>().ToArray();
 
+            if (!inputPose)
+            {
+                Debug.LogError($"There is no pose for {gameObject.name}!");
+            }
+            
             var leftPosePos = inputPose.leftHandPositions;
             var leftPoseRot = inputPose.leftHandRotations;
 
@@ -302,21 +222,5 @@ namespace yellowyears.SkeletonPoser
             handBones[0].localRotation = Quaternion.identity;
         }
 
-        // private IEnumerator SetPose()
-        // {
-        //     float elapsedTime = 0;
-        //
-        //     while (elapsedTime < XRSkeletonPoserSettings.Instance.fingerLerpDuration)
-        //     {
-        //         // valueToLerp = Vector3.Lerp(startValue, endValue, elapsedTime / fingerLerpDuration;
-        //         
-        //         elapsedTime += Time.deltaTime;
-        //
-        //         yield return null;
-        //     }
-        //     
-        //     // valueToLerp = endValue;
-        // }
-        
     }
 }
