@@ -32,12 +32,12 @@ namespace yellowyears.SkeletonPoser
             _defaultPose = XRSkeletonPoser.GetDefaultPose(handType, handObject);
         }
         
-        protected override void OnSelectEntered(XRBaseInteractable interactable)
+        protected override void OnSelectEntered(SelectEnterEventArgs selectEnterEventArgs)
         {
-            base.OnSelectEntered(interactable);
+            base.OnSelectEntered(new SelectEnterEventArgs());
 
             // Do not run the below code if the object isn't a skeleton poser, ie do not pose hand if not a poser interactable
-            if (!interactable.TryGetComponent(out _poser)) return;
+            if (!selectEnterEventArgs.interactable.TryGetComponent(out _poser)) return;
 
             var pose = _poser.FetchPose();
             
@@ -48,9 +48,9 @@ namespace yellowyears.SkeletonPoser
             _isSkeletonPoseInteractable = true;
         }
         
-        protected override void OnSelectExited(XRBaseInteractable interactable)
+        protected override void OnSelectExited(SelectExitEventArgs selectExitEventArgs)
         {
-            base.OnSelectExited(interactable);
+            base.OnSelectExited(selectExitEventArgs);
 
             if (_isSkeletonPoseInteractable)
             {

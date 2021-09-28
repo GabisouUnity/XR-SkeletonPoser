@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Linq;
 using UnityEditor;
-using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 
 namespace yellowyears.SkeletonPoser
@@ -14,19 +13,10 @@ namespace yellowyears.SkeletonPoser
         
         // Serialized Properties
         
-        public enum SelectedPose { Main, Secondary }
-
-        public enum BlendInput { Trigger } // Only trigger right now, will be adding more soon along with boolean / analogue input options.
-        
         [HideInInspector] public XRSkeletonPose pose;
-        [HideInInspector] public SelectedPose selectedPose;
-        
-        [HideInInspector] public BlendInput blendInput;
         
         [HideInInspector] public bool showPoses = false;
         [HideInInspector] public bool showPoseEditor = true; // Used in editor foldout
-        [HideInInspector] public bool showBlendEditor = false;
-        [HideInInspector] public bool useBlend = false;
         
         [HideInInspector] public bool showLeft;
         [HideInInspector] public GameObject tempLeft;
