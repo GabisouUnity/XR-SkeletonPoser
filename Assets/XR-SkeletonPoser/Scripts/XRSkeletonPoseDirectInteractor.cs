@@ -19,11 +19,8 @@ namespace yellowyears.SkeletonPoser
         private XRSkeletonPose _defaultPose;
         private XRSkeletonPoser _poser;
         private XRController _inputController;
-        // private Transform[] _handBones = null;
 
-        // private XRSkeletonPoserSettings _poserSettings;
         private bool _isSkeletonPoseInteractable = false;
-        private bool _shouldCheckForBlendInput = false;
 
         protected override void Awake()
         {
@@ -49,7 +46,6 @@ namespace yellowyears.SkeletonPoser
             _poser.SetOffset(selectTarget, handObject);
             
             _isSkeletonPoseInteractable = true;
-            _shouldCheckForBlendInput = _poser.useBlend;
         }
         
         protected override void OnSelectExited(XRBaseInteractable interactable)
@@ -62,7 +58,6 @@ namespace yellowyears.SkeletonPoser
             }
             
             _isSkeletonPoseInteractable = false;
-            _shouldCheckForBlendInput = false;
 
             _poser = null;
         }

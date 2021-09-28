@@ -374,7 +374,7 @@ namespace yellowyears.SkeletonPoser
         {
             var pose = _propertyPose.objectReferenceValue as XRSkeletonPose;
 
-            if (pose == null) pose = ScriptableObject.CreateInstance<XRSkeletonPose>();
+            if (pose == null) pose = CreateInstance<XRSkeletonPose>();
             
             var copy = Instantiate(pose);
             
@@ -383,29 +383,7 @@ namespace yellowyears.SkeletonPoser
         
             copy.rightHandPositions = _poser.GetBonePositions(_propertyTempRight.objectReferenceValue as GameObject);
             copy.rightHandRotations = _poser.GetBoneRotations(_propertyTempRight.objectReferenceValue as GameObject);
-        
-            // Don't overwrite secondary stuff
-        
-            if (copy.leftSecondaryPositions != null)
-            {
-                copy.leftSecondaryPositions = pose.leftSecondaryPositions;
-            }
-        
-            if (copy.leftSecondaryRotations != null)
-            {
-                copy.leftSecondaryRotations = pose.leftSecondaryRotations;
-            }
-        
-            if (copy.rightSecondaryPositions != null)
-            {
-                copy.rightSecondaryPositions = pose.rightSecondaryPositions;
-            }
-        
-            if (copy.rightSecondaryRotations != null)
-            {
-                copy.rightSecondaryRotations = pose.rightSecondaryRotations;
-            }
-
+            
             _poser.pose = copy;
             
             // LoadPose(copy);
@@ -435,12 +413,6 @@ namespace yellowyears.SkeletonPoser
 
             copy.rightHandPositions = _defaultPose.rightHandPositions;
             copy.rightHandRotations = _defaultPose.rightHandRotations;
-            
-            copy.leftSecondaryPositions = _defaultPose.leftSecondaryPositions;
-            copy.leftSecondaryRotations = _defaultPose.leftSecondaryRotations;
-
-            copy.rightSecondaryPositions = _defaultPose.rightSecondaryPositions;
-            copy.rightSecondaryRotations = _defaultPose.rightSecondaryRotations;
             
             _poser.pose = copy;
 
