@@ -394,12 +394,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pose: {fileID: 11400000, guid: 9f574ff68086fb64dbb8d722634dbca2, type: 2}
-  selectedPose: 0
-  blendInput: 0
   showPoses: 1
   showPoseEditor: 1
-  showBlendEditor: 1
-  useBlend: 0
   showLeft: 0
   tempLeft: {fileID: 0}
   showRight: 0
@@ -1261,12 +1257,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pose: {fileID: 11400000, guid: 03c6b1960e237a74c9b2e58baae5d1b1, type: 2}
-  selectedPose: 0
-  blendInput: 0
   showPoses: 1
   showPoseEditor: 1
-  showBlendEditor: 1
-  useBlend: 1
   showLeft: 1
   tempLeft: {fileID: 938800605}
   showRight: 1
@@ -1993,7 +1985,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &871608824
 Transform:
   m_ObjectHideFlags: 0
@@ -2218,12 +2210,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pose: {fileID: 11400000, guid: 35ed0501c70a33e4d840e18119c9122b, type: 2}
-  selectedPose: 0
-  blendInput: 0
   showPoses: 1
   showPoseEditor: 1
-  showBlendEditor: 1
-  useBlend: 1
   showLeft: 0
   tempLeft: {fileID: 0}
   showRight: 0
@@ -3872,12 +3860,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pose: {fileID: 0}
-  selectedPose: 0
-  blendInput: 0
   showPoses: 1
   showPoseEditor: 1
-  showBlendEditor: 1
-  useBlend: 0
   showLeft: 0
   tempLeft: {fileID: 0}
   showRight: 0
