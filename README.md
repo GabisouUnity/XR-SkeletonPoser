@@ -4,16 +4,24 @@
 
 A skeleton poser is useful to author poses in the scene view easily, which can scale better than animations, where you would have to create animations for each object in the project.
 
-# Installation
+##### Table of Contents
 
-# Troubleshooting
+[Installation](#installation)  
+[Troubleshooting](#troubleshooting)  
+[FAQ](#faq)  
+[Additional Notes](#additional-notes)  
+[License](#license)  
+
+## Installation
+
+## Troubleshooting
 
 * First, please check the FAQ
 * If your problem wasn't in the FAQ, you can send an [issue report](https://github.com/yellowyears/XR-SkeletonPoser/issues), contact me on my [Discord Server](https://discord.gg/Y6GpkRF) or send me a friend request at **yellowyears#8953**
 
-# FAQ
+## FAQ
 
-## Additional notes:
+### Additional notes:
 
 Want to take your hands to the next level? During my endeavours into VR physics I found [a method for physics based hands in VR](https://youtu.be/uG5aTsS5sNk)
 
