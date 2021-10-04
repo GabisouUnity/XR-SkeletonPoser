@@ -262,7 +262,7 @@ namespace yellowyears.SkeletonPoser
                    if (!_propertyBothShown.boolValue)
                    {
                        GUI.backgroundColor = _poserSettings.showBothHandsColour;
-                       EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue && _propertyShowRight.boolValue);
+                       EditorGUI.BeginDisabledGroup(_propertyShowLeft.boolValue && _propertyShowRight.boolValue || !_poserSettings.leftHand || !_poserSettings.rightHand);
 
                        if (GUILayout.Button("Show Both Hands"))
                        {
@@ -293,7 +293,7 @@ namespace yellowyears.SkeletonPoser
                    else
                    {
                        GUI.backgroundColor = _poserSettings.hideBothHandsColour;
-                       EditorGUI.BeginDisabledGroup(!_propertyShowLeft.boolValue && !_propertyShowRight.boolValue);
+                       EditorGUI.BeginDisabledGroup(!_propertyShowLeft.boolValue && !_propertyShowRight.boolValue || !_poserSettings.leftHand || !_poserSettings.rightHand);
 
                        if (GUILayout.Button("Hide Both Hands"))
                        {

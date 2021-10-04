@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9995a4c4734888f448db7b74b8fa49db, type: 3}
   m_Name: SkeletonPoserSettings
   m_EditorClassIdentifier: 
-  leftHand: {fileID: 1084974400513676027, guid: 0266ea4df3425bb428dd632418b888ce,
+  leftHand: {fileID: 3509768977297426757, guid: f8b105d384322824d9a47e0f4f527df3,
     type: 3}
-  rightHand: {fileID: 4612610853942019498, guid: 4c5392e11dca6e146a1685f469b80eeb,
+  rightHand: {fileID: 126567881452638359, guid: fa7a20ddd8e285b4abd7a6a6b7f8881c,
     type: 3}
   poseNamePrefix: 
-  defaultExpandPreview: 0
+  defaultExpandPreview: 1
   useBoneGizmos: 1
   boneGizmoColour: {r: 0.6791116, g: 0.7169812, b: 0, a: 1}
   boneGizmoSize: 0.01

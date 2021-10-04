@@ -6,14 +6,16 @@ A skeleton poser is useful to author poses in the scene view easily, which can s
 
 ### Table of Contents
 
-[Features](#features)
-[Installation](#installation)
+[Features](#features)   
+[Installation](#installation)   
 [Troubleshooting](#troubleshooting)  
 [FAQ](#faq)  
 [Additional Notes](#additional-notes)  
 [License](#license)  
 
 # Features:
+
+* Easily create poses in the scene view
 
 ## Installation
 
@@ -28,7 +30,8 @@ A skeleton poser is useful to author poses in the scene view easily, which can s
 ## Troubleshooting
 
 * First, please check the [FAQ](#faq)
-* If your problem wasn't in the FAQ, you can send an [issue report](https://github.com/yellowyears/XR-SkeletonPoser/issues), contact me on my [Discord Server](https://discord.gg/Y6GpkRF) or send me a friend request at **yellowyears#8953**
+* If your problem is still unanswered, please ensure you have followed the [video setup guide]()   as this will show you exactly how to get started.
+* If your problem wasn't in the FAQ or the video setup guide, you can send an [issue report](https://github.com/yellowyears/XR-SkeletonPoser/issues), contact me on my [Discord Server](https://discord.gg/Y6GpkRF) or send me a friend request at **yellowyears#8953**
 
 ## FAQ
 
